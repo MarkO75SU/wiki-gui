@@ -19,6 +19,111 @@ const wikipediaSearchHelpUrls = {
     'pt': 'https://pt.wikipedia.org/wiki/Ajuda:Pesquisa'
 };
 
+/**
+ * Generates a Wikipedia search string based on user input from various form fields.
+ *
+ * @returns {string} The constructed search string.
+ */
+function generateSearchString() {
+    const queryParts = [];
+
+    // Main search query
+    const searchQuery = document.getElementById('search-query')?.value.trim();
+    if (searchQuery) {
+        queryParts.push(searchQuery);
+    }
+
+    // Exact phrase
+    const exactPhrase = document.getElementById('exact-phrase')?.value.trim();
+    if (exactPhrase) {
+        queryParts.push(`"${exactPhrase}"`);
+    }
+
+    // Without words
+    const withoutWords = document.getElementById('without-words')?.value.trim();
+    if (withoutWords) {
+        withoutWords.split(/\s+/).forEach(word => {
+            if (word) queryParts.push(`-${word}`);
+        });
+    }
+
+    // Any words (OR logic)
+    const anyWords = document.getElementById('any-words')?.value.trim();
+    if (anyWords) {
+        const words = anyWords.split(/\s+/).filter(word => word);
+        if (words.length > 0) {
+            queryParts.push(`(${words.join(' OR ')})`);
+        }
+    }
+
+    // In category
+    const incategory = document.getElementById('incategory-value')?.value.trim();
+    if (incategory) {
+        queryParts.push(`incategory:"${incategory}"`);
+    }
+
+    // Deep category
+    const deepcat = document.getElementById('deepcat-value')?.value.trim();
+    if (deepcat) {
+        queryParts.push(`deepcat:"${deepcat}"`);
+    }
+
+    // Prefix
+    const prefix = document.getElementById('prefix-value')?.value.trim();
+    if (prefix) {
+        queryParts.push(`prefix:"${prefix}"`);
+    }
+
+    // Subpage of
+    const subpageof = document.getElementById('subpageof-value')?.value.trim();
+    if (subpageof) {
+        queryParts.push(`subpageof:"${subpageof}"`);
+    }
+
+    // Link from
+    const linkfrom = document.getElementById('linkfrom-value')?.value.trim();
+    if (linkfrom) {
+        queryParts.push(`linkfrom:"${linkfrom}"`);
+    }
+
+    // In source
+    const insource = document.getElementById('insource-value')?.value.trim();
+    if (insource) {
+        queryParts.push(`insource:"${insource}"`);
+    }
+
+    // Has template
+    const hastemplate = document.getElementById('hastemplate-value')?.value.trim();
+    if (hastemplate) {
+        queryParts.push(`hastemplate:"${hastemplate}"`);
+    }
+
+    // File type
+    const filetype = document.getElementById('filetype-value')?.value.trim();
+    if (filetype) {
+        queryParts.push(`filetype:${filetype}`);
+    }
+
+    // File size min and max
+    const filesizeMin = document.getElementById('filesize-min')?.value.trim();
+    const filesizeMax = document.getElementById('filesize-max')?.value.trim();
+    if (filesizeMin && filesizeMax) {
+        queryParts.push(`filesize:${filesizeMin}-${filesizeMax}`);
+    } else if (filesizeMin) {
+        queryParts.push(`filesize:>${filesizeMin}`);
+    } else if (filesizeMax) {
+        queryParts.push(`filesize:<${filesizeMax}`);
+    }
+
+    // Category select (dropdown)
+    const categorySelect = document.getElementById('category-select');
+    if (categorySelect && categorySelect.value && categorySelect.value !== "") {
+        queryParts.push(`incategory:"${categorySelect.value}"`);
+    }
+
+    return queryParts.join(' ').trim();
+}
+
 // Helper function to fetch translations
 async function fetchTranslations(lang) {
     try {
@@ -176,6 +281,83 @@ function addEnterKeySubmitListener() {
             console.warn(`Input element with ID '${id}' not found. Enter key listener not attached for this field.`);
         }
     });
+}
+
+/**
+ * Performs a Wikipedia search using the MediaWiki API.
+ *
+ * @param {string} query The search query string.
+ * @param {string} lang The language code for the Wikipedia domain (e.g., 'en', 'de').
+ * @returns {Array<Object>} An array of search result objects, each with at least a 'title'.
+ */
+async function performWikipediaSearch(query, lang) {
+    const endpoint = `https://${lang}.wikipedia.org/w/api.php`;
+    const params = {
+        action: 'query',
+        list: 'search',
+        srsearch: query,
+        format: 'json',
+        origin: '*' // Required for CORS
+    };
+
+    const url = new URL(endpoint);
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+    try {
+        console.log(`Fetching Wikipedia search results from: ${url.toString()}`);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Wikipedia API response:", data);
+        return data.query.search || [];
+    } catch (error) {
+        console.error("Error performing Wikipedia search:", error);
+        return [];
+    }
+}
+
+/**
+ * Fetches a summary for a given Wikipedia article title.
+ *
+ * @param {string} title The title of the Wikipedia article.
+ * @param {string} lang The language code for the Wikipedia domain (e.g., 'en', 'de').
+ * @returns {string} The summary of the article, or an empty string if not found.
+ */
+async function fetchArticleSummary(title, lang) {
+    const endpoint = `https://${lang}.wikipedia.org/w/api.php`;
+    const params = {
+        action: 'query',
+        prop: 'extracts',
+        exsentences: 2, // Limit to 2 sentences
+        exintro: true, // Return only content before the first section
+        explaintext: true, // Return plain text
+        titles: title,
+        format: 'json',
+        origin: '*' // Required for CORS
+    };
+
+    const url = new URL(endpoint);
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+    try {
+        console.log(`Fetching article summary for: "${title}" from: ${url.toString()}`);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const pages = data.query.pages;
+        const pageId = Object.keys(pages)[0];
+        if (pageId && pages[pageId].extract) {
+            return pages[pageId].extract;
+        }
+        return '';
+    } catch (error) {
+        console.error(`Error fetching summary for "${title}":`, error);
+        return '';
+    }
 }
 
 
