@@ -7,12 +7,21 @@
 const translations = {};
 let currentLang = 'de'; // Default language
 
-// Helper function to get translated string
-function getTranslation(key, defaultValue = '') {
+// Helper function to get translated string with optional replacements
+function getTranslation(key, defaultValue = '', replacements = {}) {
+    let translatedString = defaultValue;
     if (translations[currentLang] && translations[currentLang][key]) {
-        return translations[currentLang][key];
+        translatedString = translations[currentLang][key];
     }
-    return defaultValue;
+
+    // Perform replacements if provided
+    for (const placeholder in replacements) {
+        // Regex to match {placeholder} or "{placeholder}"
+        const regex = new RegExp(`{\\s*${placeholder}\\s*}`, 'g');
+        translatedString = translatedString.replace(regex, replacements[placeholder]);
+    }
+
+    return translatedString;
 }
 
 // Mapping of language codes to Wikipedia search help URLs
@@ -890,35 +899,27 @@ function generateSearchString() {
 
 
 
-                        processedQuery = `intitle:"${processedQuery}"`;
+                                    processedQuery = `intitle:"${processedQuery}"`;
 
 
 
-                        explanationParts.push(getTranslation('explanation-intitle', `Searching for pages with "${mainQuery}" specifically in their title.`));
+                                    explanationParts.push(getTranslation('explanation-intitle', `Searching for pages with "${mainQuery}" specifically in their title.`, { mainQuery }));
 
 
 
-                    } else {
+                                } else {
 
 
 
-                        explanationParts.push(getTranslation('explanation-main-query', `Searching for pages containing the terms "${mainQuery}".`));
+                                    explanationParts.push(getTranslation('explanation-main-query', `Searching for pages containing the terms "${mainQuery}".`, { mainQuery }));
 
 
 
-                    }
+                                }
 
 
 
-                }
-
-
-
-    
-
-
-
-        if (optionFuzzy && mainQuery) { // Apply fuzzy only if there's a main query
+                            }
 
 
 
@@ -926,7 +927,7 @@ function generateSearchString() {
 
 
 
-            processedQuery += '~';
+            if (optionFuzzy && mainQuery) { // Apply fuzzy only if there's a main query
 
 
 
@@ -934,7 +935,7 @@ function generateSearchString() {
 
 
 
-            explanationParts.push(getTranslation('explanation-fuzzy-applied', `Applying fuzzy search to "${mainQuery}" to include similar terms.`));
+                processedQuery += '~';
 
 
 
@@ -942,43 +943,7 @@ function generateSearchString() {
 
 
 
-        }
-
-
-
-
-
-
-
-        if (exactPhrase) {
-
-
-
-
-
-
-
-            queryParts.push(`"${exactPhrase}"`);
-
-
-
-
-
-
-
-            explanationParts.push(getTranslation('explanation-exact-phrase', `Including the exact phrase "${exactPhrase}".`));
-
-
-
-
-
-
-
-        }
-
-
-
-
+                explanationParts.push(getTranslation('explanation-fuzzy-applied', `Applying fuzzy search to "${mainQuery}" to include similar terms.`, { mainQuery }));
 
 
 
@@ -986,91 +951,135 @@ function generateSearchString() {
 
 
 
+            }
 
 
 
 
-        if (withoutWords) {
 
 
 
+            if (exactPhrase) {
 
 
 
 
-            const words = withoutWords.split(/\s+/).map(word => `-${word}`);
 
 
 
+                queryParts.push(`"${exactPhrase}"`);
 
 
 
 
-            queryParts.push(words.join(' '));
 
 
 
+                explanationParts.push(getTranslation('explanation-exact-phrase', `Including the exact phrase "${exactPhrase}".`, { exactPhrase }));
 
 
 
 
-            explanationParts.push(getTranslation('explanation-without-words', `Excluding pages containing any of these words: "${withoutWords}".`));
 
 
 
+            }
 
 
 
 
-        }
 
 
 
+        
 
 
 
 
-    
 
 
 
+            if (withoutWords) {
 
 
 
 
-        if (anyWords) {
 
 
 
+                const words = withoutWords.split(/\s+/).map(word => `-${word}`);
 
 
 
 
-            const words = anyWords.split(/\s+/).join(' OR ');
 
 
 
+                queryParts.push(words.join(' '));
 
 
 
 
-            queryParts.push(`(${words})`);
 
 
 
+                explanationParts.push(getTranslation('explanation-without-words', `Excluding pages containing any of these words: "${withoutWords}".`, { withoutWords }));
 
 
 
 
-            explanationParts.push(getTranslation('explanation-any-words', `Including pages with at least one of these words: "${anyWords}".`));
 
 
 
+            }
 
 
 
 
-        }
+
+
+
+        
+
+
+
+
+
+
+
+            if (anyWords) {
+
+
+
+
+
+
+
+                const words = anyWords.split(/\s+/).join(' OR ');
+
+
+
+
+
+
+
+                queryParts.push(`(${words})`);
+
+
+
+
+
+
+
+                explanationParts.push(getTranslation('explanation-any-words', `Including pages with at least one of these words: "${anyWords}".`, { anyWords }));
+
+
+
+
+
+
+
+            }
 
 
 
@@ -1082,23 +1091,47 @@ function generateSearchString() {
 
 
 
-        const inCategory = getValue('incategory-value');
+            const inCategory = getValue('incategory-value');
 
 
 
-        if (inCategory) {
+            if (inCategory) {
 
 
 
-            queryParts.push(`incategory:"${inCategory}"`);
+                queryParts.push(`incategory:"${inCategory}"`);
 
 
 
-            explanationParts.push(getTranslation('explanation-incategory', `Limiting results to articles within the category "${inCategory}".`));
+                explanationParts.push(getTranslation('explanation-incategory', `Limiting results to articles within the category "${inCategory}".`, { inCategory }));
 
 
 
-        }
+            }
+
+
+
+            
+
+
+
+            const deepCat = getValue('deepcat-value');
+
+
+
+            if (deepCat) {
+
+
+
+                queryParts.push(`deepcat:"${deepCat}"`);
+
+
+
+                explanationParts.push(getTranslation('explanation-deepcat', `Limiting results to articles within "${deepCat}" and its subcategories.`, { deepCat }));
+
+
+
+            }
 
 
 
@@ -1106,143 +1139,119 @@ function generateSearchString() {
 
 
 
-        const deepCat = getValue('deepcat-value');
+            const linkFrom = getValue('linkfrom-value');
 
 
 
-        if (deepCat) {
+            if (linkFrom) {
 
 
 
-            queryParts.push(`deepcat:"${deepCat}"`);
+                queryParts.push(`linksto:"${linkFrom}"`);
 
 
 
-            explanationParts.push(getTranslation('explanation-deepcat', `Limiting results to articles within "${deepCat}" and its subcategories.`));
+                explanationParts.push(getTranslation('explanation-linkfrom', `Showing pages that link to "${linkFrom}".`, { linkFrom }));
 
 
 
-        }
+            }
 
 
 
-    
 
 
 
-        const linkFrom = getValue('linkfrom-value');
 
+            const prefixValue = getValue('prefix-value');
 
 
-        if (linkFrom) {
 
 
 
-            queryParts.push(`linksto:"${linkFrom}"`);
 
 
+            if (prefixValue) {
 
-            explanationParts.push(getTranslation('explanation-linkfrom', `Showing pages that link to "${linkFrom}".`));
 
 
 
-        }
 
 
 
+                queryParts.push(`prefix:"${prefixValue}"`);
 
 
 
 
-        const prefixValue = getValue('prefix-value');
 
 
 
+                explanationParts.push(getTranslation('explanation-prefix', `Only showing pages whose titles start with "${prefixValue}".`, { prefixValue }));
 
 
 
 
-        if (prefixValue) {
 
 
 
+            }
 
 
 
 
-            queryParts.push(`prefix:"${prefixValue}"`);
 
 
 
+        
 
 
 
 
-            explanationParts.push(getTranslation('explanation-prefix', `Only showing pages whose titles start with "${prefixValue}".`));
 
 
 
+            const selectedCategory = getValue('category-select');
 
 
 
 
-        }
 
 
 
+            if (selectedCategory) {
 
 
 
 
-    
 
 
 
+                // This is a duplicate of incategory, but still add explanation if used.
 
 
 
 
-        const selectedCategory = getValue('category-select');
 
 
 
+                // The actual query part is handled by incategory already.
 
 
 
 
-        if (selectedCategory) {
 
 
 
+                explanationParts.push(getTranslation('explanation-selected-category', `Filtering by selected category: "${selectedCategory}".`, { selectedCategory }));
 
 
 
 
-            // This is a duplicate of incategory, but still add explanation if used.
 
 
 
-
-
-
-
-            // The actual query part is handled by incategory already.
-
-
-
-
-
-
-
-            explanationParts.push(getTranslation('explanation-selected-category', `Filtering by selected category: "${selectedCategory}".`));
-
-
-
-
-
-
-
-        }
+            }
 
 
 
@@ -1254,71 +1263,71 @@ function generateSearchString() {
 
 
 
-        const inSource = getValue('insource-value');
+            const inSource = getValue('insource-value');
 
 
 
-        if (inSource) {
+            if (inSource) {
 
 
 
-            queryParts.push(`insource:${inSource}`);
+                queryParts.push(`insource:${inSource}`);
 
 
 
-            explanationParts.push(getTranslation('explanation-insource', `Searching for pages containing "${inSource}" in their wikitext source.`));
+                explanationParts.push(getTranslation('explanation-insource', `Searching for pages containing "${inSource}" in their wikitext source.`, { inSource }));
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        const hasTemplate = getValue('hastemplate-value');
+            const hasTemplate = getValue('hastemplate-value');
 
 
 
-        if (hasTemplate) {
+            if (hasTemplate) {
 
 
 
-            queryParts.push(`hastemplate:"${hastemplate}"`);
+                queryParts.push(`hastemplate:"${hasTemplate}"`);
 
 
 
-            explanationParts.push(getTranslation('explanation-hastemplate', `Including pages that use the template "${hastemplate}".`));
+                explanationParts.push(getTranslation('explanation-hastemplate', `Including pages that use the template "${hasTemplate}".`, { hastemplate: hasTemplate }));
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        const fileType = getValue('filetype-value');
+            const fileType = getValue('filetype-value');
 
 
 
-        if (fileType) {
+            if (fileType) {
 
 
 
-            queryParts.push(`filetype:${fileType}`);
+                queryParts.push(`filetype:${fileType}`);
 
 
 
-            explanationParts.push(getTranslation('explanation-filetype', `Filtering for files of type: "${fileType}".`));
+                explanationParts.push(getTranslation('explanation-filetype', `Filtering for files of type: "${fileType}".`, { fileType }));
 
 
 
-        }
+            }
 
 
 
@@ -1326,7 +1335,7 @@ function generateSearchString() {
 
 
 
-        const fileSizeMin = getValue('filesize-min');
+            const fileSizeMin = getValue('filesize-min');
 
 
 
@@ -1334,7 +1343,7 @@ function generateSearchString() {
 
 
 
-        if (fileSizeMin) {
+            if (fileSizeMin) {
 
 
 
@@ -1342,7 +1351,7 @@ function generateSearchString() {
 
 
 
-            queryParts.push(`filesize:>=${fileSizeMin}`);
+                queryParts.push(`filesize:>=${fileSizeMin}`);
 
 
 
@@ -1350,7 +1359,7 @@ function generateSearchString() {
 
 
 
-            explanationParts.push(getTranslation('explanation-filesize-min', `Including files with a size greater than or equal to ${fileSizeMin} bytes.`));
+                explanationParts.push(getTranslation('explanation-filesize-min', `Including files with a size greater than or equal to ${fileSizeMin} bytes.`, { fileSizeMin }));
 
 
 
@@ -1358,7 +1367,7 @@ function generateSearchString() {
 
 
 
-        }
+            }
 
 
 
@@ -1366,7 +1375,7 @@ function generateSearchString() {
 
 
 
-    
+        
 
 
 
@@ -1374,7 +1383,7 @@ function generateSearchString() {
 
 
 
-        const fileSizeMax = getValue('filesize-max');
+            const fileSizeMax = getValue('filesize-max');
 
 
 
@@ -1382,7 +1391,7 @@ function generateSearchString() {
 
 
 
-        if (fileSizeMax) {
+            if (fileSizeMax) {
 
 
 
@@ -1390,7 +1399,7 @@ function generateSearchString() {
 
 
 
-            queryParts.push(`filesize:<=${fileSizeMax}`);
+                queryParts.push(`filesize:<=${fileSizeMax}`);
 
 
 
@@ -1398,7 +1407,7 @@ function generateSearchString() {
 
 
 
-            explanationParts.push(getTranslation('explanation-filesize-max', `Including files with a size less than or equal to ${fileSizeMax} bytes.`));
+                explanationParts.push(getTranslation('explanation-filesize-max', `Including files with a size less than or equal to ${fileSizeMax} bytes.`, { fileSizeMax }));
 
 
 
@@ -1406,7 +1415,7 @@ function generateSearchString() {
 
 
 
-        }
+            }
 
 
 
