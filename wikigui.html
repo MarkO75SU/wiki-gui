@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">WikiGUI - Wikipedia Search Helper</title>
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 id="app-title">WikiGUI</h1>
+            <!-- Removed Navigation: Home, Search Help, About -->
+            <div class="language-selector">
+                <button id="lang-de" class="lang-button" data-lang="de">Deutsch</button>
+                <button id="lang-en" class="lang-button" data-lang="en">English</button>
+                <button id="lang-fr" class="lang-button" data-lang="fr">Français</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="search-interface">
+            <h2 id="main-heading">Wikipedia Search Helper</h2>
+            <p id="intro-text">
+                <a href="https://de.wikipedia.org/wiki/Hilfe:Suche" target="_blank" id="official-doc-link">Offizielle Wikipedia Suchdokumentation</a>
+                <br>
+                <span id="general-params-description">Erfahren Sie, wie Sie Suchparameter effektiv nutzen. Verwenden Sie zum Beispiel "AND" oder "OR" zwischen Begriffen, oder "-Begriff" zum Ausschließen.</span>
+            </p>
+
+            <div class="search-form-container">
+                <form id="search-form">
+                    <div class="form-group">
+                        <label for="target-wiki-lang" id="label-target-wiki-lang">Target Wiki Language:</label>
+                        <select id="target-wiki-lang">
+                            <option value="de" selected>Deutsch (de)</option>
+                            <option value="en">English (en)</option>
+                            <option value="fr">Français (fr)</option>
+                            <option value="es">Español (es)</option>
+                            <option value="zh">Chinesisch (zh)</option>
+                            <option value="hi">Hindi (hi)</option>
+                            <option value="ar">Arabisch (ar)</option>
+                            <option value="ru">Russisch (ru)</option>
+                            <option value="pt">Portugiesisch (pt)</option>
+                        </select>
+                    </div>
+
+                                        <div class="search-group" id="group-main-query">
+
+                                            <h3 class="accordion-header" id="heading-main-query">Main Search Query: <span class="info-icon" data-info-id="info-main-query">i</span><span class="accordion-arrow"></span>
+
+                                                <div class="info-popup" id="info-main-query-popup">
+
+                                                    <span id="info-main-query-text">Define your core search terms here. Use exact phrases, exclusion words, or OR conditions to refine results.</span>
+
+                                                </div>
+
+                                            </h3>
+
+                                            <div class="accordion-content">
+
+                                                <div class="form-group">
+
+                                                    <label for="search-query" id="label-search-query">All these words:</label>
+
+                                                    <input type="text" id="search-query" placeholder="1. FC Köln">
+
+                                                </div>
+
+                    
+
+                                                <div class="form-group">
+
+                                                    <label for="exact-phrase" id="label-exact-phrase">Exact Phrase:</label>
+
+                                                    <input type="text" id="exact-phrase" placeholder='e.g. "RheinEnergieStadion"'>
+
+                                                </div>
+
+                    
+
+                                                <div class="form-group">
+
+                                                    <label for="without-words" id="label-without-words">Without these words:</label>
+
+                                                    <input type="text" id="without-words" placeholder="Düsseldorf">
+
+                                                </div>
+
+                    
+
+                                                <div class="form-group">
+
+                                                    <label for="any-words" id="label-any-words">At least one of these words (OR):</label>
+
+                                                    <input type="text" id="any-words" placeholder="Football OR Soccer">
+
+                                                </div>
+
+                    
+
+                                                <div class="option-group">
+
+                                                    <input type="checkbox" id="option-wildcard">
+
+                                                    <label for="option-wildcard" id="label-option-wildcard">Enable Wildcard Search (e.g., Köl*)</label>
+
+                                                    <span class="info-icon" data-info-id="info-wildcard">i</span>
+
+                                                </div>
+
+                                                <div class="info-popup" id="info-wildcard-popup">
+
+                                                    <span id="info-wildcard-text">Use '*' as a wildcard for any characters. e.g., 'Köl*' will match 'Köln', 'Kölner', etc.</span>
+
+                                                </div>
+
+                    
+
+                                            </div>
+
+                                        </div> <!-- End Main Query Group -->
+
+                    
+
+                                        <div class="search-group" id="group-scope-location">
+
+                                            <h3 class="accordion-header" id="heading-scope-location">Scope & Location: <span class="info-icon" data-info-id="info-scope-location">i</span><span class="accordion-arrow"></span>
+
+                                                <div class="info-popup" id="info-scope-location-popup">
+
+                                                    <span id="info-scope-location-text">Narrow down your search by category, links, or namespaces.</span>
+
+                                                </div>
+
+                                            </h3>
+
+                                            <div class="accordion-content">
+
+                                                <div class="option-group">
+
+                                                    <input type="checkbox" id="option-intitle">
+
+                                                    <label for="option-intitle" id="label-intitle">Search in Title (Main Search Query)</label>
+
+                                                </div>
+
+                    
+
+                                                <div class="form-group">
+
+                                                    <label for="prefix-value" id="label-prefix-value">Starts with Title:</label>
+
+                                                    <input type="text" id="prefix-value" placeholder="Köln">
+
+                                                    <span class="info-icon" data-info-id="info-prefix-value">i</span>
+
+                                                </div>
+
+                                                <div class="info-popup" id="info-prefix-value-popup">
+
+                                                    <span id="info-prefix-value-text">Find pages whose titles begin with the specified text.</span>
+
+                                                </div>
+
+
+
+                            <div class="form-group">
+                                <label for="incategory-value" id="label-incategory">In Category:</label>
+                                <input type="text" id="incategory-value" placeholder="Football Clubs">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deepcat-value" id="label-deepcat">Deep Category:</label>
+                                <input type="text" id="deepcat-value" placeholder="Sport">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="linkfrom-value" id="label-linkfrom">Linked from:</label>
+                                <input type="text" id="linkfrom-value" placeholder="Miroslav Klose">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category-select" id="label-category-dropdown">Category:</label>
+                                <select id="category-select">
+                                    <option value="">Select a category</option>
+                                    <option value="Science">Science</option>
+                                    <option value="History">History</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Geography">Geography</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="namespaces-heading" id="label-namespaces">Namespaces:</label>
+                                <div id="namespaces-options">
+                                    <div class="option-group">
+                                        <input type="checkbox" id="ns-main">
+                                        <label for="ns-main" id="label-ns-main">Article</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="ns-file">
+                                        <label for="ns-file" id="label-ns-file">File</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="ns-category">
+                                        <label for="ns-category" id="label-ns-category">Category</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="ns-help">
+                                        <label for="ns-help" id="label-ns-help">Help</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="ns-user">
+                                        <label for="ns-user" id="label-ns-user">User</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="ns-template">
+                                        <label for="ns-template" id="label-ns-template">Template</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End Scope/Location Group -->
+                    
+                    <div class="search-group" id="group-content-technical">
+                        <h3 class="accordion-header" id="heading-content-technical">Content & Technical: <span class="info-icon" data-info-id="info-content-technical">i</span><span class="accordion-arrow"></span>
+                            <div class="info-popup" id="info-content-technical-popup">
+                                <span id="info-content-technical-text">Refine searches based on file content, templates, or file types/sizes.</span>
+                            </div>
+                        </h3>
+                        <div class="accordion-content">
+                            <div class="form-group">
+                                <label for="insource-value" id="label-insource">In Source (Wikitext):</label>
+                                <input type="text" id="insource-value" placeholder="insource:/regex/ or insource:&quot;text&quot;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hastemplate-value" id="label-hastemplate">Uses Template:</label>
+                                <input type="text" id="hastemplate-value" placeholder="Infobox Football Player">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="filetype-value" id="label-filetype">File Type:</label>
+                                <input type="text" id="filetype-value" placeholder="pdf, jpg, ogg">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="filesize-min" id="label-filesize">File Size (bytes):</label>
+                                <input type="number" id="filesize-min" placeholder="Min" min="0">
+                                <input type="number" id="filesize-max" placeholder="Max" min="0">
+                            </div>
+                        </div>
+                    </div> <!-- End Content/Technical Group -->
+
+                    <div class="search-group" id="group-behavioral">
+                        <h3 class="accordion-header" id="heading-behavioral">Search Behavior: <span class="info-icon" data-info-id="info-behavioral">i</span><span class="accordion-arrow"></span>
+                            <div class="info-popup" id="info-behavioral-popup">
+                                <span id="info-behavioral-text">Adjust how the search engine interprets your query, like enabling fuzzy matching.</span>
+                            </div>
+                        </h3>
+                        <div class="accordion-content">
+                            <div class="option-group">
+                                <input type="checkbox" id="option-fuzzy">
+                                <label for="option-fuzzy" id="label-fuzzy">Fuzzy Search (tilde ~)</label>
+                                <span class="info-icon" data-info-id="info-fuzzy">i</span>
+                            </div>
+                            <div class="info-popup" id="info-fuzzy-popup">
+                                <span id="info-fuzzy-text">Allows for minor spelling variations (e.g., 'house~' finds 'houses').</span>
+                            </div>
+                        </div>
+                    </div> <!-- End Behavioral Group -->
+
+                    <button type="submit" id="generate-search-string-button">Generate Search String & Preview</button>
+                </form>
+            </div>
+
+            <div class="search-output">
+                <h3 id="generated-string-heading">Generated Search String:</h3>
+                <p id="generated-search-string-display">Generated string will appear here.</p>
+
+                <h3 id="search-results-heading">Search Results (First 10):</h3>
+                <ul id="simulated-search-results">
+                    <!-- Simulated results will be inserted here -->
+                    <li><div class="loading-indicator" style="display: none;">Loading results...</div></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a id="link-license-agreement" href="src/html/license.html">License Agreement</a></li>
+                    <li><a id="link-terms-of-use" href="src/html/terms.html">Terms of Use</a></li>
+                    <li><a id="link-non-commercial-use" href="src/html/non_commercial.html">Non-Commercial Use</a></li>
+                    <li><a id="link-faq" href="src/html/faq.html">FAQ</a></li>
+                </ul>
+            </nav>
+            <p id="footer-text">&copy; 2025 WikiGUI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="src/js/script.js"></script>
+</body>
+</html>

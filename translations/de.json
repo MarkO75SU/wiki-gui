@@ -25,8 +25,6 @@
     "heading-scope-location": "Bereich & Ort:",
     "label-intitle": "Im Titel suchen (Hauptsuchanfrage)",
     "info-intitle-text": "Sucht die Hauptsuchanfrage nur im Titel des Artikels.",
-    "label-intext": "Im Text suchen",
-    "info-intext-text": "Sucht nach Begriffen nur im Haupttext des Artikels.",
     "label-incategory": "In Kategorie:",
     "incategory-placeholder": "Fußballvereine",
     "info-incategory-text": "Sucht Artikel innerhalb einer oder mehrerer Kategorien. Mehrere Kategorien mit Komma trennen.",
@@ -89,6 +87,20 @@
     "generated-string-placeholder": "Die generierte Zeichenkette wird hier angezeigt.",
     "search-results-heading": "Suchergebnisse (erste 10):",
     "no-results-found": "Keine simulierten Ergebnisse gefunden.",
-    "footer-text": "© 2025 WikiGUI. Alle Rechte vorbehalten."
+    "footer-text": "© 2025 WikiGUI. Alle Rechte vorbehalten.",
+    "lang-de-option": "Deutsch (de)",
+    "lang-en-option": "Englisch (en)",
+    "lang-fr-option": "Französisch (fr)",
+    "lang-es-option": "Spanisch (es)",
+    "lang-zh-option": "Chinesisch (zh)",
+    "lang-hi-option": "Hindi (hi)",
+    "lang-ar-option": "Arabisch (ar)",
+    "lang-ru-option": "Russisch (ru)",
+    "lang-pt-option": "Portugiesisch (pt)",
+    "label-option-wildcard": "Platzhalter-Suche aktivieren (z.B. Köl*)",
+    "info-wildcard-text": "Verwenden Sie '*' als Platzhalter für beliebige Zeichen. Z.B. 'Köl*' findet 'Köln', 'Kölner', etc.",
+    "label-prefix-value": "Beginnt mit Titel:",
+    "info-prefix-value-text": "Findet Seiten, deren Titel mit dem angegebenen Text beginnen.",
+    "no-params-entered": ""
 }
 

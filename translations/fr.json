@@ -25,8 +25,6 @@
     "heading-scope-location": "Portée & Emplacement :",
     "label-intitle": "Rechercher dans le titre (Requête de recherche principale)",
     "info-intitle-text": "Recherche la requête de recherche principale uniquement dans le titre de l'article.",
-    "label-intext": "Rechercher dans le texte",
-    "info-intext-text": "Recherche les termes uniquement dans le texte principal de l'article.",
     "label-incategory": "Dans la catégorie :",
     "incategory-placeholder": "Clubs de football",
     "info-incategory-text": "Recherche les articles dans une ou plusieurs catégories. Séparez les catégories par une virgule.",
@@ -98,5 +96,10 @@
     "lang-hi-option": "Hindi (hi)",
     "lang-ar-option": "Arabe (ar)",
     "lang-ru-option": "Russe (ru)",
-    "lang-pt-option": "Portugais (pt)"
+    "lang-pt-option": "Portugais (pt)",
+    "label-option-wildcard": "Activer la recherche générique (ex. Köl*)",
+    "info-wildcard-text": "Utilisez '*' comme caractère générique pour n'importe quels caractères. Par exemple, 'Köl*' correspondra à 'Köln', 'Kölner', etc.",
+    "label-prefix-value": "Commence par le titre :",
+    "info-prefix-value-text": "Trouve les pages dont les titres commencent par le texte spécifié.",
+    "no-params-entered": ""
 }

@@ -1,7 +1,7 @@
+// SCRIPT_VERSION_DEBUG_1145 - Unique Identifier for Cache Debugging
 // FORCE CACHE CLEAR - SCRIPT VERSION FORCED REFRESH - FINAL ATTEMPT - 2023-10-27 - V3
 // If the ReferenceError persists, please ensure browser cache is cleared and perform a hard refresh.
 // If the issue continues, check your local development server's configuration.
-// script.js
 
 // Object to hold translations
 const translations = {};
@@ -76,11 +76,15 @@ function applyTranslations() {
         // Translate options for the target wiki language dropdown
         const targetWikiLangSelect = document.getElementById('target-wiki-lang');
         if (targetWikiLangSelect) {
+            console.log(`Translating 'target-wiki-lang' dropdown to ${currentLang}.`);
              targetWikiLangSelect.querySelectorAll('option').forEach(option => {
                 const langCode = option.value;
                 const translationKey = `lang-${langCode}-option`; // e.g., "lang-de-option"
-                if (langCode && translations[currentLang][translationKey]) {
+                if (langCode && translations[currentLang] && translations[currentLang][translationKey]) {
+                    console.log(`Translating option ${langCode} with key ${translationKey}`);
                     option.textContent = translations[currentLang][translationKey];
+                } else {
+                    console.warn(`Translation not found for option ${langCode} with key ${translationKey} in ${currentLang}.json`);
                 }
             });
             
@@ -106,106 +110,290 @@ function applyTranslations() {
     }
 }
 
-// Language switcher functionality
-document.querySelectorAll('.lang-button').forEach(button => {
-    button.addEventListener('click', async (event) => {
-        currentLang = event.target.dataset.lang;
-        await fetchTranslations(currentLang);
-        applyTranslations();
-    });
-});
-
-// Info popup functionality
-document.querySelectorAll('.info-icon').forEach(icon => {
-    icon.addEventListener('mouseover', (event) => {
-        const infoId = event.target.dataset.infoId;
-        const popup = document.getElementById(`${infoId}-popup`);
-        if (popup) {
-            popup.style.display = 'block';
-        }
-    });
-
-    icon.addEventListener('mouseout', (event) => {
-        const infoId = event.target.dataset.infoId;
-        const popup = document.getElementById(`${infoId}-popup`);
-        if (popup) {
-            popup.style.display = 'none';
-        }
-    });
-});
-
 // Function to add Enter key listener to trigger form submission
+
 function addEnterKeySubmitListener() {
+
+    console.log("Inside addEnterKeySubmitListener function."); // Debug log
+
     const searchForm = document.getElementById('search-form');
+
     // Exit if the search form is not found to prevent errors
+
     if (!searchForm) {
+
         console.error("Search form element not found. Cannot attach Enter key listener.");
+
         return;
+
     }
 
-    const inputFieldsToWatch = [
-        'search-query',
-        'exact-phrase',
-        'without-words',
-        'any-words',
-        'incategory-value',
-        'deepcat-value',
-        'linkfrom-value',
-        'insource-value',
-        'hastemplate-value',
-        'filetype-value',
-        'filesize-min',
-        'filesize-max',
-        'category-select' // The new dropdown
-    ];
+    console.log("Search form found."); // Debug log
 
-    inputFieldsToWatch.forEach(id => {
-        const inputElement = document.getElementById(id);
-        if (inputElement) {
-            inputElement.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    // Prevent default browser behavior for Enter key in forms
-                    event.preventDefault();
+
+
+    const inputFieldsToWatch = [
+
+        'search-query',
+
+        'exact-phrase',
+
+        'without-words',
+
+        'any-words',
+
+        'incategory-value',
+
+        'deepcat-value',
+
+        'linkfrom-value',
+
+        'insource-value',
+
+        'hastemplate-value',
+
+        'filetype-value',
+
+        'filesize-min',
+
+                                'filesize-max',
+
+                                'category-select', // The new dropdown
+
+                                'prefix-value' // Input for prefix search
+
+                            ];
+
+                        
+
+                            inputFieldsToWatch.forEach(id => {
+
+                                console.log(`Checking for input element with ID: ${id}`); // Debug log
+
+                                const inputElement = document.getElementById(id);
+
+                                if (inputElement) {
+
+                                    console.log(`Element with ID '${id}' found.`); // Debug log
+
+                                    inputElement.addEventListener('keydown', (event) => {
+
+                                        if (event.key === 'Enter') {
+
+                                            // Prevent default browser behavior for Enter key in forms
+
+                                            event.preventDefault();
+
                     // Manually trigger the form submission to initiate search
+
                     console.log(`Enter key pressed on ${id}. Triggering form submit.`);
+
                     searchForm.submit();
+
                 }
+
             });
+
         } else {
+
             // Log if an expected input element is not found
+
             console.warn(`Input element with ID '${id}' not found. Enter key listener not attached for this field.`);
+
         }
+
     });
+
 }
 
 
+
+// Function to add accordion functionality
+
+
+
+function addAccordionFunctionality() {
+
+
+
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+
+
+
+
+
+
+    accordionHeaders.forEach(header => {
+
+
+
+        header.addEventListener('click', () => {
+
+
+
+            const content = header.nextElementSibling; // Get the next sibling element, which should be the content
+
+
+
+            if (content && content.classList.contains('accordion-content')) {
+
+
+
+                // Toggle the 'active' class on the header
+
+
+
+                header.classList.toggle('active');
+
+
+
+
+
+
+
+                // Toggle the display of the content
+
+
+
+                if (content.style.display === 'block') {
+
+
+
+                    content.style.display = 'none';
+
+
+
+                } else {
+
+
+
+                    content.style.display = 'block';
+
+
+
+                }
+
+
+
+            }
+
+
+
+        });
+
+
+
+    });
+
+
+
+    console.log("Accordion functionality initiated.");
+
+
+
+
+
+
+
+    // Automatically open the first accordion (Main Search Query) on page load
+
+
+
+    const mainQueryHeader = document.getElementById('heading-main-query');
+
+
+
+    if (mainQueryHeader) {
+
+
+
+        const mainQueryContent = mainQueryHeader.nextElementSibling;
+
+
+
+        if (mainQueryContent && mainQueryContent.classList.contains('accordion-content')) {
+
+
+
+            mainQueryContent.style.display = 'block';
+
+
+
+            mainQueryHeader.classList.add('active');
+
+
+
+        }
+
+
+
+    }
+
+
+
+}
+
+
+
 // Function to generate the search string from form inputs
+
 function generateSearchString() {
+
     const queryParts = [];
 
+
+
     // Helper to get value from an element
+
     const getValue = (id) => {
+
         const element = document.getElementById(id);
+
         if (element) {
+
             if (element.type === 'checkbox') {
+
                 return element.checked;
+
             }
+
             return element.value.trim();
+
         }
+
         return '';
+
     };
 
-    const mainQuery = getValue('search-query');
-    const exactPhrase = getValue('exact-phrase');
-    const withoutWords = getValue('without-words');
-    const anyWords = getValue('any-words');
 
-    let mainQueryString = mainQuery;
-    if (getValue('option-intitle')) {
-        mainQueryString = `intitle:"${mainQuery}"`;
+
+    const mainQuery = getValue('search-query');
+
+    const exactPhrase = getValue('exact-phrase');
+
+    const withoutWords = getValue('without-words');
+
+    const anyWords = getValue('any-words');
+    const optionFuzzy = getValue('option-fuzzy');
+    const optionWildcard = getValue('option-wildcard');
+    const optionIntitle = getValue('option-intitle');
+
+    let processedQuery = mainQuery;
+
+    if (optionIntitle) {
+        processedQuery = `intitle:"${processedQuery}"`;
     }
-    if (mainQueryString) {
-        queryParts.push(mainQueryString);
+
+    if (optionFuzzy && processedQuery) {
+        processedQuery += '~';
+    }
+
+    // If wildcard is enabled, we assume the user has already included '*' in the mainQuery
+    // No special handling is needed here, as processedQuery already contains the mainQuery.
+
+    if (processedQuery) {
+        queryParts.push(processedQuery);
     }
 
     if (exactPhrase) {
@@ -236,6 +424,11 @@ function generateSearchString() {
     const linkFrom = getValue('linkfrom-value');
     if (linkFrom) {
         queryParts.push(`linksto:"${linkFrom}"`);
+    }
+
+    const prefixValue = getValue('prefix-value');
+    if (prefixValue) {
+        queryParts.push(`prefix:"${prefixValue}"`);
     }
 
     const selectedCategory = getValue('category-select');
@@ -273,7 +466,11 @@ function generateSearchString() {
     
     const displayElement = document.getElementById('generated-search-string-display');
     if (displayElement) {
-        displayElement.textContent = generatedString || 'No parameters entered.';
+        let fallbackText = ''; // Default English fallback
+        if (translations[currentLang] && translations[currentLang]['']) {
+            fallbackText = translations[currentLang][''];
+        }
+        displayElement.textContent = generatedString || fallbackText;
     }
     
     console.log("Generated search string:", generatedString);
@@ -341,6 +538,9 @@ if (searchForm) {
         console.log("Form submit event captured. Generating search query...");
 
         const generatedQuery = generateSearchString();
+        console.log(`Generated query inside submit listener: "${generatedQuery}"`); // Debug log
+
+        // ... (rest of the function remains the same)
         console.log("generateSearchString returned:", generatedQuery); // Debug log for generated query
 
         const targetLangInput = document.getElementById('target-wiki-lang');
@@ -386,7 +586,10 @@ if (searchForm) {
         } else {
             console.log("Search query or target language missing.");
             if (resultsContainer) {
-                resultsContainer.innerHTML = '<li>Please enter some search parameters or select a target language.</li>';
+                console.log("Search query or target language missing.");
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = '<li>Please enter some search parameters or select a target language.</li>';
+                }
             }
         }
     });
@@ -403,4 +606,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("generateSearchString called from DOMContentLoaded."); // Debug log
     addEnterKeySubmitListener(); // Add the new listener for Enter key
     console.log("Enter key listener attached.");
+    addAccordionFunctionality(); // Add accordion functionality
 });

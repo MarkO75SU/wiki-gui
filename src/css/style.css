@@ -321,6 +321,51 @@ header h1 {
 }
 
 
+/* Accordion Styles */
+.accordion-header {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Distribute space between elements */
+    padding-right: 15px; /* Add some padding on the right for the arrow */
+}
+
+.accordion-header:hover {
+    background-color: #f0f0f0;
+}
+
+.accordion-header.active {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.accordion-arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--text-dark); /* Down arrow */
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active .accordion-arrow {
+    transform: rotate(180deg); /* Up arrow when active */
+    border-top-color: var(--text-light); /* Change arrow color when active */
+}
+
+.accordion-content {
+    display: none;
+    padding-top: 15px;
+}
+
+/* Ensure info-icons are visible */
+.info-icon {
+    display: inline-flex !important; /* Use important to override other potential styles */
+}
+
 /* Footer */
 footer {
     background-color: var(--text-dark);

@@ -25,8 +25,6 @@
     "heading-scope-location": "Scope & Location:",
     "label-intitle": "Search in Title (Main Search Query)",
     "info-intitle-text": "Searches the Main Search Query only in the title of the article.",
-    "label-intext": "Search in Text",
-    "info-intext-text": "Searches for terms only in the main text of the article.",
     "label-incategory": "In Category:",
     "incategory-placeholder": "Football Clubs",
     "info-incategory-text": "Searches for articles within one or more categories. Separate multiple categories with a comma.",
@@ -89,6 +87,20 @@
     "generated-string-heading": "Generated Search String:",
     "generated-string-placeholder": "Generated string will appear here.",
     "search-results-heading": "Search Results (First 10):",
-    "no-results-found": "No results found."
+    "no-results-found": "No results found.",
+    "lang-de-option": "German (de)",
+    "lang-en-option": "English (en)",
+    "lang-fr-option": "French (fr)",
+    "lang-es-option": "Spanish (es)",
+    "lang-zh-option": "Chinese (zh)",
+    "lang-hi-option": "Hindi (hi)",
+    "lang-ar-option": "Arabic (ar)",
+    "lang-ru-option": "Russian (ru)",
+    "lang-pt-option": "Portuguese (pt)",
+    "label-option-wildcard": "Enable Wildcard Search (e.g., Köl*)",
+    "info-wildcard-text": "Use '*' as a wildcard for any characters. e.g., 'Köl*' will match 'Köln', 'Kölner', etc.",
+    "label-prefix-value": "Starts with Title:",
+    "info-prefix-value-text": "Find pages whose titles begin with the specified text.",
+    "no-params-entered": ""
 }
 
