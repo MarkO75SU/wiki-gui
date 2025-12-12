@@ -558,99 +558,39 @@ function updateLanguageButtonState() {
 }
 
 // Function to add Enter key listener to trigger form submission
-
 function addEnterKeySubmitListener() {
-
-    console.log("Inside addEnterKeySubmitListener function."); // Debug log
-
+    console.log("Inside addEnterKeySubmitListener function."); // DEBUG
     const searchForm = document.getElementById('search-form');
 
-    // Exit if the search form is not found to prevent errors
-
     if (!searchForm) {
-
-        console.error("Search form element not found. Cannot attach Enter key listener.");
-
+        console.error("Search form element not found. Cannot attach Enter key listener."); // DEBUG
         return;
-
     }
-
-    console.log("Search form found."); // Debug log
-
-
+    console.log("Search form found. Attaching listeners."); // DEBUG
 
     const inputFieldsToWatch = [
+        'search-query', 'exact-phrase', 'without-words', 'any-words',
+        'incategory-value', 'deepcat-value', 'linkfrom-value', 'prefix-value',
+        'insource-value', 'hastemplate-value', 'filetype-value',
+        'filesize-min', 'filesize-max', 'category-select'
+    ];
 
-        'search-query',
-
-        'exact-phrase',
-
-        'without-words',
-
-        'any-words',
-
-        'incategory-value',
-
-        'deepcat-value',
-
-        'linkfrom-value',
-
-        'insource-value',
-
-        'hastemplate-value',
-
-        'filetype-value',
-
-        'filesize-min',
-
-                                'filesize-max',
-
-                                'category-select', // The new dropdown
-
-                                'prefix-value' // Input for prefix search
-
-                            ];
-
-                        
-
-                            inputFieldsToWatch.forEach(id => {
-
-                                console.log(`Checking for input element with ID: ${id}`); // Debug log
-
-                                const inputElement = document.getElementById(id);
-
-                                if (inputElement) {
-
-                                    console.log(`Element with ID '${id}' found.`); // Debug log
-
-                                    inputElement.addEventListener('keydown', (event) => {
-
-                                        if (event.key === 'Enter') {
-
-                                            // Prevent default browser behavior for Enter key in forms
-
-                                            event.preventDefault();
-
-                    // Manually trigger the form submission to initiate search
-
-                    console.log(`Enter key pressed on ${id}. Triggering form submit.`);
-
+    inputFieldsToWatch.forEach(id => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            console.log(`Attaching keydown listener to input element with ID: ${id}`); // DEBUG
+            inputElement.addEventListener('keydown', (event) => {
+                console.log(`Keydown event on ${id}. Key: ${event.key}, Target: ${event.target.id}`); // DEBUG
+                if (event.key === 'Enter') {
+                    console.log(`Enter key pressed on ${id}. Preventing default and triggering form submit.`); // DEBUG
+                    event.preventDefault();
                     searchForm.submit();
-
                 }
-
             });
-
         } else {
-
-            // Log if an expected input element is not found
-
-            console.warn(`Input element with ID '${id}' not found. Enter key listener not attached for this field.`);
-
+            console.warn(`Input element with ID '${id}' not found. Enter key listener not attached for this field.`); // DEBUG
         }
-
     });
-
 }
 
 
