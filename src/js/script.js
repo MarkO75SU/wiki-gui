@@ -85,7 +85,7 @@ function clearForm() {
     document.querySelectorAll('#search-form input[type="text"]').forEach(input => input.value = '');
     document.querySelectorAll('#search-form input[type="number"]').forEach(input => input.value = '');
     document.querySelectorAll('#search-form input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
-    document.querySelectorAll('#search-form select').forEach(select => select.selectedIndex = 0); // Reset dropdowns
+    document.querySelectorAll('#search-form select:not(#target-wiki-lang)').forEach(select => select.selectedIndex = 0); // Reset dropdowns, but exclude target-wiki-lang
     document.getElementById('save-search-comment').value = ''; // Clear the comment input
     generateSearchString(); // Update the generated string and explanation after clearing
 }

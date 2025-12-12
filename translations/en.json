@@ -87,6 +87,7 @@
     "preset-easy": "Easy: Basic Keyword Search",
     "preset-medium": "Medium: Phrase & Exclusion Search",
     "preset-complex": "Complex: Template & Deep Category Search",
+    "generate-search-string-button": "Start Search",
     "clear-form-button": "Clear Form",
     "query-label": "Query",
     "comment-label": "Comment",
