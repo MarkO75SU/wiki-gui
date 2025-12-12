@@ -505,18 +505,25 @@ async function fetchTranslations(lang) {
 
 // Function to apply translations and update dynamic content
 function applyTranslations() {
+    console.log("applyTranslations called."); // DEBUG
     const elements = document.querySelectorAll('[id]');
     elements.forEach(element => {
         const key = element.id;
+        console.log(`Processing element with ID: ${key}`); // DEBUG
+
         // Check for placeholder translation specifically for input elements
         if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
             const placeholderKey = `${key}-placeholder`; // e.g., 'search-query-placeholder'
             if (translations[currentLang] && translations[currentLang][placeholderKey]) {
                 element.placeholder = translations[currentLang][placeholderKey];
+                console.log(`  - Placeholder translated for ID ${key}: ${element.placeholder}`); // DEBUG
             }
         } else if (translations[currentLang] && translations[currentLang][key]) {
             // Default: translate textContent for other elements
             element.textContent = translations[currentLang][key];
+            console.log(`  - TextContent translated for ID ${key}: ${element.textContent}`); // DEBUG
+        } else {
+            console.log(`  - No direct ID translation found for ${key}.`); // DEBUG
         }
         
         // Translate title attributes for elements with data-info-id (info-icons)
@@ -524,14 +531,21 @@ function applyTranslations() {
             const infoId = element.dataset.infoId;
             if (translations[currentLang] && translations[currentLang][infoId]) {
                 element.title = translations[currentLang][infoId];
+                console.log(`  - Title attribute translated for ID ${key} (data-info-id: ${infoId}): ${element.title}`); // DEBUG
+            } else {
+                console.log(`  - No title translation found for data-info-id ${infoId} on element ID ${key}.`); // DEBUG
             }
         }
         
         // Translate preset buttons by data-preset-type
         if (element.classList.contains('preset-button') && element.dataset.presetType) {
             const presetKey = `preset-${element.dataset.presetType}`;
+            console.log(`  - Processing preset button. ID: ${key}, data-preset-type: ${element.dataset.presetType}, Looking for key: ${presetKey}`); // DEBUG
             if (translations[currentLang] && translations[currentLang][presetKey]) {
                 element.textContent = translations[currentLang][presetKey];
+                console.log(`  - Preset button translated! ID: ${key}, TextContent: ${element.textContent}`); // DEBUG
+            } else {
+                console.warn(`  - WARNING: Translation not found for preset button with key ${presetKey} in ${currentLang}.json`); // DEBUG
             }
         }
 
@@ -540,6 +554,7 @@ function applyTranslations() {
             const importLabelKey = element.id;
             if (translations[currentLang] && translations[currentLang][importLabelKey]) {
                 element.textContent = translations[currentLang][importLabelKey];
+                console.log(`  - Import label translated for ID ${key}: ${element.textContent}`); // DEBUG
             }
         }
     });
@@ -554,12 +569,12 @@ function applyTranslations() {
                 if (optionValue === "") {
                     // Translate placeholder option "Select a category"
                     const placeholderKey = 'placeholder-category-dropdown';
-                    if (translations[currentLang][placeholderKey]) {
+                    if (translations[currentLang] && translations[currentLang][placeholderKey]) {
                         option.textContent = translations[currentLang][placeholderKey];
                     }
                 } else {
                     const translationKey = `category-${optionValue}`; // e.g., "category-Science"
-                    if (translations[currentLang][translationKey]) {
+                    if (translations[currentLang] && translations[currentLang][translationKey]) {
                         option.textContent = translations[currentLang][translationKey];
                     }
                 }
@@ -569,15 +584,15 @@ function applyTranslations() {
         // Translate options for the target wiki language dropdown
         const targetWikiLangSelect = document.getElementById('target-wiki-lang');
         if (targetWikiLangSelect) {
-            console.log(`Translating 'target-wiki-lang' dropdown to ${currentLang}.`);
+            console.log(`Translating 'target-wiki-lang' dropdown to ${currentLang}.`); // DEBUG
              targetWikiLangSelect.querySelectorAll('option').forEach(option => {
                 const langCode = option.value;
                 const translationKey = `lang-${langCode}-option`; // e.g., "lang-de-option"
                 if (langCode && translations[currentLang] && translations[currentLang][translationKey]) {
-                    console.log(`Translating option ${langCode} with key ${translationKey}`);
+                    console.log(`Translating option ${langCode} with key ${translationKey}`); // DEBUG
                     option.textContent = translations[currentLang][translationKey];
                 } else {
-                    console.warn(`Translation not found for option ${langCode} with key ${translationKey} in ${currentLang}.js`);
+                    console.warn(`Translation not found for option ${langCode} with key ${translationKey} in ${currentLang}.js`); // DEBUG
                 }
             });
             
@@ -600,6 +615,7 @@ function applyTranslations() {
     const officialDocLink = document.getElementById('official-doc-link');
     if (officialDocLink) {
         officialDocLink.href = wikipediaSearchHelpUrls[currentLang] || wikipediaSearchHelpUrls['en']; // Fallback to English if language not found
+        console.log(`  - Official documentation link updated for ${currentLang}: ${officialDocLink.href}`); // DEBUG
     }
 }
 
