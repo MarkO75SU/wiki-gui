@@ -213,14 +213,13 @@ header h1 {
     color: var(--text-light);
     border: none;
     padding: 10px 18px;
+    margin-right: 10px; /* Reinstated for spacing */
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease;
     white-space: normal; /* Allow text to wrap */
     text-align: center; /* Center text within the button */
-    min-width: 150px; /* Set a minimum width for better readability */
-    flex-grow: 1; /* Allow buttons to grow and fill space */
 }
 
 .preset-button:hover {
@@ -679,10 +678,9 @@ header h1 {
     }
 
     .preset-button {
-        /* These properties are now handled by min-width/flex-grow in base rule and parent gap */
-        /* width: 100%; */
-        /* margin-bottom: 0; */
-        /* margin-right: 0; */
+        width: 100%;
+        margin-bottom: 10px; /* Add margin-bottom for vertical spacing when stacked */
+        margin-right: 0; /* Remove horizontal margin when stacked */
     }
 }
 
