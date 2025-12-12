@@ -6,7 +6,7 @@
     "nav-about": "Über uns",
     "main-heading": "Wikipedia Suchhelfer",
     "official-doc-link": "Offizielle Wikipedia Suchdokumentation",
-    "general-params-description": "Erfahren Sie, wie Sie Suchparameter effektiv nutzen. Verwenden Sie zum Beispiel \"AND\" oder \"OR\" zwischen Begriffen, oder \"-Begriff\" zum Ausschließen.",
+
     "heading-main-query": "Hauptsuchanfrage:",
     "info-main-query": "Definieren Sie Ihre primären Schlüsselwörter. Kombinieren Sie Begriffe mit 'UND' (Standard), 'ODER', oder schließen Sie mit '-Begriff' aus. Verwenden Sie Anführungszeichen für exakte Phrasen. Beispiel: 'Apfel ODER Orange -Frucht'",
     "label-search-query": "Alle diese Wörter:",

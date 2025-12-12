@@ -6,7 +6,7 @@
     "nav-about": "About",
     "main-heading": "Wikipedia Search Helper",
     "official-doc-link": "Official Wikipedia Search Documentation",
-    "general-params-description": "Learn how to effectively use search parameters. For example, use \"AND\" or \"OR\" between terms, or \"-term\" to exclude.",
+
     "heading-main-query": "Main Search Query:",
     "label-search-query": "All these words:",
     "search-query-placeholder": "1. FC Köln",
