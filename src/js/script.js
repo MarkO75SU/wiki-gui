@@ -1781,6 +1781,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Event listener for clear form button
+    const clearFormButton = document.getElementById('clear-form-button');
+    if (clearFormButton) {
+        clearFormButton.addEventListener('click', clearForm);
+    }
 
 
 
