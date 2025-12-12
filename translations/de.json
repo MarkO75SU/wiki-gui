@@ -25,7 +25,7 @@
     "info-wildcard-text": "Verwenden Sie '*' als Platzhalter für beliebige Zeichen. Z.B. 'Köl*' findet 'Köln', 'Kölner', etc.",
     "label-fuzzy": "Fuzzy-Suche (Tilde ~):",
     "info-fuzzy-text": "Erlaubt geringfügige Rechtschreibabweichungen (z.B. 'haus~' findet 'Häuser').",
-    "label-target-wiki-lang": "Ziel-Wiki-Sprache:",
+    "label-target-wiki-lang": "Ziel-Wiki-Sprache (Suchbegriffe müssen in Zielsprache angegeben werden):",
     "info-target-lang-text": "Wählt die Sprache des Wikipedia-Projekts, in dem gesucht werden soll.",
     "heading-scope-location": "Bereich & Ort:",
     "info-scope-location": "Fokussieren Sie Ihre Suche auf bestimmte Artikelüberschriften, Kategorien oder Seiten, die von anderen Artikeln verlinkt sind.",
