@@ -262,11 +262,66 @@ function deleteSearch(searchId) {
 
 // Function to display saved searches
 function loadSavedSearches() {
+    console.log("loadSavedSearches called."); // DEBUG
+    const savedSearchesList = document.getElementById('saved-searches-list');
+    if (!savedSearchesList) {
+        console.error("Element with ID 'saved-searches-list' not found.");
+        return;
+    }
+    savedSearchesList.innerHTML = ''; // Clear existing list
 
+    let savedSearches = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+    console.log("Retrieved saved searches from localStorage:", savedSearches); // DEBUG
 
+    if (savedSearches.length === 0) {
+        savedSearchesList.innerHTML = `<li>${getTranslation('no-searches-saved', 'No searches saved yet.')}</li>`;
+        return;
+    }
 
+    savedSearches.sort((a, b) => b.timestamp - a.timestamp); // Sort by newest first
 
-} // Close loadSavedSearches function
+    savedSearches.forEach(search => {
+        const listItem = document.createElement('li');
+        listItem.dataset.searchId = search.id; // Store ID for actions
+
+        const date = new Date(search.timestamp).toLocaleString();
+
+        listItem.innerHTML = `
+            <div>
+                <strong>${getTranslation('query-label', 'Query')}:</strong> <span>${search.query}</span><br>
+                <strong>${getTranslation('comment-label', 'Comment')}:</strong> <span class="search-comment" data-id="${search.id}">${search.comment}</span><br>
+                <small>${date}</small>
+            </div>
+            <div class="search-actions">
+                <button class="load-search-btn" data-id="${search.id}">${getTranslation('load-button', 'Load')}</button>
+                <button class="edit-search-btn" data-id="${search.id}">${getTranslation('edit-button', 'Edit Comment')}</button>
+                <button class="delete-search-btn" data-id="${search.id}">${getTranslation('delete-button', 'Delete')}</button>
+            </div>
+        `;
+        savedSearchesList.appendChild(listItem);
+    });
+
+    // Attach event listeners using event delegation to the parent ul
+    // This is more efficient than attaching to each button individually
+    // And it will handle dynamically added/removed list items
+    savedSearchesList.removeEventListener('click', handleSavedSearchActions); // Prevent multiple listeners
+    savedSearchesList.addEventListener('click', handleSavedSearchActions);
+
+    function handleSavedSearchActions(event) {
+        const target = event.target;
+        const searchId = target.dataset.id;
+        console.log("Clicked button with searchId:", searchId, "Class:", target.classList); // DEBUG
+
+        if (target.classList.contains('load-search-btn')) {
+            loadSearch(searchId);
+        } else if (target.classList.contains('edit-search-btn')) {
+            editSearchComment(searchId);
+        } else if (target.classList.contains('delete-search-btn')) {
+            deleteSearch(searchId);
+        }
+    }
+}
+
 
 // === Import/Export Functions ===
 
