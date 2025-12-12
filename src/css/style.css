@@ -679,7 +679,10 @@ header h1 {
     }
 
     .preset-button {
-        width: 100%;
+        /* These properties are now handled by min-width/flex-grow in base rule and parent gap */
+        /* width: 100%; */
+        /* margin-bottom: 0; */
+        /* margin-right: 0; */
     }
 }
 
