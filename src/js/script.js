@@ -41,7 +41,7 @@ const wikipediaSearchHelpUrls = {
 // Preset search queries for "Space Exploration"
 const presetSearches = {
     easy: {
-        'search-query': 'Weltraumforschung', // Simple keyword in German
+        'search-query': 'preset-easy-search-query', // Translation key
         'exact-phrase': '',
         'without-words': '',
         'any-words': '',
@@ -59,10 +59,10 @@ const presetSearches = {
         'filesize-max': ''
     },
     medium: {
-        'search-query': 'Mars', // Main topic
-        'exact-phrase': 'Roter Planet', // Exact phrase in German
-        'without-words': 'Rover', // Exclude in German
-        'any-words': 'Erkundung OR Mission', // OR condition in German
+        'search-query': 'preset-medium-search-query', // Translation key
+        'exact-phrase': 'preset-medium-exact-phrase', // Translation key
+        'without-words': 'preset-medium-without-words', // Translation key
+        'any-words': 'preset-medium-any-words', // Translation key
         'option-intitle': false,
         'option-wildcard': false,
         'option-fuzzy': false,
@@ -101,7 +101,8 @@ function applyPreset(preset) {
             if (element.type === 'checkbox') {
                 element.checked = preset[key];
             } else {
-                element.value = preset[key];
+                // Use getTranslation for preset values
+                element.value = getTranslation(preset[key], preset[key]);
             }
         }
     }
