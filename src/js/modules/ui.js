@@ -53,7 +53,6 @@ export function applyPreset(preset) {
                 let valueToSet = presetValue;
                 if (typeof presetValue === 'string' && presetValue.startsWith('preset-')) {
                     valueToSet = getTranslation(presetValue, presetValue);
-                    console.log(`DEBUG: getTranslation for key '${presetValue}' returned '${valueToSet}'`); // Re-added DEBUG
                 }
                 element.value = valueToSet;
             }
