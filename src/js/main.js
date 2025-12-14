@@ -22,40 +22,51 @@ async function initializeApp() {
     generateSearchString();
     loadSavedSearches();
 
+    // Advanced mode toggle
     const advancedToggle = document.getElementById('advanced-mode-toggle');
     const searchFormContainer = document.querySelector('.search-form-container');
-    advancedToggle.addEventListener('change', () => {
-        if (advancedToggle.checked) {
-            searchFormContainer.classList.add('advanced-view');
-        } else {
-            searchFormContainer.classList.remove('advanced-view');
-        }
-    });
+    if (advancedToggle && searchFormContainer) { // Null check
+        advancedToggle.addEventListener('change', () => {
+            if (advancedToggle.checked) {
+                searchFormContainer.classList.add('advanced-view');
+            } else {
+                searchFormContainer.classList.remove('advanced-view');
+            }
+        });
+    }
+
 
     // New Preset Logic Setup
     const presetCategorySelect = document.getElementById('preset-category-select');
     const presetSelect = document.getElementById('preset-select');
     const applyPresetButton = document.getElementById('apply-preset-button');
 
-    populatePresetCategories(presetCategorySelect, presetSelect);
+    if (presetCategorySelect && presetSelect && applyPresetButton) { // Null check for preset elements
+        populatePresetCategories(presetCategorySelect, presetSelect);
 
-    presetCategorySelect.addEventListener('change', () => {
-        populatePresets(presetCategorySelect, presetSelect);
-    });
+        presetCategorySelect.addEventListener('change', () => {
+            populatePresets(presetCategorySelect, presetSelect);
+        });
 
-    applyPresetButton.addEventListener('click', () => {
-        const selectedCategory = presetCategorySelect.value;
-        const selectedPreset = presetSelect.value;
-        if (selectedCategory && selectedPreset && presetCategories[selectedCategory] && presetCategories[selectedCategory].presets[selectedPreset]) {
-            applyPresetToForm(presetCategories[selectedCategory].presets[selectedPreset]);
-        }
-    });
+        applyPresetButton.addEventListener('click', () => {
+            const selectedCategory = presetCategorySelect.value;
+            const selectedPreset = presetSelect.value;
+            if (selectedCategory && selectedPreset && presetCategories[selectedCategory] && presetCategories[selectedCategory].presets[selectedPreset]) {
+                applyPresetToForm(presetCategories[selectedCategory].presets[selectedPreset]);
+            }
+        });
+    }
     // End New Preset Logic
 
-    document.getElementById('search-form').addEventListener('submit', handleSearchFormSubmit);
-    document.getElementById('clear-form-button').addEventListener('click', clearForm);
-    document.getElementById('save-search-button').addEventListener('click', saveCurrentSearch);
-    document.getElementById('saved-searches-list').addEventListener('click', handleSavedSearchActions);
+    const searchForm = document.getElementById('search-form');
+    if (searchForm) { searchForm.addEventListener('submit', handleSearchFormSubmit); }
+    const clearFormBtn = document.getElementById('clear-form-button');
+    if (clearFormBtn) { clearFormBtn.addEventListener('click', clearForm); }
+    const saveSearchBtn = document.getElementById('save-search-button');
+    if (saveSearchBtn) { saveSearchBtn.addEventListener('click', saveCurrentSearch); }
+    const savedSearchesList = document.getElementById('saved-searches-list');
+    if (savedSearchesList) { savedSearchesList.addEventListener('click', handleSavedSearchActions); }
+
 
     document.querySelectorAll('.lang-button').forEach(button => {
         button.addEventListener('click', async (event) => {
@@ -66,18 +77,21 @@ async function initializeApp() {
                 const data = await response.json();
                 setTranslations(lang, data);
                 applyTranslations();
-                populatePresetCategories(presetCategorySelect, presetSelect); // Re-populate presets on lang change
+                if (presetCategorySelect && presetSelect) { // Re-populate presets on lang change
+                    populatePresetCategories(presetCategorySelect, presetSelect);
+                }
             } catch (error) {
                 console.error(`Could not fetch translations for ${lang}:`, error);
             }
         });
     });
 
-    document.getElementById('search-form').addEventListener('input', generateSearchString);
+    if (searchForm) { searchForm.addEventListener('input', generateSearchString); }
 
-    // Watch for changes in date inputs to update search string
-    document.getElementById('dateafter-value').addEventListener('change', generateSearchString);
-    document.getElementById('datebefore-value').addEventListener('change', generateSearchString);
+    const dateafterInput = document.getElementById('dateafter-value');
+    if (dateafterInput) { dateafterInput.addEventListener('change', generateSearchString); }
+    const datebeforeInput = document.getElementById('datebefore-value');
+    if (datebeforeInput) { datebeforeInput.addEventListener('change', generateSearchString); }
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
