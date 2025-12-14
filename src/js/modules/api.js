@@ -7,7 +7,7 @@
  */
 function parseAdvancedSearchParams(query) {
     const params = {
-        srsearch: query, // Initialize with the full query
+        srsearch: query,
         srincategory: '',
         srdeepcategory: '',
         srhastemplate: '',
@@ -16,47 +16,40 @@ function parseAdvancedSearchParams(query) {
         srfiletype: ''
     };
 
-    let remainingQuery = query;
+    let currentQuery = query; // Use a distinct variable to track the evolving query string
 
-    // Define patterns for advanced parameters that should be moved out of srsearch
-    // Use non-greedy match for quoted strings: "([^"]*?)"
-    // Or match non-whitespace for unquoted: ([^\s]+)
-    const patterns = {
-        srincategory: /incategory:("([^"]*?)"|([^\s]+))/i,
-        srdeepcategory: /deepcat:("([^"]*?)"|([^\s]+))/i,
-        srhastemplate: /hastemplate:("([^"]*?)"|([^\s]+))/i,
-        srprefix: /prefix:("([^"]*?)"|([^\s]+))/i,
-        srincontent: /insource:("([^"]*?)"|([^\s]+))/i, // 'insource' maps to 'srincontent'
-        srfiletype: /filetype:("([^"]*?)"|([^\s]+))/i
+    const definitions = {
+        srincategory: { regex: /incategory:("([^"]*?)"|([^\s]+))/gi, separator: ';' }, // Global regex
+        srdeepcategory: { regex: /deepcat:("([^"]*?)"|([^\s]+))/gi },
+        srhastemplate: { regex: /hastemplate:("([^"]*?)"|([^\s]+))/gi },
+        srprefix: { regex: /prefix:("([^"]*?)"|([^\s]+))/gi },
+        srincontent: { regex: /insource:("([^"]*?)"|([^\s]+))/gi },
+        srfiletype: { regex: /filetype:("([^"]*?)"|([^\s]+))/gi }
     };
 
-    for (const paramKey in patterns) {
-        let match;
-        // Keep matching and replacing until no more occurrences of this parameter are found
-        // Use a global regex to find all matches, but process one by one to ensure removal
-        while ((match = remainingQuery.match(patterns[paramKey]))) {
-            // Group 2 is for quoted string, Group 3 is for unquoted string
-            const value = match[2] || match[3];
+    for (const paramKey in definitions) {
+        const { regex, separator } = definitions[paramKey];
+        let values = [];
+
+        // Find all matches for the current parameter type
+        const matches = [...currentQuery.matchAll(regex)]; // Get all matches
+
+        matches.forEach(match => {
+            const value = match[2] || match[3]; // Quoted or unquoted value
             if (value) {
-                // If there are multiple values for a single parameter (e.g. incategory:A incategory:B),
-                // we should concatenate them or handle based on API expectations.
-                // For now, assuming only one of each is intended for simple parsing.
-                // For incategory, the API expects semicolon-separated values if multiple.
-                if (paramKey === 'srincategory' && params[paramKey]) {
-                    params[paramKey] += ';' + value;
-                } else if (params[paramKey]) { // For other params, just overwrite if multiple occurrences exist
-                    params[paramKey] = value;
-                } else {
-                    params[paramKey] = value;
-                }
+                values.push(value);
             }
-            // Remove the matched part from the remaining query string
-            remainingQuery = remainingQuery.replace(match[0], '').trim();
+        });
+
+        if (values.length > 0) {
+            params[paramKey] = values.join(separator || ' '); // Join with separator or space
         }
+
+        // Remove ALL occurrences of this parameter from the query string
+        currentQuery = currentQuery.replace(regex, '').trim();
     }
 
-    // After extracting dedicated parameters, the rest of the remainingQuery becomes srsearch
-    params.srsearch = remainingQuery.trim();
+    params.srsearch = currentQuery.trim(); // The remainder is the core search string
 
     return params;
 }
