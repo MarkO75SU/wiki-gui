@@ -154,28 +154,52 @@
                     <label id="label-namespaces">Namespaces:</label>
                     <div id="namespaces-options">
                         <div class="option-group">
-                            <input type="checkbox" id="ns-main">
+                            <input type="checkbox" id="ns-main" value="0">
                             <label for="ns-main" id="label-ns-main">Artikel</label>
                         </div>
                         <div class="option-group">
-                            <input type="checkbox" id="ns-user">
+                            <input type="checkbox" id="ns-user" value="2">
                             <label for="ns-user" id="label-ns-user">Benutzer</label>
                         </div>
                         <div class="option-group">
-                            <input type="checkbox" id="ns-file">
+                            <input type="checkbox" id="ns-user-talk" value="3">
+                            <label for="ns-user-talk">Benutzer Diskussion</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="ns-file" value="6">
                             <label for="ns-file" id="label-ns-file">Datei</label>
                         </div>
                         <div class="option-group">
-                            <input type="checkbox" id="ns-help">
+                            <input type="checkbox" id="ns-file-talk" value="7">
+                            <label for="ns-file-talk">Datei Diskussion</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="ns-help" value="12">
                             <label for="ns-help" id="label-ns-help">Hilfe</label>
                         </div>
                         <div class="option-group">
-                            <input type="checkbox" id="ns-category">
+                            <input type="checkbox" id="ns-help-talk" value="13">
+                            <label for="ns-help-talk">Hilfe Diskussion</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="ns-category" value="14">
                             <label for="ns-category" id="label-ns-category">Kategorie</label>
                         </div>
                         <div class="option-group">
-                            <input type="checkbox" id="ns-template">
+                            <input type="checkbox" id="ns-category-talk" value="15">
+                            <label for="ns-category-talk">Kategorie Diskussion</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="ns-portal" value="100">
+                            <label for="ns-portal">Portal</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="ns-template" value="10">
                             <label for="ns-template" id="label-ns-template">Vorlage</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="ns-template-talk" value="11">
+                            <label for="ns-template-talk">Vorlage Diskussion</label>
                         </div>
                     </div>
                 </div>
@@ -198,6 +222,14 @@
                                 <label id="label-filetype">File Type:</label>
                                 <div id="filetype-options">
                                     <div class="option-group">
+                                        <input type="checkbox" id="filetype-bmp" value="bmp">
+                                        <label for="filetype-bmp">BMP</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="filetype-gif" value="gif">
+                                        <label for="filetype-gif">GIF</label>
+                                    </div>
+                                    <div class="option-group">
                                         <input type="checkbox" id="filetype-jpg" value="jpg">
                                         <label for="filetype-jpg">JPG/JPEG</label>
                                     </div>
@@ -216,6 +248,10 @@
                                     <div class="option-group">
                                         <input type="checkbox" id="filetype-svg" value="svg">
                                         <label for="filetype-svg">SVG</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="checkbox" id="filetype-webp" value="webp">
+                                        <label for="filetype-webp">WEBP</label>
                                     </div>
                                 </div>
                             </div>
