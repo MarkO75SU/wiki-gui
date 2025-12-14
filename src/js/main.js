@@ -9,17 +9,19 @@ async function initializeApp() {
     const initialLang = getLanguage();
     document.documentElement.lang = initialLang;
 
-    // Fetch translations
+    // Fetch translations and wait for them to complete
     try {
         const response = await fetch(`translations/${initialLang}.json`);
         const data = await response.json();
         setTranslations(initialLang, data);
+        
+        // Now that translations are loaded, apply them
+        applyTranslations();
     } catch (error) {
         console.error(`Could not fetch initial translations for ${initialLang}:`, error);
     }
 
-    // Apply translations and set up UI
-    applyTranslations();
+    // Set up UI and event listeners after translations are ready
     addAccordionFunctionality();
     generateSearchString(); // To show placeholders correctly
     loadSavedSearches();

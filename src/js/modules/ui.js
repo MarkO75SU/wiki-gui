@@ -15,9 +15,12 @@ const wikipediaSearchHelpUrls = {
     'pt': 'https://pt.wikipedia.org/wiki/Ajuda:Pesquisa'
 };
 
-export function applyTranslations(translations) {
-    document.querySelectorAll('[data-translate]').forEach(element => {
-        const key = element.getAttribute('data-translate');
+export function applyTranslations() {
+    const lang = getLanguage();
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[id]').forEach(element => {
+        const key = element.id;
         const translation = getTranslation(key);
         if (translation) {
             if (element.hasAttribute('placeholder')) {
@@ -28,8 +31,14 @@ export function applyTranslations(translations) {
         }
     });
 
-    const lang = getLanguage();
-    document.documentElement.lang = lang;
+    document.querySelectorAll('.preset-button').forEach(button => {
+        const presetKey = `preset-${button.dataset.presetType}`;
+        const translation = getTranslation(presetKey);
+        if (translation) {
+            button.textContent = translation;
+        }
+    });
+
     const officialDocLink = document.getElementById('official-doc-link');
     if (officialDocLink) {
         officialDocLink.href = wikipediaSearchHelpUrls[lang] || wikipediaSearchHelpUrls['en'];
