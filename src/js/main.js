@@ -85,7 +85,7 @@ async function initializeApp() {
             if (selectedCategory && selectedPreset && presetToApply) {
                 applyPresetToForm(presetToApply);
             } else {
-                console.warn("Invalid preset selection or preset not found.");
+                // console.warn("Invalid preset selection or preset not found."); // Removed
             }
         });
     }

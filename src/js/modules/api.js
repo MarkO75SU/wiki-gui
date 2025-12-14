@@ -44,6 +44,7 @@ function parseAdvancedSearchParams(query) {
 export async function performWikipediaSearch(query, lang) {
     const endpoint = `https://${lang}.wikipedia.org/w/api.php`;
     const parsedParams = parseAdvancedSearchParams(query);
+    console.log("DEBUG: Parsed API parameters:", parsedParams); // DEBUG
 
     const apiParams = {
         action: 'query',

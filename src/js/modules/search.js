@@ -140,5 +140,7 @@ export function generateSearchString() {
         }
     }
 
-    return queryParts.join(' ').trim();
+    const finalQuery = queryParts.join(' ').trim();
+    console.log("DEBUG: generatedSearchString output:", finalQuery); // DEBUG
+    return finalQuery;
 }
