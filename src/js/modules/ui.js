@@ -78,12 +78,21 @@ export async function handleSearchFormSubmit(event) {
     const query = generateSearchString();
     const lang = document.getElementById('target-wiki-lang').value;
     const resultsContainer = document.getElementById('simulated-search-results');
+    const searchResultsHeading = document.getElementById('search-results-heading');
     
     if (!query) return;
 
     resultsContainer.innerHTML = `<li><div class="loading-indicator">${getTranslation('loading-indicator')}</div></li>`;
     
-    const results = await performWikipediaSearch(query, lang);
+    const apiResponse = await performWikipediaSearch(query, lang);
+    const results = apiResponse?.query?.search || [];
+    const totalHits = apiResponse?.query?.searchinfo?.totalhits || 0;
+
+    // Update the results heading with the total number of hits
+    if (searchResultsHeading) {
+        searchResultsHeading.textContent = getTranslation('search-results-heading', '', { totalResults: totalHits });
+    }
+
     resultsContainer.innerHTML = '';
 
     if (results.length === 0) {

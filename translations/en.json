@@ -124,7 +124,7 @@
     "alert-imported-new-searches": "Successfully imported new searches",
     "generated-string-heading": "Generated Search String:",
     "generated-string-placeholder": "Generated string will appear here.",
-    "search-results-heading": "Search Results (First 10):",
+    "search-results-heading": "Search Results (First 10 of {totalResults}):",
     "no-results-found": "No results found.",
     "lang-de-option": "German (de)",
     "lang-en-option": "English (en)",

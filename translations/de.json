@@ -102,7 +102,7 @@
     "explanation-filetype": "Filtern nach Dateien des Typs: \"{fileType}\".",
     "explanation-filesize-min": "Einschließlich Dateien mit einer Größe größer oder gleich {fileSizeMin} Bytes.",
     "explanation-filesize-max": "Einschließlich Dateien mit einer Größe kleiner oder gleich {fileSizeMax} Bytes.",
-    "search-results-heading": "Suchergebnisse (erste 10):",
+    "search-results-heading": "Suchergebnisse (erste 10 von {totalResults}):",
     "no-results-found": "Keine Ergebnisse gefunden.",
     "footer-text": "© 2025 WikiGUI. Alle Rechte vorbehalten.",
     "link-license-agreement": "Lizenzvereinbarung",
