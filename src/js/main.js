@@ -42,7 +42,7 @@ async function initializeApp() {
     const applyPresetButton = document.getElementById('apply-preset-button');
 
     if (presetCategorySelect && presetSelect && applyPresetButton) { // Null check for preset elements
-        populatePresetCategories(presetCategorySelect, presetSelect);
+        populatePresetCategories(presetCategorySelect, presetSelect, populatePresets);
 
         presetCategorySelect.addEventListener('change', () => {
             populatePresets(presetCategorySelect, presetSelect);
@@ -84,7 +84,7 @@ async function initializeApp() {
                 setTranslations(lang, data);
                 applyTranslations();
                 if (presetCategorySelect && presetSelect) { // Re-populate presets on lang change
-                    populatePresetCategories(presetCategorySelect, presetSelect);
+                    populatePresetCategories(presetCategorySelect, presetSelect, populatePresets);
                 }
             } catch (error) {
                 console.error(`Could not fetch translations for ${lang}:`, error);
