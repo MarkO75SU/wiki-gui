@@ -81,14 +81,11 @@ async function initializeApp() {
         applyPresetButton.addEventListener('click', () => {
             const selectedCategory = presetCategorySelect.value;
             const selectedPreset = presetSelect.value;
-            console.log("DEBUG: Selected Preset Category:", selectedCategory); // DEBUG
-            console.log("DEBUG: Selected Preset Name:", selectedPreset);     // DEBUG
             const presetToApply = presetCategories[selectedCategory]?.presets[selectedPreset];
             if (selectedCategory && selectedPreset && presetToApply) {
-                console.log("DEBUG: Preset object to apply:", presetToApply); // DEBUG
                 applyPresetToForm(presetToApply);
             } else {
-                console.warn("DEBUG: Invalid preset selection or preset not found."); // DEBUG
+                console.warn("Invalid preset selection or preset not found.");
             }
         });
     }
