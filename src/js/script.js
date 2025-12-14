@@ -901,7 +901,7 @@ function generateSearchString() {
 
 
 
-    let processedQuery = mainQuery;
+        const mainQueryInput = getValue('search-query');
 
 
 
@@ -909,35 +909,223 @@ function generateSearchString() {
 
 
 
-    if (processedQuery) {
+        // Wikipedia special characters that might need quoting if found in raw input
 
 
 
-        if (optionIntitle) {
 
 
 
-                                    processedQuery = `intitle:"${processedQuery}"`;
+
+        // This regex includes characters that could be interpreted as search operators
 
 
 
-                                    explanationParts.push(getTranslation('explanation-intitle', `Searching for pages with "${mainQuery}" specifically in their title.`, { mainQuery }));
 
 
 
-                                } else {
+
+        const wikipediaSearchOperatorChars = /[!"#$%&'()*+,./:;<=>?@\[\\\]^`{|}~]/;
 
 
 
-                                    explanationParts.push(getTranslation('explanation-main-query', `Searching for pages containing the terms "${mainQuery}".`, { mainQuery }));
 
 
 
-                                }
+
+    
 
 
 
-                            }
+
+
+
+
+        let finalMainQueryTerm = mainQueryInput;
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+        if (mainQueryInput) {
+
+
+
+
+
+
+
+            // If mainQueryInput contains spaces or Wikipedia search operator characters,
+
+
+
+
+
+
+
+            // AND it's not an intitle search, wrap it in quotes to force literal interpretation.
+
+
+
+
+
+
+
+            // intitle: operator itself handles quoting if needed.
+
+
+
+
+
+
+
+            if (!optionIntitle && (mainQueryInput.includes(' ') || wikipediaSearchOperatorChars.test(mainQueryInput))) {
+
+
+
+
+
+
+
+                // Only add quotes if not already quoted (to prevent double quoting issues)
+
+
+
+
+
+
+
+                if (!(mainQueryInput.startsWith('"') && mainQueryInput.endsWith('"'))) {
+
+
+
+
+
+
+
+                    finalMainQueryTerm = `"${mainQueryInput}"`;
+
+
+
+
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+            if (optionIntitle) {
+
+
+
+
+
+
+
+                // intitle operator syntax is `intitle:VALUE`. VALUE can be quoted for phrases.
+
+
+
+
+
+
+
+                // If finalMainQueryTerm is already quoted, it means it contains spaces/special chars and we want to preserve that.
+
+
+
+
+
+
+
+                // So, no extra quotes around finalMainQueryTerm for intitle.
+
+
+
+
+
+
+
+                queryParts.push(`intitle:${finalMainQueryTerm}`);
+
+
+
+
+
+
+
+                explanationParts.push(getTranslation('explanation-intitle', `Searching for pages with "${mainQueryInput}" specifically in their title.`, { mainQuery: mainQueryInput }));
+
+
+
+
+
+
+
+            } else {
+
+
+
+
+
+
+
+                queryParts.push(finalMainQueryTerm); // Use the potentially quoted term
+
+
+
+
+
+
+
+                explanationParts.push(getTranslation('explanation-main-query', `Searching for pages containing the terms "${mainQueryInput}".`, { mainQuery: mainQueryInput }));
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+        }
 
 
 
