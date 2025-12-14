@@ -77,6 +77,17 @@ export function applyTranslations() {
         }
     });
 
+    // Explicitly translate the apply preset button and comment placeholder
+    const applyPresetButton = document.getElementById('apply-preset-button');
+    if (applyPresetButton) {
+        applyPresetButton.textContent = getTranslation('button-apply-preset');
+    }
+
+    const saveSearchCommentInput = document.getElementById('save-search-comment');
+    if (saveSearchCommentInput) {
+        saveSearchCommentInput.placeholder = getTranslation('save-search-comment-placeholder');
+    }
+
     // Translate preset category and preset select labels
     const presetCategorySelect = document.getElementById('preset-category-select');
     const presetSelect = document.getElementById('preset-select');

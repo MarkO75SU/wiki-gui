@@ -127,6 +127,7 @@
     "label-select-preset": "Select Preset:",
     "saved-searches-heading": "Saved Searches (Local, temporary storage only. Export for permanent saving)",
     "save-search-comment-placeholder": "Add a comment for this search (optional)",
+    "button-apply-preset": "Apply Preset",
     "save-search-button": "Save Current Search",
     "export-json-button": "Export as JSON",
     "export-csv-button": "Export as CSV",

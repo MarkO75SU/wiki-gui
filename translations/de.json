@@ -173,6 +173,7 @@
     "label-select-preset": "Voreinstellung auswählen:",
     "saved-searches-heading": "Gespeicherte Suchen (Nur lokale, temporäre Speicherung. Dauerhaft per Export)",
     "save-search-comment-placeholder": "Kommentar für diese Suche hinzufügen (optional)",
+    "button-apply-preset": "Voreinstellung anwenden",
     "save-search-button": "Aktuelle Suche speichern",
     "export-json-button": "Als JSON exportieren",
     "export-csv-button": "Als CSV exportieren",
