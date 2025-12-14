@@ -6,6 +6,7 @@ export const presetCategories = {
         name_de: "Weltraumforschung",
         presets: {
             easy: {
+                display_name_key: 'preset-easy', // NEW
                 'search-query': 'preset-easy-search-query', // Translation key
                 'exact-phrase': '',
                 'without-words': '',
@@ -24,6 +25,7 @@ export const presetCategories = {
                 'filesize-max': ''
             },
             medium: {
+                display_name_key: 'preset-medium', // NEW
                 'search-query': 'preset-medium-search-query', // Translation key
                 'exact-phrase': 'preset-medium-exact-phrase', // Translation key
                 'without-words': 'preset-medium-without-words', // Translation key
@@ -48,6 +50,7 @@ export const presetCategories = {
         name_de: "Geschichte",
         presets: {
             ancient_rome: {
+                display_name_key: 'preset-history-ancient-rome', // NEW
                 'search-query': 'preset-history-ancient-rome-query',
                 'exact-phrase': 'preset-history-ancient-rome-exact-phrase',
                 'without-words': 'preset-history-ancient-rome-without-words',
@@ -66,6 +69,7 @@ export const presetCategories = {
                 'filesize-max': ''
             },
             world_wars: {
+                display_name_key: 'preset-history-world-wars', // NEW
                 'search-query': 'preset-history-world-wars-query',
                 'exact-phrase': '',
                 'without-words': 'preset-history-world-wars-without-words',
@@ -90,6 +94,7 @@ export const presetCategories = {
         name_de: "Biologie",
         presets: {
             cells: {
+                display_name_key: 'preset-biology-cells', // NEW
                 'search-query': 'preset-biology-cells-query',
                 'exact-phrase': 'preset-biology-cells-exact-phrase',
                 'without-words': '',

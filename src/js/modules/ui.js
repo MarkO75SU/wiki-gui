@@ -24,7 +24,7 @@ export function populatePresets(categorySelectElement, presetSelectElement) {
         for (const key in categoryPresets) {
             const option = document.createElement('option');
             option.value = key;
-            option.textContent = getTranslation(key); // Translate preset name
+            option.textContent = getTranslation(categoryPresets[key].display_name_key); // Use display_name_key
             presetSelectElement.appendChild(option);
         }
     }
@@ -41,7 +41,7 @@ export function populatePresetCategories(categorySelectElement, presetSelectElem
 }
 
 export function applyPreset(preset) {
-    console.log("DEBUG: applyPreset received preset:", preset); // DEBUG
+    // console.log("DEBUG: applyPreset received preset:", preset); // DEBUG removed
     clearForm(); // Clear all form fields first
 
     for (const key in preset) {
@@ -54,7 +54,7 @@ export function applyPreset(preset) {
                 let valueToSet = presetValue;
                 if (typeof presetValue === 'string' && presetValue.startsWith('preset-')) {
                     valueToSet = getTranslation(presetValue, presetValue);
-                    console.log(`DEBUG: getTranslation for key '${presetValue}' returned '${valueToSet}'`); // ADDED LOG
+                    // console.log(`DEBUG: getTranslation for key '${presetValue}' returned '${valueToSet}'`); // DEBUG removed
                 }
                 element.value = valueToSet;
             }
