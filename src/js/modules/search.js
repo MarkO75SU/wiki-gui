@@ -1,5 +1,5 @@
 // src/js/modules/search.js
-import { getTranslation } from './state.js';
+import { getTranslation, getLanguage } from './state.js';
 
 /**
  * Generates the search string from form inputs.
@@ -56,9 +56,11 @@ export function generateSearchString() {
     }
 
     if (anyWords) {
-        const wordsArray = anyWords.split(/ OR /i).map(word => word.trim()).filter(word => word);
+        const currentLang = getLanguage();
+        const orOperator = currentLang === 'de' ? 'ODER' : 'OR'; // Use ODER for German, OR for others
+        const wordsArray = anyWords.split(new RegExp(` ${orOperator} `, 'i')).map(word => word.trim()).filter(word => word);
         if (wordsArray.length > 0) {
-            let anyWordsQuery = wordsArray.join(' OR ');
+            let anyWordsQuery = wordsArray.join(' OR '); // Wikipedia API always expects 'OR'
             if (wordsArray.length > 1) {
                 anyWordsQuery = `(${anyWordsQuery})`;
             }
