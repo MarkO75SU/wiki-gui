@@ -41,6 +41,7 @@ export function populatePresets(categorySelectElement, presetSelectElement) {
 }
 
 export function applyPreset(preset) {
+    console.log("DEBUG: applyPreset received preset:", preset); // DEBUG
     clearForm(); // Clear all form fields first
 
     for (const key in preset) {
