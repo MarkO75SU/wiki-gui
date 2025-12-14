@@ -16,16 +16,6 @@ const wikipediaSearchHelpUrls = {
     'pt': 'https://pt.wikipedia.org/wiki/Ajuda:Pesquisa'
 };
 
-export function populatePresetCategories(categorySelectElement) {
-    categorySelectElement.innerHTML = `<option value="">${getTranslation('placeholder-preset-category')}</option>`;
-    for (const key in presetCategories) {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = presetCategories[key][`name_${getLanguage()}`] || presetCategories[key].name_en;
-        categorySelectElement.appendChild(option);
-    }
-}
-
 export function populatePresets(categorySelectElement, presetSelectElement) {
     presetSelectElement.innerHTML = `<option value="">${getTranslation('placeholder-select-preset')}</option>`;
     const selectedCategoryKey = categorySelectElement.value;
@@ -37,6 +27,16 @@ export function populatePresets(categorySelectElement, presetSelectElement) {
             option.textContent = getTranslation(key); // Translate preset name
             presetSelectElement.appendChild(option);
         }
+    }
+}
+
+export function populatePresetCategories(categorySelectElement) {
+    categorySelectElement.innerHTML = `<option value="">${getTranslation('placeholder-preset-category')}</option>`;
+    for (const key in presetCategories) {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = presetCategories[key][`name_${getLanguage()}`] || presetCategories[key].name_en;
+        categorySelectElement.appendChild(option);
     }
 }
 
