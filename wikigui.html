@@ -32,7 +32,8 @@
                     <input type="checkbox" id="advanced-mode-toggle">
                     <span class="slider"></span>
                 </label>
-                <label for="advanced-mode-toggle" id="label-advanced-mode">Advanced Mode</label>
+                <label for="advanced-mode-toggle" id="label-advanced-mode"></label>
+                <span id="advanced-mode-description"></span>
             </div>
             <p id="intro-text">
                 <a href="https://de.wikipedia.org/wiki/Hilfe:Suche" target="_blank" id="official-doc-link">Offizielle Wikipedia Suchdokumentation</a>
@@ -82,19 +83,19 @@
                                             <div class="accordion-content">
                 <div class="form-group">
                     <label for="search-query" id="label-search-query">All these words:</label>
-                    <input type="text" id="search-query" placeholder="e.g., 'solar energy', 'global warming'">
+                    <input type="text" id="search-query" placeholder="e.g., solar energy, global warming">
                 </div>
                 <div class="form-group">
                     <label for="exact-phrase" id="label-exact-phrase">Exact Phrase:</label>
-                    <input type="text" id="exact-phrase" placeholder='e.g., "artificial intelligence research"'>
+                    <input type="text" id="exact-phrase" placeholder="e.g., \"artificial intelligence research\"">
                 </div>
                 <div class="form-group">
                     <label for="without-words" id="label-without-words">Without these words:</label>
-                    <input type="text" id="without-words" placeholder="e.g., 'war', 'conflict'">
+                    <input type="text" id="without-words" placeholder="e.g., war, conflict">
                 </div>
                 <div class="form-group">
                     <label for="any-words" id="label-any-words">At least one of these words (OR):</label>
-                    <input type="text" id="any-words" placeholder="e.g., 'Mars OR Venus'">
+                    <input type="text" id="any-words" placeholder="e.g., Mars OR Venus">
                 </div>
                 <div class="option-group">
                     <input type="checkbox" id="option-wildcard">
@@ -125,19 +126,19 @@
                 </div>
                 <div class="form-group">
                     <label for="prefix-value" id="label-prefix-value">Starts with Title:</label>
-                    <input type="text" id="prefix-value" placeholder="e.g., 'Science:', 'History of'">
+                    <input type="text" id="prefix-value" placeholder="e.g., Science:, History of">
                 </div>
                 <div class="form-group">
                     <label for="incategory-value" id="label-incategory">In Category:</label>
-                    <input type="text" id="incategory-value" placeholder="e.g., 'Physics', 'Ancient Rome'">
+                    <input type="text" id="incategory-value" placeholder="e.g., Physics, Ancient Rome">
                 </div>
                 <div class="form-group">
                     <label for="deepcat-value" id="label-deepcat">Deep Category:</label>
-                    <input type="text" id="deepcat-value" placeholder="e.g., 'Biology', 'Literature'">
+                    <input type="text" id="deepcat-value" placeholder="e.g., Biology, Literature">
                 </div>
                 <div class="form-group">
                     <label for="linkfrom-value" id="label-linkfrom">Linked from:</label>
-                    <input type="text" id="linkfrom-value" placeholder="e.g., 'Albert Einstein', 'Quantum Physics'">
+                    <input type="text" id="linkfrom-value" placeholder="e.g., Albert Einstein, Quantum Physics">
                 </div>
                 <div class="form-group">
                     <label for="category-select" id="label-category-dropdown">Category:</label>
@@ -212,11 +213,11 @@
                         <div class="accordion-content">
                             <div class="form-group">
                                 <label for="insource-value" id="label-insource">In Source (Wikitext):</label>
-                                <input type="text" id="insource-value" placeholder="insource:/regex/ or insource:&quot;text&quot;">
+                                <input type="text" id="insource-value" placeholder="insource:/regex/ or insource:\"text\"">
                             </div>
                             <div class="form-group">
                                 <label for="hastemplate-value" id="label-hastemplate">Uses Template:</label>
-                                <input type="text" id="hastemplate-value" placeholder="e.g., 'Infobox Scientist', 'Citation needed'">
+                                <input type="text" id="hastemplate-value" placeholder="e.g., Infobox Scientist, Citation needed">
                             </div>
                             <div class="form-group">
                                 <label id="label-filetype">File Type:</label>

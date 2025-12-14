@@ -25,6 +25,25 @@ async function initializeApp() {
     // Advanced mode toggle
     const advancedToggle = document.getElementById('advanced-mode-toggle');
     const searchFormContainer = document.querySelector('.search-form-container');
+    const advancedModeDescription = document.getElementById('advanced-mode-description'); // Get the new description span
+
+    function updateAdvancedModeDescription() {
+        if (!advancedToggle || !advancedModeDescription) return;
+
+        // Update the label-advanced-mode as well, as its text content might need to change
+        const labelAdvancedMode = document.getElementById('label-advanced-mode');
+        if (labelAdvancedMode) {
+             labelAdvancedMode.textContent = getTranslation('label-advanced-mode');
+        }
+
+        if (advancedToggle.checked) {
+            advancedModeDescription.textContent = getTranslation('advanced-mode-advanced-active');
+        } else {
+            advancedModeDescription.textContent = getTranslation('advanced-mode-simple-active') + ' ' + getTranslation('advanced-mode-hint');
+        }
+    }
+
+
     if (advancedToggle && searchFormContainer) { // Null check
         advancedToggle.addEventListener('change', () => {
             if (advancedToggle.checked) {
@@ -32,7 +51,9 @@ async function initializeApp() {
             } else {
                 searchFormContainer.classList.remove('advanced-view');
             }
+            updateAdvancedModeDescription(); // Call after state changes
         });
+        updateAdvancedModeDescription(); // Call once on initialization
     }
 
 
@@ -113,6 +134,7 @@ async function initializeApp() {
                 if (presetCategorySelect && presetSelect) { // Re-populate presets on lang change
                     populatePresetCategories(presetCategorySelect, presetSelect);
                 }
+                updateAdvancedModeDescription(); // Update description on language change
             } catch (error) {
                 console.error(`Could not fetch translations for ${lang}:`, error);
             }
@@ -128,3 +150,4 @@ async function initializeApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
+

@@ -8,6 +8,9 @@
     "official-doc-link": "Official Wikipedia Search Documentation",
     "github-support-text": "Want to support/use?:",
     "label-advanced-mode": "Advanced Mode",
+    "advanced-mode-simple-active": "Simple Mode active.",
+    "advanced-mode-advanced-active": "Advanced Mode active.",
+    "advanced-mode-hint": "Flip the switch for more input fields.",
 
     "heading-main-query": "Main Search Query:",
     "label-search-query": "All these words:",

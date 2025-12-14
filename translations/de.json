@@ -8,6 +8,9 @@
     "official-doc-link": "Offizielle Wikipedia Suchdokumentation",
     "github-support-text": "Möchten Sie unterstützen/nutzen?:",
     "label-advanced-mode": "Erweiterter Modus",
+    "advanced-mode-simple-active": "Einfacher Modus aktiv.",
+    "advanced-mode-advanced-active": "Erweiterter Modus aktiv.",
+    "advanced-mode-hint": "Für mehr Vorgabefelder betätige den Schalter.",
 
     "heading-main-query": "Hauptsuchanfrage:",
     "info-main-query": "Definieren Sie Ihre primären Schlüsselwörter. Kombinieren Sie Begriffe mit 'UND' (Standard), 'ODER', oder schließen Sie mit '-Begriff' aus. Verwenden Sie Anführungszeichen für exakte Phrasen. Beispiel: 'Apfel ODER Orange -Frucht'",
