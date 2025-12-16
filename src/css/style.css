@@ -368,20 +368,20 @@ select {
 
 .preset-button {
     background-color: var(--primary-color);
-    color: var(--text-light); /* Ensure white text */
+    color: var(--text-light);
     border: none;
-    padding: 12px 20px; /* Increased padding */
+    padding: 12px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease;
-    white-space: normal; /* Allow text to wrap */
-    text-align: center; /* Center text within the button */
-    height: auto; /* Allow vertical expansion */
-    font-size: 1.1rem; /* Explicit font size */
-    margin-right: 0; /* Remove conflicting margin */
-    min-width: unset; /* Allow content-based sizing */
-    flex-grow: unset; /* Allow content-based sizing */
+    white-space: normal;
+    text-align: center;
+    height: auto;
+    font-size: 1.1rem;
+    margin-right: 0; /* REMOVED conflicting margin */
+    min-width: unset;
+    flex-grow: unset;
 }
 
 .preset-button:hover {
@@ -601,7 +601,6 @@ select {
     color: var(--primary-color);
 }
 
-/* Adjust .preset-controls and .preset-button for proper layout */
 .preset-controls {
     display: flex;
     flex-wrap: wrap;
@@ -830,8 +829,8 @@ footer nav li {
 footer nav a {
     color: var(--text-light); /* Set text color to white */
     text-decoration: none; /* Remove underline if desired */
-    font-weight: bold; /* Make links bold */
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 footer nav a:hover {
@@ -956,4 +955,11 @@ footer nav a:hover {
     color: var(--secondary-color);
     margin-left: 10px; /* Space from the toggle label */
     flex-shrink: 0;
+}
+#generate-search-string-button {
+    background-color: var(--primary-color) !important;
+}
+
+#generate-search-string-button:hover {
+    background-color: #0056b3 !important;
 }
