@@ -99,6 +99,16 @@ export function generateSearchString() {
             } else if (key === 'datebefore') {
                 apiQueryParts.push(`before:${value}`);
                 explanationParts.push(getTranslation('explanation-datebefore', '', { datebefore: value }));
+            } else if (key === 'incategory' || key === 'deepcat') {
+                // Split categories by semicolon and add each as a separate incategory: or deepcat:
+                value.split(';').forEach(cat => {
+                    const trimmedCat = cat.trim();
+                    if (trimmedCat) {
+                        apiQueryParts.push(`${key}:"${trimmedCat}"`);
+                        const explanationKey = `explanation-${key}`;
+                        explanationParts.push(getTranslation(explanationKey, '', { [key]: trimmedCat }));
+                    }
+                });
             } else {
                 apiQueryParts.push(`${key}:"${value}"`);
                 const explanationKey = `explanation-${key}`;
