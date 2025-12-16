@@ -1,12 +1,15 @@
 // src/js/modules/state.js
 
+const LANGUAGE_STORAGE_KEY = 'wikiGuiLanguage';
+
 const state = {
-    currentLang: 'de',
+    currentLang: localStorage.getItem(LANGUAGE_STORAGE_KEY) || 'de', // Initialize from local storage, default to 'de'
     translations: {}
 };
 
 export function setLanguage(lang) {
     state.currentLang = lang;
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang); // Persist language to local storage
 }
 
 export function getLanguage() {
