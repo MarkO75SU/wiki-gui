@@ -72,6 +72,10 @@ export function applyTranslations() {
 
     document.querySelectorAll('[id]').forEach(element => {
         const key = element.id;
+        // Skip advanced-mode-description as its content is managed dynamically by updateAdvancedModeDescription
+        if (key === 'advanced-mode-description') {
+            return;
+        }
         const translation = getTranslation(key);
         if (translation) {
             if (element.hasAttribute('placeholder')) {
