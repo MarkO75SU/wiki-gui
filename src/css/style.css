@@ -671,7 +671,7 @@ select {
 }
 
 #save-search-button {
-    background-color: var(--success-color);
+    background-color: var(--primary-color); /* Changed to primary blue */
     color: var(--text-light);
     border: none;
     padding: 10px 18px;
@@ -682,7 +682,7 @@ select {
 }
 
 #save-search-button:hover {
-    background-color: #218838;
+    background-color: #0056b3; /* Darker shade of primary blue for hover */
 }
 
 .import-export-group {
