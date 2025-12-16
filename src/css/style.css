@@ -391,20 +391,22 @@ select {
 /* Styling for main action buttons (Generate Search, Clear Form) */
 .main-action-buttons {
     display: flex;
-    flex-direction: column; /* Stack buttons vertically by default */
-    gap: 10px; /* Space between buttons */
+    flex-direction: row; /* Display buttons side by side */
+    gap: 20px; /* Space between buttons */
     margin-top: 30px;
 }
 
 .main-action-buttons button {
-    width: 100%; /* Full width within the container */
-    padding: 15px 20px;
-    border-radius: 5px;
-    font-size: 1.1rem;
+    flex: 1; /* Each button takes equal available space */
+    padding: 20px 25px; /* Increase padding for bigger buttons */
+    border-radius: 8px; /* Slightly more rounded corners */
+    font-size: 1.4rem; /* Significantly increase font size */
     font-weight: bold;
     cursor: pointer;
     border: none;
     transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-align: center; /* Center text within the button */
 }
 
 #generate-search-string-button {
@@ -652,42 +654,6 @@ select {
 }
 
 
-/* Styling for main action buttons (Generate Search, Clear Form) */
-.main-action-buttons {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically by default */
-    gap: 10px; /* Space between buttons */
-    margin-top: 30px;
-}
-
-.main-action-buttons button {
-    width: 100%; /* Full width within the container */
-    padding: 15px 20px;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-}
-
-#generate-search-string-button {
-    background-color: var(--success-color);
-    color: var(--text-light);
-}
-
-#generate-search-string-button:hover {
-    background-color: #218838;
-}
-
-#clear-form-button {
-    background-color: var(--secondary-color);
-    color: var(--text-light);
-}
-
-#clear-form-button:hover {
-    background-color: #5a6268;
-}
 
 /* Styling for Saved Searches section */
 .saved-searches-container {
