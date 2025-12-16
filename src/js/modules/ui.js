@@ -97,6 +97,11 @@ export function applyTranslations() {
         saveSearchCommentInput.placeholder = getTranslation('save-search-comment-placeholder');
     }
 
+    const searchQueryInput = document.getElementById('search-query');
+    if (searchQueryInput) {
+        searchQueryInput.placeholder = getTranslation('search-query-placeholder');
+    }
+
     // Translate preset category and preset select labels
     const presetCategorySelect = document.getElementById('preset-category-select');
     const presetSelect = document.getElementById('preset-select');
