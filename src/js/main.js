@@ -9,15 +9,6 @@ async function initializeApp() {
     const initialLang = getLanguage();
     document.documentElement.lang = initialLang;
 
-    try {
-        const response = await fetch(`translations/${initialLang}.json`);
-        const data = await response.json();
-        setTranslations(initialLang, data);
-        applyTranslations();
-    } catch (error) {
-        console.error(`Could not fetch initial translations for ${initialLang}:`, error);
-    }
-
     addAccordionFunctionality();
     generateSearchString();
     loadSavedSearches();
@@ -113,11 +104,55 @@ async function initializeApp() {
     // End New Preset Logic
 
     const searchForm = document.getElementById('search-form');
-    if (searchForm) { searchForm.addEventListener('submit', handleSearchFormSubmit); }
+    if (searchForm) { searchForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const { apiQuery } = generateSearchString(); // Destructure apiQuery
+        const lang = document.getElementById('target-wiki-lang').value;
+        const resultsContainer = document.getElementById('simulated-search-results');
+        const searchResultsHeading = document.getElementById('search-results-heading');
+        
+        if (!apiQuery) return; // Use apiQuery for validation
+
+        resultsContainer.innerHTML = `<li><div class="loading-indicator">${getTranslation('loading-indicator')}</div></li>`;
+        
+        const apiResponse = await performWikipediaSearch(apiQuery, lang); // Pass apiQuery
+        const results = apiResponse?.query?.search || [];
+        const totalHits = apiResponse?.query?.searchinfo?.totalhits || 0;
+
+        // Update the results heading with the total number of hits
+        if (searchResultsHeading) {
+            searchResultsHeading.textContent = getTranslation('search-results-heading', '', { totalResults: totalHits });
+        }
+
+        resultsContainer.innerHTML = '';
+
+        if (results.length === 0) {
+            resultsContainer.innerHTML = `<li>${getTranslation('no-results-found')}</li>`;
+            return;
+        }
+
+        for (const result of results) {
+            const summary = await fetchArticleSummary(result.title, lang);
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <a href="https://${lang}.wikipedia.org/wiki/${encodeURIComponent(result.title)}" target="_blank">
+                    <strong>${result.title}</strong>
+                </a>
+                <p>${summary}</p>
+            `;
+            resultsContainer.appendChild(listItem);
+        }
+    }); }
     const clearFormBtn = document.getElementById('clear-form-button');
-    if (clearFormBtn) { clearFormBtn.addEventListener('click', clearForm); }
+    if (clearFormBtn) { clearFormBtn.addEventListener('click', () => {
+        clearForm();
+        generateSearchString(); // Call generateSearchString directly to update UI
+    }); }
     const saveSearchBtn = document.getElementById('save-search-button');
-    if (saveSearchBtn) { saveSearchBtn.addEventListener('click', saveCurrentSearch); }
+    if (saveSearchBtn) { saveSearchBtn.addEventListener('click', () => {
+        const { apiQuery } = generateSearchString(); // Get apiQuery for saving
+        saveCurrentSearch(apiQuery); // Pass apiQuery
+    }); }
     const savedSearchesList = document.getElementById('saved-searches-list');
     if (savedSearchesList) { savedSearchesList.addEventListener('click', handleSavedSearchActions); }
 
@@ -141,16 +176,16 @@ async function initializeApp() {
         });
     });
 
-    if (searchForm) { searchForm.addEventListener('input', generateSearchString); }
+    if (searchForm) { searchForm.addEventListener('input', generateSearchString); } // Call generateSearchString directly
 
     const dateafterInput = document.getElementById('dateafter-value');
-    if (dateafterInput) { dateafterInput.addEventListener('change', generateSearchString); }
+    if (dateafterInput) { dateafterInput.addEventListener('change', generateSearchString); } // Call generateSearchString directly
     const datebeforeInput = document.getElementById('datebefore-value');
-    if (datebeforeInput) { datebeforeInput.addEventListener('change', generateSearchString); }
+    if (datebeforeInput) { datebeforeInput.addEventListener('change', generateSearchString); } // Call generateSearchString directly
 
     const targetLangSelectForCopy = document.getElementById('target-wiki-lang');
     if(targetLangSelectForCopy) {
-        targetLangSelectForCopy.addEventListener('change', generateSearchString);
+        targetLangSelectForCopy.addEventListener('change', generateSearchString); // Call generateSearchString directly
     }
 
     const copyIcon = document.querySelector('.copy-icon');

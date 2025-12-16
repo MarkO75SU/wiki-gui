@@ -131,21 +131,21 @@ export function clearForm() {
         form.reset();
         document.querySelectorAll('#filetype-options input').forEach(cb => cb.checked = false);
     }
-    generateSearchString();
+    generateSearchString(); // Call generateSearchString directly
 }
 
 export async function handleSearchFormSubmit(event) {
     event.preventDefault();
-    const query = generateSearchString();
+    const { apiQuery } = generateSearchString(); // Destructure apiQuery
     const lang = document.getElementById('target-wiki-lang').value;
     const resultsContainer = document.getElementById('simulated-search-results');
     const searchResultsHeading = document.getElementById('search-results-heading');
     
-    if (!query) return;
+    if (!apiQuery) return; // Use apiQuery for validation
 
     resultsContainer.innerHTML = `<li><div class="loading-indicator">${getTranslation('loading-indicator')}</div></li>`;
     
-    const apiResponse = await performWikipediaSearch(query, lang);
+    const apiResponse = await performWikipediaSearch(apiQuery, lang); // Pass apiQuery
     const results = apiResponse?.query?.search || [];
     const totalHits = apiResponse?.query?.searchinfo?.totalhits || 0;
 

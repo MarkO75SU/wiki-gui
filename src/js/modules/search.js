@@ -3,10 +3,11 @@ import { getTranslation, getLanguage } from './state.js';
 
 /**
  * Generates the search string from form inputs.
- * @returns {string} The generated search query.
+ * @returns {{apiQuery: string, browserQuery: string}} An object containing the generated search queries.
  */
 export function generateSearchString() {
-    const queryParts = [];
+    const apiQueryParts = []; // For the Wikipedia API
+    const browserQueryParts = []; // For user display and direct browser search
     const explanationParts = [];
 
     const getValue = (id) => {
@@ -22,36 +23,43 @@ export function generateSearchString() {
     const optionFuzzy = getValue('option-fuzzy');
     const optionIntitle = getValue('option-intitle');
 
+    // --- Build API Query Parts (with advanced syntax) ---
     if (mainQuery) {
-        let mainQueryTerm = mainQuery;
+        let mainQueryTermApi = mainQuery;
+        let mainQueryTermBrowser = mainQuery;
+
         if (optionFuzzy) {
-            mainQueryTerm += '~';
+            mainQueryTermApi += '~';
             explanationParts.push(getTranslation('explanation-fuzzy-applied', '', { mainQuery }));
         }
 
-        if (!optionIntitle && (mainQueryTerm.includes(' ') || /[\(\)]/.test(mainQueryTerm))) {
-            if (!(mainQueryTerm.startsWith('"') && mainQueryTerm.endsWith('"'))) {
-                mainQueryTerm = `"${mainQueryTerm}"`;
+        if (!optionIntitle && (mainQueryTermApi.includes(' ') || /[\(\)]/.test(mainQueryTermApi))) {
+            if (!(mainQueryTermApi.startsWith('"') && mainQueryTermApi.endsWith('"'))) {
+                mainQueryTermApi = `"${mainQueryTermApi}"`;
             }
         }
         
         if (optionIntitle) {
-            queryParts.push(`intitle:${mainQueryTerm}`);
+            apiQueryParts.push(`intitle:${mainQueryTermApi}`);
             explanationParts.push(getTranslation('explanation-intitle', '', { mainQuery }));
         } else {
-            queryParts.push(mainQueryTerm);
+            apiQueryParts.push(mainQueryTermApi);
             explanationParts.push(getTranslation('explanation-main-query', '', { mainQuery }));
         }
+        browserQueryParts.push(mainQueryTermBrowser); // Add to browser query as plain text
     }
 
     if (exactPhrase) {
-        queryParts.push(`"${exactPhrase}"`);
+        apiQueryParts.push(`"${exactPhrase}"`);
+        browserQueryParts.push(`"${exactPhrase}"`);
         explanationParts.push(getTranslation('explanation-exact-phrase', '', { exactPhrase }));
     }
 
     if (withoutWords) {
-        const words = withoutWords.split(/\s+/).map(word => `-${word}`).join(' ');
-        queryParts.push(words);
+        const wordsApi = withoutWords.split(/\s+/).map(word => `-${word}`).join(' ');
+        apiQueryParts.push(wordsApi);
+        const wordsBrowser = withoutWords.split(/\s+/).map(word => `-${word}`).join(' '); // Keep for browser display
+        browserQueryParts.push(wordsBrowser);
         explanationParts.push(getTranslation('explanation-without-words', '', { withoutWords }));
     }
 
@@ -60,16 +68,19 @@ export function generateSearchString() {
         const orOperator = currentLang === 'de' ? 'ODER' : 'OR'; // Use ODER for German, OR for others
         const wordsArray = anyWords.split(new RegExp(` ${orOperator} `, 'i')).map(word => word.trim()).filter(word => word);
         if (wordsArray.length > 0) {
-            let anyWordsQuery = wordsArray.join(' OR '); // Wikipedia API always expects 'OR'
+            let anyWordsQueryApi = wordsArray.join(' OR '); // Wikipedia API always expects 'OR'
+            let anyWordsQueryBrowser = wordsArray.join(` ${orOperator} `); // For display, respect user's 'ODER'
             if (wordsArray.length > 1) {
-                anyWordsQuery = `(${anyWordsQuery})`;
+                anyWordsQueryApi = `(${anyWordsQueryApi})`;
+                anyWordsQueryBrowser = `(${anyWordsQueryBrowser})`;
             }
-            queryParts.push(anyWordsQuery);
+            apiQueryParts.push(anyWordsQueryApi);
+            browserQueryParts.push(anyWordsQueryBrowser);
             explanationParts.push(getTranslation('explanation-any-words', '', { anyWords }));
         }
     }
     
-    // The rest of the parameter logic...
+    // The rest of the parameter logic... (mostly for API, won't go into browserQuery as direct syntax)
     const params = {
         incategory: getValue('incategory-value'),
         deepcat: getValue('deepcat-value'),
@@ -83,13 +94,13 @@ export function generateSearchString() {
         if (value) {
             // Special handling for date fields
             if (key === 'dateafter') {
-                queryParts.push(`after:${value}`);
+                apiQueryParts.push(`after:${value}`);
                 explanationParts.push(getTranslation('explanation-dateafter', '', { dateafter: value }));
             } else if (key === 'datebefore') {
-                queryParts.push(`before:${value}`);
+                apiQueryParts.push(`before:${value}`);
                 explanationParts.push(getTranslation('explanation-datebefore', '', { datebefore: value }));
             } else {
-                queryParts.push(`${key}:"${value}"`);
+                apiQueryParts.push(`${key}:"${value}"`);
                 const explanationKey = `explanation-${key}`;
                 explanationParts.push(getTranslation(explanationKey, '', { [key]: value }));
             }
@@ -99,56 +110,49 @@ export function generateSearchString() {
     const selectedFileTypes = Array.from(document.querySelectorAll('#filetype-options input:checked')).map(cb => cb.value);
     if (selectedFileTypes.length > 0) {
         const fileTypeQuery = selectedFileTypes.join('|');
-        queryParts.push(`filetype:${fileTypeQuery}`);
+        apiQueryParts.push(`filetype:${fileTypeQuery}`);
         explanationParts.push(getTranslation('explanation-filetype', '', { fileType: fileTypeQuery }));
     }
 
     const fileSizeMin = getValue('filesize-min');
     if (fileSizeMin) {
-        queryParts.push(`filesize:>=${fileSizeMin}`);
+        apiQueryParts.push(`filesize:>=${fileSizeMin}`);
         explanationParts.push(getTranslation('explanation-filesize-min', '', { fileSizeMin }));
     }
 
     const fileSizeMax = getValue('filesize-max');
     if (fileSizeMax) {
-        queryParts.push(`filesize:<=${fileSizeMax}`);
+        apiQueryParts.push(`filesize:<=${fileSizeMax}`);
         explanationParts.push(getTranslation('explanation-filesize-max', '', { fileSizeMax }));
     }
 
     const dateafter = getValue('dateafter-value');
     if (dateafter) {
-        queryParts.push(`after:${dateafter}`);
+        apiQueryParts.push(`after:${dateafter}`);
         explanationParts.push(getTranslation('explanation-dateafter', '', { dateafter: dateafter }));
     }
 
     const datebefore = getValue('datebefore-value');
     if (datebefore) {
-        queryParts.push(`before:${datebefore}`);
+        apiQueryParts.push(`before:${datebefore}`);
         explanationParts.push(getTranslation('explanation-datebefore', '', { datebefore: datebefore }));
     }
 
+    const finalApiQuery = apiQueryParts.join(' ').trim();
+    const finalBrowserQuery = browserQueryParts.join(' ').trim();
+
     // Update the UI with the generated string and explanation
     const displayElement = document.getElementById('generated-search-string-display');
-    
-    // Create a user-friendly version for display and copying
-    const userFriendlyQueryParts = [];
-    if (mainQuery) userFriendlyQueryParts.push(mainQuery);
-    if (exactPhrase) userFriendlyQueryParts.push(`"${exactPhrase}"`);
-    if (anyWords) userFriendlyQueryParts.push(anyWords); // Show user's 'ODER'
-    if (withoutWords) userFriendlyQueryParts.push(withoutWords.split(/\s+/).map(w => `-${w}`).join(' '));
-
-    const userFriendlyQuery = userFriendlyQueryParts.join(' ').trim();
-
     if (displayElement) {
-        displayElement.value = userFriendlyQuery || getTranslation('generated-string-placeholder');
+        displayElement.value = finalBrowserQuery || getTranslation('generated-string-placeholder');
     }
 
-    const finalQueryForApi = queryParts.join(' ').trim();
     const openInWikipediaLink = document.getElementById('open-in-wikipedia-link');
     if(openInWikipediaLink) {
-        if(finalQueryForApi) {
+        if(finalApiQuery) {
             const targetLang = getLanguage();
-            const searchUrl = `https://${targetLang}.wikipedia.org/w/index.php?search=${encodeURIComponent(finalQueryForApi)}`;
+            // Use Special:Search for advanced queries in browser
+            const searchUrl = `https://${targetLang}.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(finalApiQuery)}`;
             openInWikipediaLink.href = searchUrl;
             openInWikipediaLink.textContent = getTranslation('open-in-wikipedia-link');
             openInWikipediaLink.style.display = 'inline-block';
@@ -166,5 +170,5 @@ export function generateSearchString() {
         }
     }
     
-    return finalQueryForApi;
+    return { apiQuery: finalApiQuery, browserQuery: finalBrowserQuery };
 }
