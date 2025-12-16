@@ -129,16 +129,26 @@ export function generateSearchString() {
 
     // Update the UI with the generated string and explanation
     const displayElement = document.getElementById('generated-search-string-display');
-    const finalQuery = queryParts.join(' ').trim();
+    
+    // Create a user-friendly version for display and copying
+    const userFriendlyQueryParts = [];
+    if (mainQuery) userFriendlyQueryParts.push(mainQuery);
+    if (exactPhrase) userFriendlyQueryParts.push(`"${exactPhrase}"`);
+    if (anyWords) userFriendlyQueryParts.push(anyWords); // Show user's 'ODER'
+    if (withoutWords) userFriendlyQueryParts.push(withoutWords.split(/\s+/).map(w => `-${w}`).join(' '));
+
+    const userFriendlyQuery = userFriendlyQueryParts.join(' ').trim();
+
     if (displayElement) {
-        displayElement.value = finalQuery || getTranslation('generated-string-placeholder');
+        displayElement.value = userFriendlyQuery || getTranslation('generated-string-placeholder');
     }
 
+    const finalQueryForApi = queryParts.join(' ').trim();
     const openInWikipediaLink = document.getElementById('open-in-wikipedia-link');
     if(openInWikipediaLink) {
-        if(finalQuery) {
+        if(finalQueryForApi) {
             const targetLang = getLanguage();
-            const searchUrl = `https://${targetLang}.wikipedia.org/w/index.php?search=${encodeURIComponent(finalQuery)}`;
+            const searchUrl = `https://${targetLang}.wikipedia.org/w/index.php?search=${encodeURIComponent(finalQueryForApi)}`;
             openInWikipediaLink.href = searchUrl;
             openInWikipediaLink.textContent = getTranslation('open-in-wikipedia-link');
             openInWikipediaLink.style.display = 'inline-block';
@@ -156,5 +166,5 @@ export function generateSearchString() {
         }
     }
     
-    return finalQuery;
+    return finalQueryForApi;
 }

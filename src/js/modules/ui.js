@@ -43,6 +43,11 @@ export function populatePresetCategories(categorySelectElement, presetSelectElem
 export function applyPreset(preset) {
     clearForm(); // Clear all form fields first
 
+    const targetLangSelect = document.getElementById('target-wiki-lang');
+    if(targetLangSelect) {
+        targetLangSelect.value = getLanguage();
+    }
+
     for (const key in preset) {
         const element = document.getElementById(key);
         if (element) {
