@@ -3,12 +3,15 @@ import { getTranslation, getLanguage } from './state.js';
 
 /**
  * Generates the search string from form inputs.
- * @returns {{apiQuery: string, browserQuery: string}} An object containing the generated search queries.
+ * @returns {{apiQuery: string, browserQuery: string, wikiSearchUrlParams: string}} An object containing the generated search queries.
  */
 export function generateSearchString() {
-    const apiQueryParts = []; // For the Wikipedia API
-    const browserQueryParts = []; // For user display and direct browser search
+    const apiQueryParts = []; // For the programmatic API (action=query&list=search)
+    const browserQueryParts = []; // For user display and copying to clipboard
     const explanationParts = [];
+
+    // Structured parameters for Wikipedia's Special:Search URL
+    const wikiSearchParams = new URLSearchParams();
 
     const getValue = (id) => {
         const element = document.getElementById(id);
@@ -23,43 +26,49 @@ export function generateSearchString() {
     const optionFuzzy = getValue('option-fuzzy');
     const optionIntitle = getValue('option-intitle');
 
-    // --- Build API Query Parts (with advanced syntax) ---
-    if (mainQuery) {
-        let mainQueryTermApi = mainQuery;
-        let mainQueryTermBrowser = mainQuery;
+    // --- Main Query & Basic Operators ---
+    let mainSearchTermForApi = mainQuery; // Base for API's main search term
+    let mainSearchTermForBrowser = mainQuery; // Base for browser display
 
+    if (mainQuery) {
         if (optionFuzzy) {
-            mainQueryTermApi += '~';
+            mainSearchTermForApi += '~'; // Fuzzy operator is part of the API query term
             explanationParts.push(getTranslation('explanation-fuzzy-applied', '', { mainQuery }));
         }
 
-        if (!optionIntitle && (mainQueryTermApi.includes(' ') || /[\(\)]/.test(mainQueryTermApi))) {
-            if (!(mainQueryTermApi.startsWith('"') && mainQueryTermApi.endsWith('"'))) {
-                mainQueryTermApi = `"${mainQueryTermApi}"`;
+        // Quote main query if it contains spaces and not already quoted, and not intitle (intitle will handle its own quoting)
+        if (!optionIntitle && (mainSearchTermForApi.includes(' ') || /[\(\)]/.test(mainSearchTermForApi))) {
+            if (!(mainSearchTermForApi.startsWith('"') && mainSearchTermForApi.endsWith('"'))) {
+                mainSearchTermForApi = `"${mainSearchTermForApi}"`;
             }
         }
         
         if (optionIntitle) {
-            apiQueryParts.push(`intitle:${mainQueryTermApi}`);
+            // intitle is a separate parameter for Special:Search, but a prefix for API query
+            wikiSearchParams.set('intitle', mainSearchTermForBrowser); // Use non-fuzzy, non-quoted for direct intitle param
+            apiQueryParts.push(`intitle:${mainSearchTermForApi}`); // For programmatic API call
             explanationParts.push(getTranslation('explanation-intitle', '', { mainQuery }));
         } else {
-            apiQueryParts.push(mainQueryTermApi);
+            // If not intitle, main query goes directly into Special:Search's 'search' param
+            wikiSearchParams.set('search', mainSearchTermForBrowser); // For Special:Search
+            apiQueryParts.push(mainSearchTermForApi); // For programmatic API call
             explanationParts.push(getTranslation('explanation-main-query', '', { mainQuery }));
         }
-        browserQueryParts.push(mainQueryTermBrowser); // Add to browser query as plain text
+        browserQueryParts.push(mainSearchTermForBrowser); // For display, simple version
     }
 
     if (exactPhrase) {
+        wikiSearchParams.append('search', `"${exactPhrase}"`); // Appends to main search param
         apiQueryParts.push(`"${exactPhrase}"`);
         browserQueryParts.push(`"${exactPhrase}"`);
         explanationParts.push(getTranslation('explanation-exact-phrase', '', { exactPhrase }));
     }
 
     if (withoutWords) {
-        const wordsApi = withoutWords.split(/\s+/).map(word => `-${word}`).join(' ');
-        apiQueryParts.push(wordsApi);
-        const wordsBrowser = withoutWords.split(/\s+/).map(word => `-${word}`).join(' '); // Keep for browser display
-        browserQueryParts.push(wordsBrowser);
+        const words = withoutWords.split(/\s+/).map(word => `-${word}`).join(' ');
+        wikiSearchParams.append('search', words); // Appends to main search param
+        apiQueryParts.push(words);
+        browserQueryParts.push(words);
         explanationParts.push(getTranslation('explanation-without-words', '', { withoutWords }));
     }
 
@@ -74,42 +83,50 @@ export function generateSearchString() {
                 anyWordsQueryApi = `(${anyWordsQueryApi})`;
                 anyWordsQueryBrowser = `(${anyWordsQueryBrowser})`;
             }
+            wikiSearchParams.append('search', anyWordsQueryApi); // Appends to main search param (uses OR)
             apiQueryParts.push(anyWordsQueryApi);
             browserQueryParts.push(anyWordsQueryBrowser);
             explanationParts.push(getTranslation('explanation-any-words', '', { anyWords }));
         }
     }
     
-    // The rest of the parameter logic... (mostly for API, won't go into browserQuery as direct syntax)
-    const params = {
+    // --- Advanced Parameters (for both API and Special:Search) ---
+    const rawParams = {
         incategory: getValue('incategory-value'),
         deepcat: getValue('deepcat-value'),
-        linksto: getValue('linkfrom-value'),
+        linkfrom: getValue('linkfrom-value'),
         prefix: getValue('prefix-value'),
         insource: getValue('insource-value'),
-        hastemplate: getValue('hastemplate-value')
+        hastemplate: getValue('hastemplate-value'),
+        filetype: Array.from(document.querySelectorAll('#filetype-options input:checked')).map(cb => cb.value), // Get filetypes directly
+        dateafter: getValue('dateafter-value'),
+        datebefore: getValue('datebefore-value')
     };
 
-    Object.entries(params).forEach(([key, value]) => {
+    Object.entries(rawParams).forEach(([key, value]) => {
         if (value) {
-            // Special handling for date fields
-            if (key === 'dateafter') {
-                apiQueryParts.push(`after:${value}`);
-                explanationParts.push(getTranslation('explanation-dateafter', '', { dateafter: value }));
-            } else if (key === 'datebefore') {
-                apiQueryParts.push(`before:${value}`);
-                explanationParts.push(getTranslation('explanation-datebefore', '', { datebefore: value }));
+            if (Array.isArray(value)) { // Handle filetype array
+                 if (value.length > 0) {
+                    wikiSearchParams.set(key, value.join('|')); // Special:Search uses |
+                    apiQueryParts.push(`filetype:${value.join('|')}`);
+                    explanationParts.push(getTranslation('explanation-filetype', '', { fileType: value.join('|') }));
+                 }
             } else if (key === 'incategory' || key === 'deepcat') {
-                // Split categories by semicolon and add each as a separate incategory: or deepcat:
                 value.split(';').forEach(cat => {
                     const trimmedCat = cat.trim();
                     if (trimmedCat) {
+                        wikiSearchParams.append(key, trimmedCat); // Append each category
                         apiQueryParts.push(`${key}:"${trimmedCat}"`);
-                        const explanationKey = `explanation-${key}`;
-                        explanationParts.push(getTranslation(explanationKey, '', { [key]: trimmedCat }));
+                        explanationParts.push(getTranslation(`explanation-${key}`, '', { [key]: trimmedCat }));
                     }
                 });
-            } else {
+            } else if (key === 'dateafter' || key === 'datebefore') {
+                 wikiSearchParams.set(key, value); // Special:Search might support these directly as params
+                 apiQueryParts.push(`${key}:${value}`);
+                 explanationParts.push(getTranslation(`explanation-${key}`, '', { [key]: value }));
+            }
+            else {
+                wikiSearchParams.set(key, value); // Direct mapping for other params
                 apiQueryParts.push(`${key}:"${value}"`);
                 const explanationKey = `explanation-${key}`;
                 explanationParts.push(getTranslation(explanationKey, '', { [key]: value }));
@@ -117,38 +134,37 @@ export function generateSearchString() {
         }
     });
 
-    const selectedFileTypes = Array.from(document.querySelectorAll('#filetype-options input:checked')).map(cb => cb.value);
-    if (selectedFileTypes.length > 0) {
-        const fileTypeQuery = selectedFileTypes.join('|');
-        apiQueryParts.push(`filetype:${fileTypeQuery}`);
-        explanationParts.push(getTranslation('explanation-filetype', '', { fileType: fileTypeQuery }));
-    }
-
+    // File Size
     const fileSizeMin = getValue('filesize-min');
     if (fileSizeMin) {
         apiQueryParts.push(`filesize:>=${fileSizeMin}`);
+        // Special:Search typically takes filesize into its main 'search' parameter, not separate.
+        // For consistency, keep it in apiQuery and append to wikiSearchParams's main 'search' if needed.
+        wikiSearchParams.append('search', `filesize:>=${fileSizeMin}`);
         explanationParts.push(getTranslation('explanation-filesize-min', '', { fileSizeMin }));
     }
-
     const fileSizeMax = getValue('filesize-max');
     if (fileSizeMax) {
         apiQueryParts.push(`filesize:<=${fileSizeMax}`);
+        // Special:Search typically takes filesize into its main 'search' parameter, not separate.
+        wikiSearchParams.append('search', `filesize:<=${fileSizeMax}`);
         explanationParts.push(getTranslation('explanation-filesize-max', '', { fileSizeMax }));
     }
 
-    const dateafter = getValue('dateafter-value');
-    if (dateafter) {
-        apiQueryParts.push(`after:${dateafter}`);
-        explanationParts.push(getTranslation('explanation-dateafter', '', { dateafter: dateafter }));
+    // Namespaces
+    const selectedNamespaces = Array.from(document.querySelectorAll('#namespaces-options input:checked')).map(cb => cb.value);
+    if (selectedNamespaces.length > 0) {
+        selectedNamespaces.forEach(ns => {
+            wikiSearchParams.append(`ns${ns}`, '1'); // Special:Search uses nsX=1
+        });
+        // No direct API query equivalent for namespaces here, handled by API search.
     }
 
-    const datebefore = getValue('datebefore-value');
-    if (datebefore) {
-        apiQueryParts.push(`before:${datebefore}`);
-        explanationParts.push(getTranslation('explanation-datebefore', '', { datebefore: datebefore }));
-    }
-
+    // Final construction of API query string
     const finalApiQuery = apiQueryParts.join(' ').trim();
+
+    // Final construction of Browser query string (for display/copy)
+    // This should be a clean version without advanced operators
     const finalBrowserQuery = browserQueryParts.join(' ').trim();
 
     // Update the UI with the generated string and explanation
@@ -159,10 +175,9 @@ export function generateSearchString() {
 
     const openInWikipediaLink = document.getElementById('open-in-wikipedia-link');
     if(openInWikipediaLink) {
-        if(finalApiQuery) {
-            const targetLang = getLanguage();
-            // Use Special:Search for advanced queries in browser
-            const searchUrl = `https://${targetLang}.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(finalApiQuery)}`;
+        const targetLang = getLanguage();
+        if(finalApiQuery) { // Link should be active if there's any query
+            const searchUrl = `https://${targetLang}.wikipedia.org/wiki/Special:Search?${wikiSearchParams.toString()}`;
             openInWikipediaLink.href = searchUrl;
             openInWikipediaLink.textContent = getTranslation('open-in-wikipedia-link');
             openInWikipediaLink.style.display = 'inline-block';
@@ -180,5 +195,6 @@ export function generateSearchString() {
         }
     }
     
-    return { apiQuery: finalApiQuery, browserQuery: finalBrowserQuery };
+    return { apiQuery: finalApiQuery, browserQuery: finalBrowserQuery, wikiSearchUrlParams: wikiSearchParams.toString() };
+}
 }
