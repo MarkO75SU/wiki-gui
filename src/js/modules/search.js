@@ -197,4 +197,3 @@ export function generateSearchString() {
     
     return { apiQuery: finalApiQuery, browserQuery: finalBrowserQuery, wikiSearchUrlParams: wikiSearchParams.toString() };
 }
-}
