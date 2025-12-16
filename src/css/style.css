@@ -791,7 +791,8 @@ footer {
             width: 100%; /* Take full width when stacked */
             margin-bottom: 0; /* Rely on gap for vertical spacing */
             margin-right: 0; /* Rely on gap for horizontal spacing */
-        }}
+        }
+}
 
 /* Styles for footer links */
 footer nav ul {
@@ -903,3 +904,41 @@ footer nav a:hover {
         padding: 12px 15px;
     }
 }
+
+/* New/Updated Styles for recent changes */
+#generated-search-string-display {
+    flex-grow: 1;
+    border: none; /* Remove default input border */
+    background-color: transparent; /* Match wrapper background */
+    padding: 0; /* Remove default input padding */
+    font-family: inherit; /* Inherit font from wrapper */
+    font-size: inherit; /* Inherit font size from wrapper */
+    color: inherit; /* Inherit color from wrapper */
+    outline: none; /* Remove outline on focus */
+    cursor: text; /* Indicate it's selectable text */
+}
+
+.wikipedia-link {
+    display: block; /* Make it block level */
+    margin-top: 15px; /* Space from generated string */
+    padding: 8px 15px;
+    background-color: var(--info-color);
+    color: var(--text-light);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.wikipedia-link:hover {
+    background-color: #138496; /* Darker info color */
+}
+
+#advanced-mode-description {
+    font-style: italic;
+    color: var(--secondary-color);
+    margin-left: 10px; /* Space from the toggle label */
+    flex-shrink: 0;
+}
+
