@@ -198,5 +198,10 @@
     "alert-unsupported-file-type": "Unsupported file type. Please select a .json or .csv file.",
     "alert-failed-to-read-file": "Failed to read file.",
     "alert-imported-new-searches": "Successfully imported new searches.",
-    "open-in-wikipedia-link": "Open in Wikipedia"
+    "github-repo-link": "GitHub Repo",
+    "download-zip-link": "Download ZIP",
+    "import-label": "Import Searches",
+    "open-in-wikipedia-link": "Open in Wikipedia",
+    "copy-url-button-title": "Copy URL",
+    "copy-success-title": "Copied!"
 }

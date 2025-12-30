@@ -138,19 +138,22 @@ async function initializeApp() {
         targetLangSelectForCopy.addEventListener('change', generateSearchString);
     }
 
-    const copyIcon = document.querySelector('.copy-icon');
     const generatedSearchStringDisplay = document.getElementById('generated-search-string-display');
-
-    if (copyIcon && generatedSearchStringDisplay) {
-        copyIcon.addEventListener('click', async () => {
+    const copyUrlButton = document.getElementById('copy-url-button');
+    if (copyUrlButton && generatedSearchStringDisplay) {
+        copyUrlButton.addEventListener('click', async () => {
             const textToCopy = generatedSearchStringDisplay.value;
+            if (!textToCopy || textToCopy === getTranslation('generated-string-placeholder')) return;
+
             try {
                 await navigator.clipboard.writeText(textToCopy);
-                const originalIcon = copyIcon.textContent;
-                copyIcon.textContent = '✅';
+                copyUrlButton.classList.add('copied');
+                const originalTitle = copyUrlButton.title;
+                copyUrlButton.title = getTranslation('copy-success-title');
                 setTimeout(() => {
-                    copyIcon.textContent = originalIcon;
-                }, 1500);
+                    copyUrlButton.classList.remove('copied');
+                    copyUrlButton.title = originalTitle;
+                }, 2000);
             } catch (err) {
                 console.error('Failed to copy text: ', err);
             }
@@ -185,6 +188,7 @@ async function initializeApp() {
     } catch (error) {
         console.error(`Could not fetch initial translations for ${initialLang}:`, error);
     }
+
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);

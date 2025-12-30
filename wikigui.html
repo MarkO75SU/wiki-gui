@@ -14,8 +14,8 @@
             <!-- Removed Navigation: Home, Search Help, About -->
             <div class="header-links">
                 <span id="github-support-text"></span>
-                <a href="https://github.com/MarkO75SU/wiki-searchgui" target="_blank" class="header-button" id="github-repo-link">GitHub Repo</a>
-                <a href="https://github.com/MarkO75SU/wiki-searchgui/archive/refs/heads/main.zip" class="header-button" id="download-zip-link">Download ZIP</a>
+                <a href="https://github.com/MarkO75SU/wiki-searchgui" target="_blank" class="header-button" id="github-repo-link"></a>
+                <a href="https://github.com/MarkO75SU/wiki-searchgui/archive/refs/heads/main.zip" class="header-button" id="download-zip-link"></a>
             </div>
             <div class="language-selector">
                 <button id="lang-de" class="lang-button" data-lang="de"></button>
@@ -74,7 +74,7 @@
 
                                             <div class="accordion-content">
                 <div class="form-group">
-                    <label for="search-query" id="label-search-query">All these words:</label>
+                    <label for="search-query" id="label-search-query"></label>
                     <input type="text" id="search-query">
                 </div>
                 <div class="form-group">
@@ -82,11 +82,11 @@
                     <input type="text" id="exact-phrase">
                 </div>
                 <div class="form-group">
-                    <label for="without-words" id="label-without-words">Without these words:</label>
+                    <label for="without-words" id="label-without-words"></label>
                     <input type="text" id="without-words">
                 </div>
                 <div class="form-group">
-                    <label for="any-words" id="label-any-words">At least one of these words (OR):</label>
+                    <label for="any-words" id="label-any-words"></label>
                     <input type="text" id="any-words">
                 </div>
                 <div class="option-group">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="option-group">
                     <input type="checkbox" id="option-fuzzy">
-                    <label for="option-fuzzy" id="label-fuzzy">Fuzzy Search (tilde ~)</label>
+                    <label for="option-fuzzy" id="label-fuzzy"></label>
                 </div>
             </div>
 
@@ -107,14 +107,14 @@
 
                                         <div class="search-group" id="group-scope-location" data-advanced>
 
-                                            <h3 class="accordion-header" id="heading-scope-location">Scope & Location: <span class="info-icon" data-info-id="info-scope-location" title="Focus your search within specific article titles, categories, or pages linked from other articles.">?</span><span class="accordion-arrow">
+                                            <h3 class="accordion-header" id="heading-scope-location"> <span class="info-icon" data-info-id="info-scope-location" title="Focus your search within specific article titles, categories, or pages linked from other articles.">?</span><span class="accordion-arrow">
 
                                             </h3>
 
                                             <div class="accordion-content">
                 <div class="option-group">
                     <input type="checkbox" id="option-intitle">
-                    <label for="option-intitle" id="label-intitle">Search in Title (Main Search Query)</label>
+                    <label for="option-intitle" id="label-intitle"></label>
                 </div>
                 <div class="form-group">
                     <label for="prefix-value" id="label-prefix-value"></label>
@@ -133,13 +133,13 @@
                     <input type="text" id="linkfrom-value">
                 </div>
                 <div class="form-group">
-                    <label for="category-select" id="label-category-dropdown">Category:</label>
+                    <label for="category-select" id="label-category-dropdown"></label>
                     <select id="category-select">
                         <!-- Options will be dynamically populated -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label id="label-namespaces">Namespaces:</label>
+                    <label id="label-namespaces"></label>
                     <div id="namespaces-options">
                         <div class="option-group">
                             <input type="checkbox" id="ns-main" value="0">
@@ -195,19 +195,19 @@
                     </div> <!-- End Scope/Location Group -->
                     
                     <div class="search-group" id="group-content-technical" data-advanced>
-                        <h3 class="accordion-header" id="heading-content-technical">Content & Technical: <span class="info-icon" data-info-id="info-content-technical" title="Target articles based on their internal wikitext content, templates they use, or properties of associated files.">?</span><span class="accordion-arrow"></span>
+                        <h3 class="accordion-header" id="heading-content-technical"> <span class="info-icon" data-info-id="info-content-technical" title="Target articles based on their internal wikitext content, templates they use, or properties of associated files.">?</span><span class="accordion-arrow"></span>
                         </h3>
                         <div class="accordion-content">
                             <div class="form-group">
-                                <label for="insource-value" id="label-insource">In Source (Wikitext):</label>
+                                <label for="insource-value" id="label-insource"></label>
                                 <input type="text" id="insource-value" placeholder="insource:/regex/ or insource:\"text\"">
                             </div>
                             <div class="form-group">
-                                <label for="hastemplate-value" id="label-hastemplate">Uses Template:</label>
+                                <label for="hastemplate-value" id="label-hastemplate"></label>
                                 <input type="text" id="hastemplate-value">
                             </div>
                             <div class="form-group">
-                                <label id="label-filetype">File Type:</label>
+                                <label id="label-filetype"></label>
                                 <div id="filetype-options">
                                     <div class="option-group">
                                         <input type="checkbox" id="filetype-bmp" value="bmp">
@@ -244,7 +244,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="filesize-min" id="label-filesize">File Size (bytes):</label>
+                                <label for="filesize-min" id="label-filesize"></label>
                                 <div class="file-size-inputs">
                                     <input type="number" id="filesize-min">
                                     <input type="number" id="filesize-max">
@@ -254,15 +254,15 @@
                     </div> <!-- End Content/Technical Group -->
 
                     <div class="search-group" id="group-date-filters" data-advanced>
-                        <h3 class="accordion-header" id="heading-date-filters">Date Filters: <span class="info-icon" data-info-id="info-date-filters" title="Filter articles by the page's creation or last modification date on Wikipedia. Format: YYYY-MM-DD.">?</span><span class="accordion-arrow"></span>
+                        <h3 class="accordion-header" id="heading-date-filters"> <span class="info-icon" data-info-id="info-date-filters" title="Filter articles by the page's creation or last modification date on Wikipedia. Format: YYYY-MM-DD.">?</span><span class="accordion-arrow"></span>
                         </h3>
                         <div class="accordion-content">
                             <div class="form-group">
-                                <label for="dateafter-value" id="label-dateafter">Added after (YYYY-MM-DD):</label>
+                                <label for="dateafter-value" id="label-dateafter"></label>
                                 <input type="date" id="dateafter-value">
                             </div>
                             <div class="form-group">
-                                <label for="datebefore-value" id="label-datebefore">Added before (YYYY-MM-DD):</label>
+                                <label for="datebefore-value" id="label-datebefore"></label>
                                 <input type="date" id="datebefore-value">
                             </div>
                         </div>
@@ -280,11 +280,12 @@
                 <h3 id="generated-string-heading"></h3>
                 <div class="generated-string-wrapper">
                     <input type="text" id="generated-search-string-display" readonly>
+                    <button id="copy-url-button" class="copy-button" title="Copy URL"></button>
                 </div>
                 <div id="generated-string-explanation" class="search-string-explanation"></div>
-                <a href="#" id="open-in-wikipedia-link" target="_blank" class="wikipedia-link" style="display: none;"></a>
-
-                <h3 id="search-results-heading"></h3>
+                                <a href="#" id="open-in-wikipedia-link" target="_blank" class="wikipedia-link" style="display: none;"></a>
+                
+                                <h3 id="search-results-heading"></h3>
                 <ul id="simulated-search-results">
                     <!-- Simulated results will be inserted here -->
                     <li><div class="loading-indicator" style="display: none;"></div></li>
@@ -300,7 +301,7 @@
                 <div class="import-export-group">
                     <button id="export-json-button" class="export-button"></button>
                     <button id="export-csv-button" class="export-button"></button>
-                    <label for="import-file-input" class="import-label">Import Searches</label>
+                    <label for="import-file-input" class="import-label" id="import-label"></label>
                     <input type="file" id="import-file-input" accept=".json,.csv" style="display: none;">
                 </div>
                 <ul id="saved-searches-list">

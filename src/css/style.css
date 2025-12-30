@@ -192,11 +192,14 @@ input:checked + .slider:before {
 .search-interface a {
     color: var(--primary-color);
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .search-interface a:hover {
+    color: var(--primary-color); /* Maintain color on hover */
     text-decoration: underline;
 }
+
 
 /* New: Styling for search groups */
 .search-group {
@@ -277,7 +280,7 @@ select {
     cursor: help;
     margin-left: 5px; /* Closer to the word */
     z-index: 10;
-    transition: background-color 0.2s ease; /* Added for smooth transition */
+    transition: background-color 0.3s ease;
 }
 
 .info-icon:hover {
@@ -363,255 +366,7 @@ select {
 
 .preset-controls .form-group {
     flex-grow: 1; /* Allow dropdowns to grow */
-    min-width: 150px; /* Ensure a minimum width */
-}
-
-.preset-button {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    white-space: normal;
-    text-align: center;
-    height: auto;
-    font-size: 1.1rem;
-    margin-right: 0; /* REMOVED conflicting margin */
-    min-width: unset;
-    flex-grow: unset;
-}
-
-.preset-button:hover {
-    background-color: #0056b3;
-}
-
-/* Styling for main action buttons (Generate Search, Clear Form) */
-.main-action-buttons {
-    display: flex;
-    flex-direction: row; /* Display buttons side by side */
-    gap: 20px; /* Space between buttons */
-    margin-top: 30px;
-}
-
-.main-action-buttons button {
-    flex: 1; /* Each button takes equal available space */
-    padding: 20px 25px; /* Increase padding for bigger buttons */
-    border-radius: 8px; /* Slightly more rounded corners */
-    font-size: 1.4rem; /* Significantly increase font size */
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-    white-space: nowrap; /* Prevent text from wrapping */
-    text-align: center; /* Center text within the button */
-}
-
-
-
-.search-output {
-    margin-top: 40px;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--background-light);
-}
-
-.generated-string-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between string and copy icon */
-    background-color: #e9ecef;
-    padding: 10px;
-    border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace;
-    word-wrap: break-word;
-    font-size: 0.95rem;
-    color: #333;
-    margin-bottom: 15px;
-    cursor: pointer; /* Indicate clickability */
-    transition: background-color 0.2s ease;
-}
-
-.generated-string-wrapper:hover {
-    background-color: #d8e1e7; /* Slightly darker on hover */
-}
-
-#generated-search-string-display.clickable-search-string {
-    flex-grow: 1; /* Allow the text to take up available space */
-    margin: 0; /* Remove default paragraph margin */
-    user-select: all; /* Allow easy selection */
-}
-
-.copy-icon {
-    font-size: 1.2rem;
-    color: var(--primary-color);
-    flex-shrink: 0; /* Prevent icon from shrinking */
-}
-
-.search-string-explanation {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f1f8ff; /* Light blue background */
-    border: 1px solid #cce5ff; /* Blue border */
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #004085; /* Dark blue text */
-}
-
-.search-string-explanation h4 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #002752; /* Even darker blue for heading */
-}
-
-.search-string-explanation ul {
-    list-style-type: disc; /* Use discs for list items */
-    padding-left: 20px;
-    margin-bottom: 0;
-}
-
-.search-string-explanation li {
-    margin-bottom: 5px;
-}
-
-#simulated-search-results {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-}
-
-/* Styles for search results with previews */
-#simulated-search-results li {
-    background-color: var(--text-light);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex; /* Changed to flex for better layout control */
-    flex-direction: column; /* Stack title and paragraph */
-    transition: background-color 0.2s ease;
-}
-
-#simulated-search-results li:hover {
-    background-color: #f0f0f0;
-}
-
-#simulated-search-results li a {
-    text-decoration: none;
-    color: var(--primary-color);
-    font-weight: bold;
-    font-size: 1.1rem; /* Slightly larger title */
-    margin-bottom: 5px; /* Space between title and summary */
-}
-
-#simulated-search-results li p {
-    font-size: 0.95rem; /* Readable summary text */
-    color: var(--text-dark);
-    margin: 0; /* Remove default paragraph margin */
-    line-height: 1.5;
-}
-
-/* Loading indicator styling */
-.loading-indicator {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    font-size: 1.1rem;
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.loading-indicator::before {
-    content: '';
-    border: 4px solid rgba(0, 123, 255, 0.2);
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    margin-right: 10px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
-/* Accordion Styles */
-.accordion-header {
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex; /* Use flexbox to align items */
-    align-items: center; /* Vertically center items */
-    gap: 10px; /* Space between items in the header */
-    padding: 10px 15px; /* Add padding to the header */
-    margin-bottom: 5px; /* Space below header */
-    border-radius: 5px; /* Slightly rounded corners */
-}
-
-.accordion-header:hover {
-    background-color: #f0f0f0;
-}
-
-.accordion-header.active {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-}
-
-.accordion-arrow {
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent; /* Slightly larger arrow */
-    border-right: 6px solid transparent;
-    border-top: 6px solid var(--text-dark); /* Down arrow */
-    margin-left: auto; /* Push the arrow to the right */
-    transition: transform 0.3s ease;
-}
-
-.accordion-header.active .accordion-arrow {
-    transform: rotate(180deg); /* Up arrow when active */
-    border-top-color: var(--text-light); /* Change arrow color when active */
-}
-
-.accordion-content {
-    padding: 20px 15px; /* Add some padding */
-    border: 1px solid var(--border-color);
-    border-top: none;
-    border-radius: 0 0 5px 5px;
-    margin-bottom: 20px;
-}
-
-/* Existing .presets-container styling */
-.presets-container {
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px dashed var(--border-color);
-    border-radius: 8px;
-    background-color: var(--background-light);
-}
-
-.presets-container h3 {
-    margin-top: 0;
-    color: var(--primary-color);
-}
-
-.preset-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Space between controls */
-    margin-top: 15px;
-    align-items: flex-end; /* Align items to the bottom */
-}
-
-.preset-controls .form-group {
-    flex-grow: 1; /* Allow dropdowns to grow */
-    min-width: 150px; /* Ensure a minimum width */
+    min-width: 100px; /* Ensure a minimum width */
 }
 
 .preset-button {
@@ -921,16 +676,55 @@ footer nav a:hover {
 }
 
 /* New/Updated Styles for recent changes */
+.generated-string-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--background-light);
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    margin-top: 10px;
+}
+
 #generated-search-string-display {
     flex-grow: 1;
-    border: none; /* Remove default input border */
-    background-color: transparent; /* Match wrapper background */
-    padding: 0; /* Remove default input padding */
-    font-family: inherit; /* Inherit font from wrapper */
-    font-size: inherit; /* Inherit font size from wrapper */
-    color: inherit; /* Inherit color from wrapper */
-    outline: none; /* Remove outline on focus */
-    cursor: text; /* Indicate it's selectable text */
+    border: none;
+    background: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    padding: 5px;
+    color: var(--text-dark);
+}
+
+.copy-button {
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.copy-button::before {
+    content: '📋'; /* Copy icon */
+    font-size: 20px;
+    line-height: 36px;
+    text-align: center;
+    display: block;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.copy-button.copied::before {
+    content: '✅'; /* Checkmark icon */
+}
+
+.copy-button:hover {
+    background-color: #5a6268;
 }
 
 .wikipedia-link {
@@ -956,10 +750,41 @@ footer nav a:hover {
     margin-left: 10px; /* Space from the toggle label */
     flex-shrink: 0;
 }
+
+.main-action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.main-action-buttons button {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    color: var(--text-light);
+}
+
 #generate-search-string-button {
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
 }
 
 #generate-search-string-button:hover {
-    background-color: #0056b3 !important;
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+#clear-form-button {
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+}
+
+#clear-form-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
 }

@@ -81,7 +81,12 @@ export function applyTranslations() {
             if (element.hasAttribute('placeholder')) {
                 element.placeholder = translation;
             } else {
-                element.textContent = translation;
+                const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+                if (textNode) {
+                    textNode.textContent = translation;
+                } else {
+                    element.textContent = translation;
+                }
             }
         }
     });
@@ -195,6 +200,11 @@ export function applyTranslations() {
             link.textContent = getTranslation(id); // Add this line to translate the link text
         }
     });
+
+    const copyUrlButton = document.getElementById('copy-url-button');
+    if (copyUrlButton) {
+        copyUrlButton.title = getTranslation('copy-url-button-title');
+    }
 
     // Explicitly translate language switch buttons
     const langDeButton = document.getElementById('lang-de');

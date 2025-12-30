@@ -167,17 +167,18 @@ export function generateSearchString() {
     // This should be a clean version without advanced operators
     const finalBrowserQuery = browserQueryParts.join(' ').trim();
 
+    const targetLang = getLanguage();
+    const searchUrl = finalApiQuery ? `https://${targetLang}.wikipedia.org/wiki/Special:Search?${wikiSearchParams.toString()}` : '';
+
     // Update the UI with the generated string and explanation
     const displayElement = document.getElementById('generated-search-string-display');
     if (displayElement) {
-        displayElement.value = finalBrowserQuery || getTranslation('generated-string-placeholder');
+        displayElement.value = searchUrl || getTranslation('generated-string-placeholder');
     }
 
     const openInWikipediaLink = document.getElementById('open-in-wikipedia-link');
     if(openInWikipediaLink) {
-        const targetLang = getLanguage();
-        if(finalApiQuery) { // Link should be active if there's any query
-            const searchUrl = `https://${targetLang}.wikipedia.org/wiki/Special:Search?${wikiSearchParams.toString()}`;
+        if(searchUrl) { // Link should be active if there's a URL
             openInWikipediaLink.href = searchUrl;
             openInWikipediaLink.textContent = getTranslation('open-in-wikipedia-link');
             openInWikipediaLink.style.display = 'inline-block';
