@@ -6,141 +6,149 @@
     <title>FAQ - WikiGUI</title>
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        .legal-document-container { /* Reusing the same container for consistency */
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        .faq-search-container {
+            margin-bottom: var(--space-xl);
         }
-        .legal-document-container h1 {
-            color: var(--primary-color);
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
+        .faq-item {
+            margin-bottom: var(--space-lg);
+            padding: var(--space-md);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            list-style: none;
         }
-        .legal-document-container h2 {
-            color: var(--text-dark);
-            font-size: 1.5rem;
-            margin-top: 25px;
-            margin-bottom: 15px;
+        .faq-item strong {
+            display: block;
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-        .legal-document-container h3 {
-            color: var(--text-dark);
-            font-size: 1.3rem;
-            margin-top: 20px;
-            margin-bottom: 10px;
+        .faq-section {
+            margin-bottom: var(--space-xl);
         }
-        .legal-document-container p, .legal-document-container ul {
-            margin-bottom: 1.2rem;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-        .legal-document-container ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-        .legal-document-container li {
-            margin-bottom: 10px;
-        }
-        .legal-document-container pre { /* For code snippets if any */
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .disclaimer {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-top: 40px;
-            border-top: 1px solid #dee2e6;
-            padding-top: 20px;
+        .faq-section h2 {
+            text-align: left;
+            border-bottom: 2px solid var(--slate-100);
+            padding-bottom: var(--space-xs);
+            margin-bottom: var(--space-md);
         }
     </style>
 </head>
 <body>
-    <div class="legal-document-container">
-        <h1>Frequently Asked Questions (FAQ) - WikiGUI</h1>
-        <p>Welcome to the FAQ section for WikiGUI! This tool helps you construct advanced Wikipedia search queries. If you can't find an answer here, please refer to the official Wikipedia search help or contact support if available.</p>
+    <header>
+        <div class="container">
+            <div class="title-group">
+                <h1 id="app-title-faq">WikiGUI FAQ</h1>
+                <div class="language-selector">
+                    <button id="lang-de" class="lang-button" data-lang="de">DE</button>
+                    <button id="lang-en" class="lang-button" data-lang="en">EN</button>
+                </div>
+            </div>
+            <div class="header-links">
+                <a href="../../index.html" class="header-button">Back to Tool</a>
+            </div>
+        </div>
+    </header>
 
-        <h2>1. Getting Started</h2>
-        <ul>
-            <li><strong>Q: What is WikiGUI?</strong><br>
-                A: WikiGUI is a web-based tool that assists users in building complex search queries for Wikipedia by providing an intuitive interface for various search parameters.
-            </li>
-            <li><strong>Q: Is WikiGUI free to use?</strong><br>
-                A: WikiGUI is provided under an open license (see LICENSE_AGREEMENT.txt). Basic use is free. Please refer to the LICENSE_AGREEMENT.txt and NON_COMMERCIAL_USE.txt for details on usage restrictions and commercial use.
-            </li>
-            <li><strong>Q: Do I need to install anything to use WikiGUI?</strong><br>
-                A: No, WikiGUI is a web application. You can use it directly from your web browser without any installation, provided you have an internet connection.
-            </li>
-            <li><strong>Q: Where can I find the official Wikipedia search guide?</strong><br>
-                A: You can find the official guide by clicking the link in the header of the page, which will direct you to the search help documentation for the selected Wikipedia language.
-            </li>
-        </ul>
+    <main class="container">
+        <div class="faq-search-container" style="margin-top: 2rem;">
+            <input type="text" id="faq-search" placeholder="Search FAQ..." style="width: 100%; height: 56px; padding: 0 1.5rem; border-radius: 16px; border: 1.5px solid var(--slate-200); font-size: 1.1rem; box-shadow: var(--shadow-md);">
+        </div>
 
-        <h2>2. Features & Functionality</h2>
-        <ul>
-            <li><strong>Q: How does the "All these words" field work?</strong><br>
-                A: Entering terms in the "All these words" field means all of them must be present in the search results (equivalent to an implicit AND).
-            </li>
-            <li><strong>Q: What's the difference between "All these words" and "Exact Phrase"?</strong><br>
-                A: "All these words" requires each word to be present, but not necessarily together. "Exact Phrase" requires the sequence of words to appear together, enclosed in quotation marks.
-            </li>
-            <li><strong>Q: How can I exclude specific words from my search?</strong><br>
-                A: Use the "Without these words" field. Enter the words you wish to exclude, and pages containing any of these words will not be returned.
-            </li>
-            <li><strong>Q: How do I search within a specific category?</strong><br>
-                A: You can use the "In Category" field to specify one or more categories. For subcategories, use the "Deep Category" field.
-            </li>
-            <li><strong>Q: What are Namespaces?</strong><br>
-                A: Namespaces are different areas within Wikipedia (e.g., Articles, Files, Categories, Help pages). You can select specific namespaces to narrow down your search results.
-            </li>
-            <li><strong>Q: How does the new category dropdown work?</strong><br>
-                A: The "Category" dropdown allows you to select a predefined Wikipedia category (e.g., Science, History) to pre-fill the "In Category" search parameter. This helps quickly target broad subject areas.
-            </li>
-        </ul>
+        <div class="faq-container">
+            <section class="faq-section">
+                <h2>1. Getting Started</h2>
+                <ul>
+                    <li class="faq-item"><strong>Q: What is WikiGUI?</strong>A: WikiGUI is a web-based tool that assists users in building complex search queries for Wikipedia by providing an intuitive interface for various search parameters.</li>
+                    <li class="faq-item"><strong>Q: Is WikiGUI free to use?</strong>A: WikiGUI is provided under an open license. Basic use is free. Please refer to the license files for details.</li>
+                    <li class="faq-item"><strong>Q: Do I need to install anything to use WikiGUI?</strong>A: No, WikiGUI is a web application. You can use it directly from your web browser without any installation.</li>
+                </ul>
+            </section>
 
-        <h2>3. Wikipedia vs. AI-Search</h2>
-        <ul>
-            <li><strong>Q: Why should I use Wikipedia when I can ask AI (like ChatGPT)?</strong><br>
-                A: AI models can "hallucinate" (invent facts) and are often a "Black Box". Wikipedia provides transparency through citations. Additionally, WikiGUI allows for targeted metadata searches (file types, date ranges) that AI simply cannot perform.
-            </li>
-            <li><strong>Q: What is the advantage of WikiGUI over a simple AI answer?</strong><br>
-                A: WikiGUI treats Wikipedia like a database. You can, for example, search for PDF documents uploaded in a specific month. AI usually only provides a summary, while WikiGUI gives you direct access to verified original sources.
-            </li>
-        </ul>
+            <section class="faq-section">
+                <h2>2. Features & Funktionalität</h2>
+                <ul>
+                    <li class="faq-item"><strong>Q: How does the "All these words" field work?</strong>A: Entering terms in the "All these words" field means all of them must be present in the search results.</li>
+                    <li class="faq-item"><strong>Q: How does the category dropdown work?</strong>A: The "Category" dropdown allows you to select a predefined Wikipedia category to pre-fill the search parameter.</li>
+                </ul>
+            </section>
 
-        <h2>4. Troubleshooting & Support</h2>
-        <ul>
-            <li><strong>Q: I entered my search parameters, but the "Generated Search String" is empty.</strong><br>
-                A: Ensure you have entered at least one search term in the primary fields like "All these words" or "Exact Phrase".
-            </li>
-            <li><strong>Q: The search results seem incomplete or incorrect.</strong><br>
-                A: Double-check your entered parameters. Wikipedia's search syntax can be complex. Refer to the official Wikipedia search help link for detailed information on how parameters work. Using specific parameter combinations (like `intitle:` vs. `intext:`) can significantly affect results.
-            </li>
-            <li><strong>Q: How do I report a bug or ask a question?</strong><br>
-                A: The best way to report a bug, suggest a new feature, or ask a question is by using the "Report an Issue" link in the footer. This will take you to the project's GitHub Issues page, which is the central place for all feedback and development tracking.
-            </li>
-        </ul>
+            <section class="faq-section">
+                <h2>3. Wikipedia vs. AI-Search</h2>
+                <ul>
+                    <li class="faq-item"><strong>Q: Why should I use Wikipedia when I can ask AI (like ChatGPT)?</strong>A: AI models can "hallucinate" (invent facts). Wikipedia provides transparency through citations. WikiGUI also allows for targeted metadata searches (file types, dates) which AI cannot do.</li>
+                    <li class="faq-item"><strong>Q: What is the advantage of WikiGUI over a simple AI answer?</strong>A: WikiGUI treats Wikipedia like a database. You can search for specific original sources (like PDFs), while AI usually only provides a summary.</li>
+                </ul>
+            </section>
 
-        <h2>4. Legal & Licensing</h2>
-        <ul>
-            <li><strong>Q: What license is WikiGUI provided under?</strong><br>
-                A: WikiGUI is provided under an open license. Please refer to the `LICENSE_AGREEMENT.txt` file for details.
-            </li>
-            <li><strong>Q: Can I use WikiGUI for commercial purposes?</strong><br>
-                A: Please review the `NON_COMMERCIAL_USE.txt` file and the `LICENSE_AGREEMENT.txt` for information regarding commercial use. It is likely restricted unless a separate commercial license is obtained.
-            </li>
-            <li><strong>Q: Where can I find the Terms of Use?</strong><br>
-                A: The basic terms of use are located in the `TERMS_OF_USE.txt` file.
-            </li>
-        </ul>
+            <section class="faq-section">
+                <h2>4. Troubleshooting & Support</h2>
+                <ul>
+                    <li class="faq-item"><strong>Q: How do I report a bug or ask a question?</strong>A: Use the "Report an Issue" link in the footer. This will take you to our GitHub Issues page.</li>
+                </ul>
+            </section>
+        </div>
+    </main>
 
-        <p class="disclaimer">This FAQ is a starting point. More specific questions can be added as needed.</p>
-    </div>
+    <footer>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="privacy_de.html">Privacy</a></li>
+                    <li><a href="impressum.html">Imprint</a></li>
+                </ul>
+            </nav>
+            <p id="footer-disclaimer" style="font-size: 0.75rem; margin-bottom: 1rem; opacity: 0.7;"></p>
+            <p id="footer-text">&copy; 2025 WikiGUI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { getLanguage, setLanguage, setTranslations, getTranslation } from '../js/modules/state.js';
+        import { applyTranslations } from '../js/modules/ui.js';
+        
+        async function initFAQ() {
+            const lang = getLanguage() || 'de';
+            try {
+                const response = await fetch(`../../translations/${lang}.json`);
+                const data = await response.json();
+                setTranslations(lang, data);
+                applyTranslations();
+                
+                const searchInput = document.getElementById('faq-search');
+                if (searchInput) searchInput.placeholder = getTranslation('search-faq-placeholder');
+            } catch (e) { console.error(e); }
+
+            const searchInput = document.getElementById('faq-search');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const sections = document.querySelectorAll('.faq-section');
+
+            searchInput?.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                if (query.length >= 3) {
+                    faqItems.forEach(item => {
+                        item.style.display = item.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+                    });
+                    sections.forEach(section => {
+                        const visible = section.querySelectorAll('.faq-item[style="display: block;"]');
+                        section.style.display = visible.length > 0 ? 'block' : 'none';
+                    });
+                } else {
+                    faqItems.forEach(item => item.style.display = 'block');
+                    sections.forEach(section => section.style.display = 'block');
+                }
+            });
+
+            document.querySelectorAll('.lang-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    setLanguage(e.target.dataset.lang);
+                    location.reload();
+                });
+            });
+        }
+        initFAQ();
+    </script>
 </body>
 </html>

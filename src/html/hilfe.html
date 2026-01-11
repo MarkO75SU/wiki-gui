@@ -74,6 +74,10 @@
     </header>
 
     <main class="container">
+        <div class="search-box-container" style="margin-top: 2rem;">
+            <input type="text" id="help-search" placeholder="Hilfe durchsuchen..." style="width: 100%; height: 56px; padding: 0 1.5rem; border-radius: 16px; border: 1.5px solid var(--slate-200); font-size: 1.1rem; box-shadow: var(--shadow-md);">
+        </div>
+
         <div class="help-container">
             <section class="help-section">
                 <h2 id="modal-heading-main-query">Hauptsuchanfrage</h2>
@@ -216,12 +220,13 @@
                     <li><a href="impressum.html">Impressum</a></li>
                 </ul>
             </nav>
+            <p id="footer-disclaimer" style="font-size: 0.75rem; margin-bottom: 1rem; opacity: 0.7;"></p>
             <p id="footer-text">&copy; 2025 WikiGUI. Alle Rechte vorbehalten.</p>
         </div>
     </footer>
 
     <script type="module">
-        import { getLanguage, setLanguage, setTranslations } from '../js/modules/state.js';
+        import { getLanguage, setLanguage, setTranslations, getTranslation } from '../js/modules/state.js';
         import { applyTranslations } from '../js/modules/ui.js';
         
         async function initHelp() {
@@ -231,9 +236,39 @@
                 const data = await response.json();
                 setTranslations(lang, data);
                 applyTranslations();
+                
+                // Set placeholder dynamically
+                const searchInput = document.getElementById('help-search');
+                if (searchInput) searchInput.placeholder = getTranslation('search-help-placeholder');
+
             } catch (e) {
                 console.error(e);
             }
+
+            // Search logic
+            const searchInput = document.getElementById('help-search');
+            const helpItems = document.querySelectorAll('.help-item');
+            const sections = document.querySelectorAll('.help-section');
+
+            searchInput?.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                
+                if (query.length >= 3) {
+                    helpItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        item.style.display = text.includes(query) ? 'block' : 'none';
+                    });
+                    
+                    // Hide empty sections
+                    sections.forEach(section => {
+                        const visibleItems = section.querySelectorAll('.help-item[style="display: block;"]');
+                        section.style.display = visibleItems.length > 0 ? 'block' : 'none';
+                    });
+                } else {
+                    helpItems.forEach(item => item.style.display = 'block');
+                    sections.forEach(section => section.style.display = 'block');
+                }
+            });
 
             document.querySelectorAll('.lang-button').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
