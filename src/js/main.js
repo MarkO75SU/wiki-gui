@@ -1,6 +1,6 @@
 // src/js/main.js
 import { setLanguage, setTranslations, getLanguage, getTranslation } from './modules/state.js';
-import { applyTranslations, clearForm, handleSearchFormSubmit, addAccordionFunctionality, populatePresetCategories, populatePresets, applyPreset as applyPresetToForm, setupParameterExplanation } from './modules/ui.js';
+import { applyTranslations, clearForm, handleSearchFormSubmit, addAccordionFunctionality, populatePresetCategories, populatePresets, applyPreset as applyPresetToForm, setupParameterExplanation, downloadResults } from './modules/ui.js';
 import { generateSearchString } from './modules/search.js';
 import { saveCurrentSearch, loadSavedSearches, handleSavedSearchActions } from './modules/storage.js';
 import { presetCategories } from './modules/presets.js';
@@ -11,6 +11,11 @@ async function initializeApp() {
 
     addAccordionFunctionality();
     loadSavedSearches();
+
+    const downloadResultsBtn = document.getElementById('download-results-button');
+    if (downloadResultsBtn) {
+        downloadResultsBtn.addEventListener('click', downloadResults);
+    }
 
     // Advanced mode toggle
     const advancedToggle = document.getElementById('advanced-mode-toggle');

@@ -123,6 +123,7 @@
     "explanation-dateafter": "Einschließlich Seiten, die nach dem {dateafter} hinzugefügt wurden.",
     "explanation-datebefore": "Einschließlich Seiten, die vor dem {datebefore} hinzugefügt wurden.",
     "search-results-heading": "Suchergebnisse (erste 10 von {totalResults}):",
+    "download-results-button": "Ergebnisse als Textdatei herunterladen",
     "no-results-found": "Keine Ergebnisse gefunden.",
     "footer-text": "© 2025 WikiGUI. Alle Rechte vorbehalten.",
     "link-license-agreement": "Lizenzvereinbarung",
