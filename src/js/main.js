@@ -110,6 +110,13 @@ async function initializeApp() {
             const lang = event.target.dataset.lang;
             setLanguage(lang);
             clearForm(); // Clear all fields on language switch
+            
+            // Explicitly set the target wiki language to match the UI language
+            const targetWikiLangSelect = document.getElementById('target-wiki-lang');
+            if (targetWikiLangSelect) {
+                targetWikiLangSelect.value = lang;
+            }
+
             try {
                 const response = await fetch(`translations/${lang}.json`);
                 const data = await response.json();
