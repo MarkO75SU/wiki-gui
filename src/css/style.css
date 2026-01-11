@@ -179,16 +179,6 @@ input:checked + .slider:before { transform: translateX(20px); }
     margin-top: var(--space-xs);
 }
 
-.quick-examples {
-    margin-top: var(--space-md);
-}
-
-.quick-examples h4 {
-    font-size: 1rem;
-    color: #1e40af;
-    margin-bottom: var(--space-xs);
-}
-
 /* Form Styling */
 .form-group { margin-bottom: var(--space-md); }
 .form-group label {

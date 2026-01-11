@@ -207,19 +207,3 @@ async function initializeApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
-
-// --- Example Search Functionality ---
-const exampleButtons = document.querySelectorAll('.example-search-item');
-
-exampleButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const presetId = button.getAttribute('data-preset-id');
-        if (presetId) {
-            const preset = presetCategories['examples']?.presets[presetId];
-            if (preset) {
-                applyPresetToForm(preset);
-            }
-        }
-    });
-});
-// --- End Example Search Functionality ---
