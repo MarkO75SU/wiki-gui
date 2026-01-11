@@ -137,6 +137,11 @@ h2 {
 input:checked + .slider { background-color: var(--primary); }
 input:checked + .slider:before { transform: translateX(20px); }
 
+#intro-text {
+    margin: 2rem 0;
+    line-height: 1.8;
+}
+
 /* Presets Section */
 .presets-container {
     background: #eff6ff;
@@ -150,9 +155,14 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 .preset-controls {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    align-items: end;
+}
+
+#apply-preset-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 0.5rem;
 }
 
 /* Form Styling */
