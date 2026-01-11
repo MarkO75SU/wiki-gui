@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marko75su.github.io/wiki-gui/sitemap.xml

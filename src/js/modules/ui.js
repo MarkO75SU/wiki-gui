@@ -72,6 +72,18 @@ export function applyTranslations() {
     const lang = getLanguage();
     document.documentElement.lang = lang;
 
+    // Update Meta Description
+    const metaDescription = document.getElementById('meta-description');
+    if (metaDescription) {
+        metaDescription.content = getTranslation('seo-description');
+    }
+
+    // Update OG tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = getTranslation('page-title');
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) ogDescription.content = getTranslation('seo-description');
+
     document.querySelectorAll('[id]').forEach(element => {
         const key = element.id;
         // Skip advanced-mode-description as its content is managed dynamically by updateAdvancedModeDescription
