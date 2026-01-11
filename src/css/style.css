@@ -456,3 +456,159 @@ footer a:hover { color: var(--primary); }
     border: none;
     box-shadow: var(--shadow-xl);
 }
+
+/* --- Saved Searches Section --- */
+.saved-searches-container {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    box-shadow: var(--shadow-md);
+}
+
+.saved-searches-container h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--slate-900);
+    margin-bottom: var(--space-md);
+    text-align: left;
+    border-bottom: 2px solid var(--slate-100);
+    padding-bottom: 0.75rem;
+}
+
+.save-search-input-group {
+    display: flex;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+
+#save-search-comment {
+    flex-grow: 1;
+}
+
+#save-search-button {
+    background: var(--primary);
+    color: white;
+    padding: 0 1.5rem;
+    height: 48px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+#save-search-button:hover {
+    background: var(--primary-dark);
+}
+
+.import-export-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+    padding: 1rem;
+    background: var(--slate-50);
+    border-radius: var(--radius-md);
+}
+
+.export-button, .import-label {
+    background: white;
+    color: var(--slate-600);
+    border: 1px solid var(--slate-200);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.export-button:hover, .import-label:hover {
+    border-color: var(--slate-400);
+    background: var(--slate-100);
+    color: var(--slate-900);
+}
+
+#saved-searches-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-sm);
+}
+
+#saved-searches-list li {
+    background: var(--slate-50);
+    border: 1px solid var(--slate-200);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: all 0.2s;
+}
+
+#saved-searches-list li:hover {
+    border-color: var(--slate-300);
+    box-shadow: var(--shadow-sm);
+}
+
+#saved-searches-list li strong {
+    color: var(--slate-900);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+#saved-searches-list li span {
+    color: var(--slate-700);
+    word-break: break-all;
+    font-size: 0.95rem;
+}
+
+#saved-searches-list li small {
+    color: var(--slate-400);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.search-actions {
+    display: flex;
+    gap: var(--space-xs);
+    margin-top: 0.5rem;
+}
+
+.search-actions button {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.load-search-btn {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.load-search-btn:hover { background: var(--primary); color: white; }
+
+.edit-search-btn {
+    background: var(--slate-100);
+    color: var(--slate-600);
+}
+.edit-search-btn:hover { background: var(--slate-200); color: var(--slate-900); }
+
+.delete-search-btn {
+    background: #fff1f2;
+    color: #e11d48;
+}
+.delete-search-btn:hover { background: #e11d48; color: white; }
