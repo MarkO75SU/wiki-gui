@@ -130,6 +130,7 @@
     "search-results-heading": "Suchergebnisse (erste 10 von {totalResults}):",
     "download-results-button": "Ergebnisse als Textdatei herunterladen",
     "no-results-found": "Keine Ergebnisse gefunden.",
+    "footer-disclaimer": "Dieses Projekt steht in keiner Verbindung zur Wikimedia Foundation. Alle Suchergebnisse stammen von Wikipedia und sind unter CC BY-SA 3.0 lizenziert.",
     "footer-text": "© 2025 WikiGUI. Alle Rechte vorbehalten.",
     "link-license-agreement": "Lizenzvereinbarung",
     "link-terms-of-use": "Nutzungsbedingungen",
