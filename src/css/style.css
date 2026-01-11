@@ -373,6 +373,35 @@ input:focus, select:focus {
     background: var(--slate-50);
 }
 
+.copy-button {
+    background: var(--slate-800);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.copy-button:hover {
+    background: var(--slate-700);
+    transform: translateY(-1px);
+}
+
+.copy-button::before {
+    content: '📋';
+    font-size: 1.25rem;
+}
+
+.copy-button.copied::before {
+    content: '✅';
+}
+
 /* --- Results List --- */
 #simulated-search-results { list-style: none; margin-top: var(--space-lg); }
 #simulated-search-results li {
