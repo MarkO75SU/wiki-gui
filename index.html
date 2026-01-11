@@ -53,17 +53,19 @@
 <body>
     <header>
         <div class="container">
-            <h1 id="app-title"></h1>
+            <div class="title-group">
+                <h1 id="app-title"></h1>
+                <div class="language-selector">
+                    <button id="lang-de" class="lang-button" data-lang="de"></button>
+                    <button id="lang-en" class="lang-button" data-lang="en"></button>
+                </div>
+            </div>
             <!-- Removed Navigation: Home, Search Help, About -->
             <div class="header-links">
                 <a href="src/html/blog.html" class="header-button" id="blog-link">Blog</a>
                 <span id="github-support-text"></span>
                 <a href="https://github.com/MarkO75SU/wiki-searchgui" target="_blank" class="header-button" id="github-repo-link"></a>
                 <a href="https://github.com/MarkO75SU/wiki-searchgui/archive/refs/heads/main.zip" class="header-button" id="download-zip-link"></a>
-            </div>
-            <div class="language-selector">
-                <button id="lang-de" class="lang-button" data-lang="de"></button>
-                <button id="lang-en" class="lang-button" data-lang="en"></button>
             </div>
         </div>
     </header>
@@ -196,7 +198,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label id="label-namespaces"></label>
+                    <label id="label-namespaces">Namensräume <span class="info-icon" data-info-id="info-namespaces-text" title="Wählen Sie spezifische Wikipedia-Namensräume für die Suche aus.">?</span></label>
                     <div id="namespaces-options">
                         <div class="option-group">
                             <input type="checkbox" id="ns-main" value="0">
@@ -301,7 +303,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="filesize-min" id="label-filesize"></label>
+                                <label for="filesize-min" id="label-filesize">Dateigröße (Bytes) <span class="info-icon" data-info-id="info-filesize-text" title="Filtert Mediendateien nach ihrer Größe. Verwenden Sie Min und Max für einen Bereich.">?</span></label>
                                 <div class="file-size-inputs">
                                     <input type="number" id="filesize-min">
                                     <input type="number" id="filesize-max">

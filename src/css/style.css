@@ -50,6 +50,13 @@ header .container {
     gap: 1rem;
 }
 
+.title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
 h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em; }
 
 .header-links { display: flex; gap: 0.75rem; align-items: center; }
@@ -411,6 +418,7 @@ footer a:hover { color: var(--primary); }
     .preset-controls { grid-template-columns: 1fr; }
     .main-action-buttons { grid-template-columns: 1fr; }
     header .container { flex-direction: column; text-align: center; }
+    .title-group { align-items: center; }
 }
 
 /* Advanced section hidden by default */
