@@ -68,7 +68,7 @@
 
                                         <div class="search-group" id="group-main-query">
 
-                                            <h3 class="accordion-header" id="heading-main-query"> <span class="info-icon" data-info-id="info-main-query" title="Define your primary keywords. Combine terms with 'AND' (default), 'OR', or exclude with '-term'. Use quotes for exact phrases. Example: 'apple OR orange -fruit'">?</span><span class="accordion-arrow">
+                                            <h3 class="accordion-header" id="heading-main-query">                <span class="info-icon" data-info-id="info-main-query" title="Define primary keywords and search logic (AND/OR, exclude, exact phrases). See '?' for full details and examples.">?</span><span class="accordion-arrow">
 
                                             </h3>
 
@@ -107,7 +107,7 @@
 
                                         <div class="search-group" id="group-scope-location" data-advanced>
 
-                                            <h3 class="accordion-header" id="heading-scope-location"> <span class="info-icon" data-info-id="info-scope-location" title="Focus your search within specific article titles, categories, or pages linked from other articles.">?</span><span class="accordion-arrow">
+                                            <h3 class="accordion-header" id="heading-scope-location"> <span class="info-icon" data-info-id="info-scope-location" title="Focus search by title, category, or links. Click '?' for full details.">?</span><span class="accordion-arrow">
 
                                             </h3>
 
@@ -254,7 +254,7 @@
                     </div> <!-- End Content/Technical Group -->
 
                     <div class="search-group" id="group-date-filters" data-advanced>
-                        <h3 class="accordion-header" id="heading-date-filters"> <span class="info-icon" data-info-id="info-date-filters" title="Filter articles by the page's creation or last modification date on Wikipedia. Format: YYYY-MM-DD.">?</span><span class="accordion-arrow"></span>
+                        <h3 class="accordion-header" id="heading-date-filters"> <span class="info-icon" data-info-id="info-date-filters" title="Filter by creation or modification date. See '?' for full details and examples.">?</span><span class="accordion-arrow"></span>
                         </h3>
                         <div class="accordion-content">
                             <div class="form-group">
@@ -276,6 +276,20 @@
                 </form>
             </div>
 
+            <div class="example-searches-container">
+                <h3 id="example-searches-heading">Example Searches</h3>
+                <div class="example-list">
+                    <button class="example-search-item" data-search-term='Albert Einstein' title="Find articles related to Albert Einstein.">Albert Einstein</button>
+                    <button class="example-search-item" data-search-term='"Artificial Intelligence"' title='Find exact phrase "Artificial Intelligence".'>Exact Phrase: "Artificial Intelligence"</button>
+                    <button class="example-search-item" data-search-term='Jaguar -car' title="Find 'Jaguar' excluding 'car'.">Jaguar (Animal)</button>
+                    <button class="example-search-item" data-search-term='Mars OR Venus' title="Find articles about Mars OR Venus.">Mars OR Venus</button>
+                    <button class="example-search-item" data-search-term='incategory:"20th-century physicists"' title='Find articles in "20th-century physicists" category.'>Category: "20th-century physicists"</button>
+                    <button class="example-search-item" data-search-term='intitle:"World War II"' title='Find articles titled "World War II".'>In Title: "World War II"</button>
+                    <button class="example-search-item" data-search-term='createdafter:2023-01-01 AND createdbefore:2023-12-31' title="Find articles created in 2023.">Created in 2023</button>
+                    <button class="example-search-item" data-search-term='\"Quantum Mechanics\" insource:/\{\{Infobox/ -physics' title='Combined search: QM, with Infobox template, excluding physics.'>Complex Query</button>
+                </div>
+            </div>
+
             <div class="search-output">
                 <h3 id="generated-string-heading"></h3>
                 <div class="generated-string-wrapper">
@@ -283,8 +297,7 @@
                     <button id="copy-url-button" class="copy-button" title="Copy URL"></button>
                 </div>
                 <div id="generated-string-explanation" class="search-string-explanation"></div>
-                                <a href="#" id="open-in-wikipedia-link" target="_blank" class="wikipedia-link" style="display: none;"></a>
-                
+                                
                                 <h3 id="search-results-heading"></h3>
                 <ul id="simulated-search-results">
                     <!-- Simulated results will be inserted here -->
@@ -325,6 +338,83 @@
         </div>
     </footer>
 
+    <div id="params-explanation-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="params-modal-title">
+        <div class="modal-content">
+            <button id="params-modal-close" class="modal-close" aria-label="Close">×</button>
+            <h3 id="params-modal-title">Search Parameter Explanations</h3>
+            <div id="params-modal-body">
+<section>
+    <h2>Main Query</h2>
+    <p><strong>Keywords:</strong> Enter your primary search terms here. By default, terms are combined with 'AND'. Use 'OR' for alternatives, or '-' before a word to exclude it. Use quotes for exact phrases.</p>
+    <p><em>Example:</em> <code>"Albert Einstein" OR "Isaac Newton" -biography</code></p>
+
+    <p><strong>Exact Phrase:</strong> Search for a specific sequence of words.</p>
+    <p><em>Wikipedia Syntax:</em> Encloses the text in double quotes (<code>"</code>).</p>
+    <p><em>Example:</em> <code>"artificial intelligence"</code></p>
+
+    <p><strong>Exclude Words:</strong> Remove results that contain certain words.</p>
+    <p><em>Wikipedia Syntax:</em> Prefix the word with a hyphen (<code>-</code>).</p>
+    <p><em>Example:</em> <code>computer -laptop</code></p>
+
+    <p><strong>Any Words:</strong> Find articles that contain at least one of the specified words.</p>
+    <p><em>Wikipedia Syntax:</em> Use the 'OR' operator between words.</p>
+    <p><em>Example:</em> <code>apple OR orange</code></p>
+
+    <p><strong>Wildcard:</strong> Use placeholder characters for unknown or variable parts of a word.</p>
+    <p><em>Wikipedia Syntax:</em> Typically uses <code>*</code> (zero or more characters) or <code>?</code> (a single character).</p>
+    <p><em>Example:</em> <code>comput*</code></p>
+
+    <p><strong>Fuzzy Search:</strong> Find results even with slight misspellings or variations.</p>
+    <p><em>Wikipedia Syntax:</em> Often uses <code>~</code> at the end of a word.</p>
+    <p><em>Example:</em> <code>color~</code></p>
+</section>
+<section>
+    <h2>Scope & Location</h2>
+    <p><strong>In Title (<code>intitle:</code>):</strong> Restricts results to articles whose titles contain specific words.</p>
+    <p><em>Example:</em> <code>intitle:"United States"</code></p>
+
+    <p><strong>Prefix (<code>prefix:</code>):</strong> Finds pages with a specific prefix in their title (e.g., in a specific namespace).</p>
+    <p><em>Example:</em> <code>prefix:User:</code></p>
+
+    <p><strong>In Category (<code>incategory:</code>):</strong> Limits results to articles that are members of a specific category.</p>
+    <p><em>Example:</em> <code>incategory:"Artificial intelligence"</code></p>
+
+    <p><strong>Deep Category (<code>deepcat:</code>):</strong> Includes articles in subcategories of the specified category.</p>
+    <p><em>Example:</em> <code>deepcat:"Science fiction"</code></p>
+
+    <p><strong>Link From (<code>linkfrom:</code>):</strong> Finds articles that link to a specified page.</p>
+    <p><em>Example:</em> <code>linkfrom:Wikipedia:Village pump</code></p>
+
+    <p><strong>Namespaces:</strong> Select specific Wikipedia namespaces (e.g., Main Article, User, File, Category) to search within.</p>
+</section>
+<section>
+    <h2>Content & Technical</h2>
+    <p><strong>In Source (<code>insource:</code>):</strong> Searches within the wikitext content of pages, not just the displayed text. Useful for finding specific markup or code snippets.</p>
+    <p><em>Example:</em> <code>insource:/Â£{{Infobox/</code></p>
+
+    <p><strong>Has Template (<code>hastemplate:</code>):</strong> Finds pages that use a specific template.</p>
+    <p><em>Example:</em> <code>hastemplate:"Infobox country"</code></p>
+
+    <p><strong>File Type:</strong> Filter search results for specific file extensions (e.g., PNG, JPG, PDF).</p>
+    <p><em>Wikipedia Syntax:</em> <code>filetype:extension</code></p>
+    <p><em>Example:</em> <code>filetype:pdf</code></p>
+
+    <p><strong>File Size:</strong> Specify minimum and maximum file sizes for image or media searches.</p>
+    <p><em>Wikipedia Syntax:</em> <code>imagesize:value</code> or <code>imagesize:min-max</code></p>
+    <p><em>Example:</em> <code>imagesize:5MP</code></p>
+</section>
+<section>
+    <h2>Date Filters</h2>
+    <p><strong>Date After:</strong> Limits results to articles created or modified on or after a specific date.</p>
+    <p><em>Format:</em> YYYY-MM-DD</p>
+    <p><em>Example:</em> <code>createdafter:2023-01-01</code> or <code>touchedafter:2023-01-01</code></p>
+
+    <p><strong>Date Before:</strong> Limits results to articles created or modified on or before a specific date.</p>
+    <p><em>Format:</em> YYYY-MM-DD</p>
+    <p><em>Example:</em> <code>createdbefore:2024-12-31</code> or <code>touchedbefore:2024-12-31</code></p>
+</section>
+            </div>
+    </div>
     <script src="src/js/main.js?v=1.1" type="module"></script>
 </body>
 </html>

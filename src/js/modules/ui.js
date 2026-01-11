@@ -320,3 +320,98 @@ export function populateCategoryOptions(selectElement) {
         selectElement.appendChild(option);
     });
 }
+
+// Parameter explanation modal and setup
+export function setupParameterExplanation() {
+    const explainBtn = document.getElementById('explain-params-button');
+    const modal = document.getElementById('params-explanation-modal');
+    const modalTitle = document.getElementById('params-modal-title');
+    const modalBody = document.getElementById('params-modal-body');
+    const closeBtn = document.getElementById('params-modal-close');
+
+    if (!modal || !explainBtn || !modalBody) return;
+
+    explainBtn.textContent = getTranslation('explain-params-button') || 'Explain parameters';
+    modalTitle.textContent = getTranslation('params-modal-title') || 'Parameter explanations';
+    closeBtn && (closeBtn.title = getTranslation('params-modal-close') || 'Close');
+
+    explainBtn.addEventListener('click', () => {
+        const { wikiSearchUrlParams } = generateSearchString();
+        const searchUrl = wikiSearchUrlParams ? `https://${getLanguage()}.wikipedia.org/wiki/Special:Search?${wikiSearchUrlParams}` : '';
+        modalBody.innerHTML = buildParamsContent(searchUrl);
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+    });
+
+    closeBtn?.addEventListener('click', () => closeModal());
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
+    });
+
+    function closeModal() {
+        modal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+    }
+
+    function buildParamsContent(searchUrl) {
+        const params = [
+            { key: 'search', title: getTranslation('label-search-query'), desc: getTranslation('param-search-desc'), example: 'search=Mars' },
+            { key: 'exact', title: getTranslation('label-exact-phrase'), desc: getTranslation('param-exact-desc'), example: 'search="red planet"' },
+            { key: 'without', title: getTranslation('label-without-words'), desc: getTranslation('param-without-desc'), example: 'search=-rover' },
+            { key: 'any', title: getTranslation('label-any-words'), desc: getTranslation('param-any-desc'), example: 'search=(exploration OR mission)' },
+            { key: 'intitle', title: getTranslation('label-intitle'), desc: getTranslation('param-intitle-desc'), example: 'intitle=Mars' },
+            { key: 'incategory', title: getTranslation('label-incategory'), desc: getTranslation('param-incategory-desc'), example: 'incategory=Space+travel' },
+            { key: 'deepcat', title: getTranslation('label-deepcat'), desc: getTranslation('param-deepcat-desc'), example: 'deepcat=Biology' },
+            { key: 'prefix', title: getTranslation('label-prefix-value'), desc: getTranslation('param-prefix-desc'), example: 'prefix=Science:' },
+            { key: 'linkfrom', title: getTranslation('label-linkfrom'), desc: getTranslation('param-linkfrom-desc'), example: 'linkfrom=Albert+Einstein' },
+            { key: 'insource', title: getTranslation('label-insource'), desc: getTranslation('param-insource-desc'), example: 'insource:/regex/' },
+            { key: 'hastemplate', title: getTranslation('label-hastemplate'), desc: getTranslation('param-hastemplate-desc'), example: 'hastemplate=Infobox+Scientist' },
+            { key: 'filetype', title: getTranslation('label-filetype'), desc: getTranslation('param-filetype-desc'), example: 'filetype=pdf|jpg' },
+            { key: 'filesize', title: getTranslation('label-filesize'), desc: getTranslation('param-filesize-desc'), example: 'search=filesize:>=1024' },
+            { key: 'dateafter', title: getTranslation('label-dateafter'), desc: getTranslation('param-date-desc'), example: 'dateafter=2020-01-01' },
+            { key: 'datebefore', title: getTranslation('label-datebefore'), desc: getTranslation('param-date-desc'), example: 'datebefore=2021-12-31' },
+            { key: 'namespaces', title: getTranslation('label-namespaces'), desc: getTranslation('param-ns-desc'), example: 'ns0=1 (main namespace)' }
+        ];
+
+        let html = '';
+        if (searchUrl) {
+            html += `<p>${getTranslation('params-modal-current-example') || 'Example generated Special:Search URL:'}</p><div class="example">${searchUrl}</div>`;
+            // Also parse the querystring and show a breakdown
+            try {
+                const u = new URL(searchUrl);
+                const qp = u.searchParams;
+                html += '<h4>' + (getTranslation('params-modal-breakdown-heading') || 'Breakdown of parameters') + '</h4>';
+                html += '<ul>';
+                // For each unique param, list its values
+                const visited = new Set();
+                for (const [k, v] of qp.entries()) {
+                    if (visited.has(k)) continue; // we'll list duplicates in getAll
+                    const values = qp.getAll(k);
+                    visited.add(k);
+                    html += `<li><strong>${k}</strong>: ` + values.map(val => `<span class="example">${decodeURIComponent(val)}</span>`).join(' ');
+                    // add human-friendly short explanation if available
+                    const mapping = params.find(p => p.key === k.replace(/^ns\d+$/,'namespaces') || p.key === k);
+                    if (mapping && mapping.desc) {
+                        html += `<div style="margin-top:6px;color:var(--secondary-color);">${mapping.desc}</div>`;
+                    }
+                    html += '</li>';
+                }
+                html += '</ul>';
+            } catch (err) {
+                // ignore parsing errors
+            }
+        } else {
+            html += `<p>${getTranslation('params-modal-intro') || 'This panel explains all parameters you can use with Special:Search (the Wikipedia search page). You can paste a Special:Search URL to see a breakdown, or generate one with the form and click here.'}</p>`;
+        }
+
+        html += '<div class="params-list">';
+        params.forEach(p => {
+            html += `<div class="params-param"><h4>${p.title}</h4><p>${p.desc}</p><div class="example">${p.example}</div></div>`;
+        });
+        html += '</div>';
+        return html;
+    }
+}

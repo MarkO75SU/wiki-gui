@@ -201,337 +201,225 @@ input:checked + .slider:before {
 }
 
 
-/* New: Styling for search groups */
-.search-group {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
+/* New/Updated Styles for recent changes */
+.generated-string-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     background-color: var(--background-light);
-}
-
-.search-group h3 {
-    font-size: 1.3rem;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed var(--border-color);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column; /* Stack label and input vertically */
-    margin-bottom: 15px; /* Space between form groups */
-}
-
-.form-group label {
-    margin-bottom: 5px; /* Space between label and input */
-    font-weight: bold;
-}
-
-.option-group {
-    display: flex; /* Keep checkbox and label on the same line */
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.option-group input[type="checkbox"] {
-    margin-right: 8px; /* Space between checkbox and label */
-}
-
-.option-group label {
-    font-weight: normal; /* Checkbox labels usually aren't bold */
-    margin-bottom: 0;
-}
-
-/* Container for the file size min/max inputs */
-.file-size-inputs {
-    display: flex;
-    gap: 15px;
-}
-
-.file-size-inputs input {
-    width: 100%; /* Make each input take half the space */
-}
-
-input[type="text"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
+    padding: 5px;
     border-radius: 5px;
-    box-sizing: border-box; /* Important for 100% width */
-    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    margin-top: 10px;
 }
 
-.info-icon {
-    background-color: var(--info-color);
+#generated-search-string-display {
+    flex-grow: 1;
+    border: none;
+    background: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    padding: 5px;
+    color: var(--text-dark);
+}
+
+.copy-button {
+    background-color: var(--secondary-color);
     color: var(--text-light);
-    width: 18px; /* Slightly smaller */
-    height: 18px; /* Slightly smaller */
-    border-radius: 50%;
-    display: inline-flex; /* Changed to inline-flex */
-    justify-content: center;
-    align-items: center;
-    font-size: 0.75rem; /* Slightly smaller font */
-    font-weight: bold;
-    cursor: help;
-    margin-left: 5px; /* Closer to the word */
-    z-index: 10;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    position: relative;
     transition: background-color 0.3s ease;
 }
 
-.info-icon:hover {
-    background-color: #117a8b; /* A slightly darker shade of info-color on hover */
-}
-
-/* Info popups general styling */
-.info-popup {
-    display: none; /* Hidden by default */
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    white-space: normal; /* Allow text to wrap */
-    z-index: 100;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    width: 250px; /* Fixed width for better readability */
-    left: 100%; /* Position to the right of the parent label */
-    top: 50%;
-    transform: translateY(-50%) translateX(10px); /* Adjust to add some space */
-}
-
-.info-icon:hover + .info-popup {
+.copy-button::before {
+    content: '📋'; /* Copy icon */
+    font-size: 20px;
+    line-height: 36px;
+    text-align: center;
     display: block;
+    transition: opacity 0.2s ease-in-out;
 }
 
+.copy-button.copied::before {
+    content: '✅'; /* Checkmark icon */
+}
 
-/* Namespace options specific styling */
-#namespaces-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid var(--border-color);
+.copy-button:hover {
+    background-color: #5a6268;
+}
+
+.wikipedia-link {
+    display: block; /* Make it block level */
+    margin-top: 15px; /* Space from generated string */
+    padding: 8px 15px;
+    background-color: var(--info-color);
+    color: var(--text-light);
+    text-align: center;
+    text-decoration: none;
     border-radius: 5px;
-    background-color: var(--background-light);
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-#namespaces-options .option-group {
-    margin-bottom: 0;
+.wikipedia-link:hover {
+    background-color: #138496; /* Darker info color */
 }
 
-/* Filetype options specific styling */
-#filetype-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid var(--border-color);
+#advanced-mode-description {
+    font-style: italic;
+    color: var(--secondary-color);
+    margin-left: 10px; /* Space from the toggle label */
+    flex-shrink: 0;
+}
+
+.main-action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.main-action-buttons button {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
     border-radius: 5px;
-    background-color: var(--background-light);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    color: var(--text-light);
 }
 
-#filetype-options .option-group {
-    margin-bottom: 0;
+#generate-search-string-button {
+    background-color: var(--primary-color);
 }
 
-/* Styling for Preset Searches section */
+#generate-search-string-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+#clear-form-button {
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+}
+
+#clear-form-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* Modal for parameter explanations */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal[aria-hidden="false"] { display: flex; }
+.modal-content {
+  background: var(--text-light);
+  color: var(--text-dark);
+  max-width: 900px;
+  width: calc(100% - 40px);
+  max-height: 80vh;
+  overflow: auto;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.3);
+}
+.modal-close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+#params-modal-body { margin-top: 10px; }
+.params-param { margin-bottom: 14px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+.params-param h4 { margin: 0 0 6px 0; color: var(--primary-color); }
+.params-param p { margin: 0 0 6px 0; color: var(--secondary-color); }
+.params-param .example { font-family: monospace; font-size: 0.95rem; color: var(--text-dark); background: var(--background-light); padding:6px; display:block; border-radius:4px; margin-top:6px; }
+
+/* Enhancements for Presets Section */
 .presets-container {
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px dashed var(--border-color);
-    border-radius: 8px;
-    background-color: var(--background-light);
+    background-color: #f9f9f9; /* Light grey background */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    padding: 15px 20px; /* Add some spacing */
+    margin-bottom: 20px; /* Space below the container */
+    border-radius: 5px; /* Slightly rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
-.presets-container h3 {
-    margin-top: 0;
-    color: var(--primary-color);
+.presets-container h3#presets-heading {
+    margin-top: 0; /* Remove default top margin for the heading */
+    color: #333; /* Darker color for heading */
+    font-size: 1.2em; /* Slightly larger font size */
+    border-bottom: 1px solid #eee; /* Separator line */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.presets-container p#presets-description {
+    font-style: italic;
+    color: #555; /* Slightly muted color for description */
+    margin-bottom: 20px;
 }
 
 .preset-controls {
     display: flex;
-    flex-wrap: wrap;
     gap: 15px; /* Space between controls */
-    margin-top: 15px;
-    align-items: flex-end; /* Align items to the bottom */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    align-items: center;
 }
 
 .preset-controls .form-group {
-    flex-grow: 1; /* Allow dropdowns to grow */
-    min-width: 100px; /* Ensure a minimum width */
+    flex: 1; /* Allow form groups to grow */
+    min-width: 180px; /* Minimum width for controls */
 }
 
-.preset-button {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+.preset-controls label {
+    display: block; /* Label on its own line */
+    margin-bottom: 8px;
     font-weight: bold;
-    transition: background-color 0.3s ease;
-    white-space: normal;
-    text-align: center;
-    height: auto;
-    font-size: 1.1rem;
-    margin-right: 0; /* REMOVED conflicting margin */
-    min-width: unset;
-    flex-grow: unset;
+    color: #444;
 }
 
-.preset-button:hover {
-    background-color: #0056b3;
-}
-
-
-
-/* Styling for Saved Searches section */
-.saved-searches-container {
-    margin-top: 40px;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--background-light);
-}
-
-.saved-searches-container h3 {
-    margin-top: 0;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--border-color);
-}
-
-.save-search-input-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
-
-#save-search-comment {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-}
-
-#save-search-button {
-    background-color: var(--primary-color); /* Changed to primary blue */
-    color: var(--text-light);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-#save-search-button:hover {
-    background-color: #0056b3; /* Darker shade of primary blue for hover */
-}
-
-.import-export-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    justify-content: center; /* Center buttons horizontally */
-}
-
-.export-button, .import-label {
-    background-color: var(--secondary-color);
-    color: var(--text-light);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    text-align: center; /* Center text for label */
-    flex-grow: 1; /* Allow buttons to grow */
-    max-width: 180px; /* Limit max width for a nicer look */
-}
-
-.export-button:hover, .import-label:hover {
-    background-color: #5a6268; /* Darker secondary color on hover */
-}
-
-#saved-searches-list {
-    list-style: none;
-    padding: 0;
-}
-
-#saved-searches-list li {
-    background-color: var(--text-light);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column; /* Stack details and actions */
-    gap: 10px;
-}
-
-#saved-searches-list li strong {
-    color: var(--text-dark);
-}
-
-#saved-searches-list li .search-comment {
-    font-style: italic;
-    color: var(--secondary-color);
-}
-
-.search-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.search-actions button {
-    padding: 8px 12px;
-    border: none;
+.preset-controls select,
+.preset-controls button {
+    width: 100%; /* Full width within their container */
+    padding: 8px 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.preset-controls button.preset-button {
+    background-color: #007bff; /* Primary button color */
+    color: white;
+    border: none;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+    width: auto; /* Auto width for button */
+    padding: 8px 15px;
 }
 
-.load-search-btn {
-    background-color: var(--info-color);
-    color: var(--text-light);
+.preset-controls button.preset-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
 
-.load-search-btn:hover {
-    background-color: #138496;
-}
-
-.edit-search-btn {
-    background-color: var(--warning-color);
-    color: var(--text-dark);
-}
-
-.edit-search-btn:hover {
-    background-color: #e0a800;
-}
-
-.delete-search-btn {
-    background-color: #dc3545; /* Red color for delete */
-    color: var(--text-light);
-}
-
-.delete-search-btn:hover {
-    background-color: #c82333;
-}
 
 /* Footer */
 footer {
@@ -669,122 +557,93 @@ footer nav a:hover {
         padding: 15px;
     }
 
-    #generate-search-string-button {
-        font-size: 1rem;
-        padding: 12px 15px;
+    .search-interface h2 {
+        font-size: 1.8rem;
+    }
+
+    .search-interface h3 {
+        font-size: 1.3rem;
+    }
+
+    .preset-button {
+        /* These properties are now handled by min-width/flex-grow in base rule and parent gap */
+        /* width: 100%; */
+        /* margin-bottom: 10px; */
+        /* margin-right: 0; */
+    }
+
+    .info-popup {
+        left: 0;
+        top: 100%;
+        transform: none;
+        width: 100%;
+        white-space: normal;
     }
 }
-
-/* New/Updated Styles for recent changes */
-.generated-string-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: var(--background-light);
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-    margin-top: 10px;
+/* Enhancements for Presets Section */
+.presets-container {
+    background-color: #f9f9f9; /* Light grey background */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    padding: 15px 20px; /* Add some spacing */
+    margin-bottom: 20px; /* Space below the container */
+    border-radius: 5px; /* Slightly rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
-#generated-search-string-display {
-    flex-grow: 1;
-    border: none;
-    background: none;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1rem;
-    padding: 5px;
-    color: var(--text-dark);
+.presets-container h3#presets-heading {
+    margin-top: 0; /* Remove default top margin for the heading */
+    color: #333; /* Darker color for heading */
+    font-size: 1.2em; /* Slightly larger font size */
+    border-bottom: 1px solid #eee; /* Separator line */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-.copy-button {
-    background-color: var(--secondary-color);
-    color: var(--text-light);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    position: relative;
-    transition: background-color 0.3s ease;
-}
-
-.copy-button::before {
-    content: '📋'; /* Copy icon */
-    font-size: 20px;
-    line-height: 36px;
-    text-align: center;
-    display: block;
-    transition: opacity 0.2s ease-in-out;
-}
-
-.copy-button.copied::before {
-    content: '✅'; /* Checkmark icon */
-}
-
-.copy-button:hover {
-    background-color: #5a6268;
-}
-
-.wikipedia-link {
-    display: block; /* Make it block level */
-    margin-top: 15px; /* Space from generated string */
-    padding: 8px 15px;
-    background-color: var(--info-color);
-    color: var(--text-light);
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.wikipedia-link:hover {
-    background-color: #138496; /* Darker info color */
-}
-
-#advanced-mode-description {
+.presets-container p#presets-description {
     font-style: italic;
-    color: var(--secondary-color);
-    margin-left: 10px; /* Space from the toggle label */
-    flex-shrink: 0;
+    color: #555; /* Slightly muted color for description */
+    margin-bottom: 20px;
 }
 
-.main-action-buttons {
+.preset-controls {
     display: flex;
-    gap: 15px;
-    margin-top: 25px;
+    gap: 15px; /* Space between controls */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    align-items: center;
 }
 
-.main-action-buttons button {
-    flex: 1;
-    padding: 15px 20px;
-    font-size: 1.2rem;
+.preset-controls .form-group {
+    flex: 1; /* Allow form groups to grow */
+    min-width: 180px; /* Minimum width for controls */
+}
+
+.preset-controls label {
+    display: block; /* Label on its own line */
+    margin-bottom: 8px;
     font-weight: bold;
-    border-radius: 5px;
+    color: #444;
+}
+
+.preset-controls select,
+.preset-controls button {
+    width: 100%; /* Full width within their container */
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.preset-controls button.preset-button {
+    background-color: #007bff; /* Primary button color */
+    color: white;
     border: none;
     cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    color: var(--text-light);
+    transition: background-color 0.2s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+    width: auto; /* Auto width for button */
+    padding: 8px 15px;
 }
 
-#generate-search-string-button {
-    background-color: var(--primary-color);
-}
-
-#generate-search-string-button:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-}
-
-#clear-form-button {
-    background-color: var(--secondary-color);
-    color: var(--text-light);
-}
-
-#clear-form-button:hover {
-    background-color: #5a6268;
-    transform: translateY(-1px);
+.preset-controls button.preset-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }

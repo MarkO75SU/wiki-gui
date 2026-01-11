@@ -176,17 +176,6 @@ export function generateSearchString() {
         displayElement.value = searchUrl || getTranslation('generated-string-placeholder');
     }
 
-    const openInWikipediaLink = document.getElementById('open-in-wikipedia-link');
-    if(openInWikipediaLink) {
-        if(searchUrl) { // Link should be active if there's a URL
-            openInWikipediaLink.href = searchUrl;
-            openInWikipediaLink.textContent = getTranslation('open-in-wikipedia-link');
-            openInWikipediaLink.style.display = 'inline-block';
-        } else {
-            openInWikipediaLink.style.display = 'none';
-        }
-    }
-
     const explanationElement = document.getElementById('generated-string-explanation');
     if (explanationElement) {
         if (explanationParts.length > 0) {
