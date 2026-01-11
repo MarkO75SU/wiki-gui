@@ -209,7 +209,7 @@ export function applyTranslations() {
     }
     
     // Update footer links
-    const footerLinkIds = ['link-license-agreement', 'link-terms-of-use', 'link-non-commercial-use', 'link-impressum', 'link-privacy-policy', 'link-faq', 'link-blog', 'link-report-issue'];
+    const footerLinkIds = ['link-license-agreement', 'link-terms-of-use', 'link-non-commercial-use', 'link-impressum', 'link-privacy-policy', 'link-faq', 'link-blog', 'link-help', 'link-report-issue'];
     footerLinkIds.forEach(id => {
         const link = document.getElementById(id);
         if (link) {

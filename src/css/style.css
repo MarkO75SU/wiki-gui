@@ -69,6 +69,49 @@ header .container {
     gap: var(--space-md);
 }
 
+.header-nav ul {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    align-items: center;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--slate-800);
+    min-width: 160px;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    z-index: 100;
+    overflow: hidden;
+    border: 1px solid var(--slate-700);
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--slate-700);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 .title-group {
     display: flex;
     flex-direction: column;
