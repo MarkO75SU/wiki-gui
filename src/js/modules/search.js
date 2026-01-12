@@ -44,12 +44,12 @@ export function generateSearchString() {
         
         if (optionIntitle) {
             // intitle is a separate parameter for Special:Search, but a prefix for API query
-            wikiSearchParams.set('intitle', mainSearchTermForBrowser); // Use non-fuzzy, non-quoted for direct intitle param
+            wikiSearchParams.set('intitle', mainSearchTermForApi); // Use Api version with modifiers
             apiQueryParts.push(`intitle:${mainSearchTermForApi}`); // For programmatic API call
             explanationParts.push(getTranslation('explanation-intitle', '', { mainQuery }));
         } else {
             // If not intitle, main query goes directly into Special:Search's 'search' param
-            wikiSearchParams.set('search', mainSearchTermForBrowser); // For Special:Search
+            wikiSearchParams.set('search', mainSearchTermForApi); // FIX: Use Api version with modifiers (tilde/quotes)
             apiQueryParts.push(mainSearchTermForApi); // For programmatic API call
             explanationParts.push(getTranslation('explanation-main-query', '', { mainQuery }));
         }
