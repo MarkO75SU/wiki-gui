@@ -1,5 +1,8 @@
 // src/js/modules/search.js
 import { getTranslation, getLanguage } from './state.js';
+import { performWikipediaSearch } from './api.js';
+
+let countDebounceTimer;
 
 /**
  * Generates the search string from form inputs.
@@ -168,6 +171,7 @@ export function generateSearchString() {
     if (fileSizeMax) {
         apiQueryParts.push(`filesize:<=${fileSizeMax}`);
         // Special:Search typically takes filesize into its main 'search' parameter, not separate.
+        // For consistency, keep it in apiQuery and append to wikiSearchParams's main 'search' if needed.
         wikiSearchParams.append('search', `filesize:<=${fileSizeMax}`);
         explanationParts.push(getTranslation('explanation-filesize-max', '', { fileSizeMax }));
     }
