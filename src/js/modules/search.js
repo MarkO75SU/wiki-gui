@@ -32,12 +32,11 @@ export function generateSearchString() {
 
     if (mainQuery) {
         if (optionFuzzy) {
-            mainSearchTermForApi += '~'; // Fuzzy operator is part of the API query term
+            // Apply fuzzy to each word, don't quote as a single phrase
+            mainSearchTermForApi = mainQuery.split(/\s+/).map(word => `${word}~`).join(' ');
             explanationParts.push(getTranslation('explanation-fuzzy-applied', '', { mainQuery }));
-        }
-
-        // Quote main query if it contains spaces and not already quoted, and not intitle (intitle will handle its own quoting)
-        if (!optionIntitle && (mainSearchTermForApi.includes(' ') || /[\(\)]/.test(mainSearchTermForApi))) {
+        } else if (!optionIntitle && (mainSearchTermForApi.includes(' ') || /[\(\)]/.test(mainSearchTermForApi))) {
+            // Quote main query if it contains spaces and not already quoted
             if (!(mainSearchTermForApi.startsWith('"') && mainSearchTermForApi.endsWith('"'))) {
                 mainSearchTermForApi = `"${mainSearchTermForApi}"`;
             }
