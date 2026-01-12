@@ -58,35 +58,42 @@ export function generateSearchString() {
     }
 
     if (exactPhrase) {
-        wikiSearchParams.append('search', `"${exactPhrase}"`); // Appends to main search param
-        apiQueryParts.push(`"${exactPhrase}"`);
-        browserQueryParts.push(`"${exactPhrase}"`);
-        explanationParts.push(getTranslation('explanation-exact-phrase', '', { exactPhrase }));
+        let cleanPhrase = exactPhrase.replace(/^"+|"+$/g, ''); // Remove existing quotes
+        wikiSearchParams.append('search', `"${cleanPhrase}"`); 
+        apiQueryParts.push(`"${cleanPhrase}"`);
+        browserQueryParts.push(`"${cleanPhrase}"`);
+        explanationParts.push(getTranslation('explanation-exact-phrase', '', { exactPhrase: cleanPhrase }));
     }
 
     if (withoutWords) {
-        const words = withoutWords.split(/\s+/).map(word => `-${word}`).join(' ');
-        wikiSearchParams.append('search', words); // Appends to main search param
-        apiQueryParts.push(words);
-        browserQueryParts.push(words);
-        explanationParts.push(getTranslation('explanation-without-words', '', { withoutWords }));
+        // Split by spaces, handle words that might already have a minus
+        const words = withoutWords.split(/\s+/).map(word => {
+            let cleanWord = word.replace(/^-+/, ''); // Remove existing minuses
+            return cleanWord ? `-${cleanWord}` : '';
+        }).filter(w => w).join(' ');
+        
+        if (words) {
+            wikiSearchParams.append('search', words);
+            apiQueryParts.push(words);
+            browserQueryParts.push(words);
+            explanationParts.push(getTranslation('explanation-without-words', '', { withoutWords: words.replace(/-/g, '') }));
+        }
     }
 
     if (anyWords) {
-        const currentLang = getLanguage();
-        const orOperator = currentLang === 'de' ? 'ODER' : 'OR'; // Use ODER for German, OR for others
-        const wordsArray = anyWords.split(new RegExp(` ${orOperator} `, 'i')).map(word => word.trim()).filter(word => word);
+        // Split by space OR comma, join with OR
+        const wordsArray = anyWords.split(/[\s,]+/).map(word => word.trim()).filter(word => word);
         if (wordsArray.length > 0) {
-            let anyWordsQueryApi = wordsArray.join(' OR '); // Wikipedia API always expects 'OR'
-            let anyWordsQueryBrowser = wordsArray.join(` ${orOperator} `); // For display, respect user's 'ODER'
+            let anyWordsQueryApi = wordsArray.join(' OR ');
+            let anyWordsQueryBrowser = anyWordsQueryApi;
             if (wordsArray.length > 1) {
                 anyWordsQueryApi = `(${anyWordsQueryApi})`;
-                anyWordsQueryBrowser = `(${anyWordsQueryBrowser})`;
+                anyWordsQueryBrowser = `(${anyWordsQueryApi})`;
             }
-            wikiSearchParams.append('search', anyWordsQueryApi); // Appends to main search param (uses OR)
+            wikiSearchParams.append('search', anyWordsQueryApi);
             apiQueryParts.push(anyWordsQueryApi);
             browserQueryParts.push(anyWordsQueryBrowser);
-            explanationParts.push(getTranslation('explanation-any-words', '', { anyWords }));
+            explanationParts.push(getTranslation('explanation-any-words', '', { anyWords: wordsArray.join(', ') }));
         }
     }
     
