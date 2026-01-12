@@ -133,6 +133,16 @@
                                             </h3>
 
                                             <div class="accordion-content">
+                <div class="modifiers-group" style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-sm); background: var(--slate-50); padding: var(--space-sm); border-radius: var(--radius-md); margin-bottom: var(--space-md); border: 1px solid var(--slate-100);">
+                    <div class="option-group">
+                        <input type="checkbox" id="option-wildcard">
+                        <label for="option-wildcard" id="label-option-wildcard">Platzhalter-Suche aktivieren <span class="info-icon" data-info-id="info-wildcard-text" title="Verwenden Sie '*' als Platzhalter für beliebige Zeichen.">?</span></label>
+                    </div>
+                    <div class="option-group">
+                        <input type="checkbox" id="option-fuzzy">
+                        <label for="option-fuzzy" id="label-fuzzy">Fuzzy-Suche <span class="info-icon" data-info-id="info-fuzzy-text" title="Erlaubt geringfügige Rechtschreibabweichungen.">?</span></label>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="search-query" id="label-search-query">Alle diese Wörter <span class="info-icon" data-info-id="info-all-words-text" title="Alle eingegebenen Wörter müssen in den Ergebnissen vorkommen.">?</span></label>
                     <input type="text" id="search-query">
@@ -148,14 +158,6 @@
                 <div class="form-group">
                     <label for="any-words" id="label-any-words">Mindestens eines dieser Wörter (ODER) <span class="info-icon" data-info-id="info-any-words-text" title="Sucht Seiten, die mindestens eines der angegebenen Wörter enthalten.">?</span></label>
                     <input type="text" id="any-words">
-                </div>
-                <div class="option-group">
-                    <input type="checkbox" id="option-wildcard">
-                    <label for="option-wildcard" id="label-option-wildcard">Platzhalter-Suche aktivieren <span class="info-icon" data-info-id="info-wildcard-text" title="Verwenden Sie '*' als Platzhalter für beliebige Zeichen.">?</span></label>
-                </div>
-                <div class="option-group">
-                    <input type="checkbox" id="option-fuzzy">
-                    <label for="option-fuzzy" id="label-fuzzy">Fuzzy-Suche <span class="info-icon" data-info-id="info-fuzzy-text" title="Erlaubt geringfügige Rechtschreibabweichungen.">?</span></label>
                 </div>
             </div>
 
