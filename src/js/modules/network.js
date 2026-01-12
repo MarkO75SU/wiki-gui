@@ -73,59 +73,67 @@ export async function performNetworkAnalysis(allArticles) {
         if (exportBtn) exportBtn.style.display = 'inline-block';
         const pages = allPages;
         
-        // 1. Prepare data
-        const nodes = articles.map((article, i) => {
+        // 1. Prepare data (Initial strength calculation)
+        const allNodes = articles.map((article, i) => {
             const pageId = Object.keys(pages).find(id => pages[id].title === article.title);
             const categories = pages[pageId]?.categories?.map(c => c.title) || [];
-            
-            // Circular layout with larger radius
-            const angle = (i / articles.length) * Math.PI * 2;
-            const centerX = rect.width / 2;
-            const centerY = 400; // Centered in the new 800px height
-            const layoutRadius = Math.min(centerX, centerY) - 120;
             
             return {
                 title: article.title,
                 categories: categories,
-                x: centerX + Math.cos(angle) * layoutRadius,
-                y: centerY + Math.sin(angle) * layoutRadius,
-                angle: angle,
                 totalStrength: 0,
                 connectionCount: 0
             };
         });
 
-        // 2. Calculate connections (Shared Categories)
-        const edges = [];
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const shared = nodes[i].categories.filter(cat => nodes[j].categories.includes(cat));
+        // 2. Calculate connections for ALL articles
+        const allEdges = [];
+        for (let i = 0; i < allNodes.length; i++) {
+            for (let j = i + 1; j < allNodes.length; j++) {
+                const shared = allNodes[i].categories.filter(cat => allNodes[j].categories.includes(cat));
                 
                 // Fallback: Keyword matching in title
-                const wordsI = nodes[i].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-                const wordsJ = nodes[j].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+                const wordsI = allNodes[i].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+                const wordsJ = allNodes[j].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
                 const sharedWords = wordsI.filter(w => wordsJ.includes(w));
 
                 const strength = shared.length + (sharedWords.length * 2);
 
                 if (strength > 0) {
-                    nodes[i].totalStrength += strength;
-                    nodes[j].totalStrength += strength;
-                    nodes[i].connectionCount++;
-                    nodes[j].connectionCount++;
-                    edges.push({ from: nodes[i], to: nodes[j], strength });
+                    allNodes[i].totalStrength += strength;
+                    allNodes[j].totalStrength += strength;
+                    allNodes[i].connectionCount++;
+                    allNodes[j].connectionCount++;
+                    allEdges.push({ from: allNodes[i], to: allNodes[j], strength });
                 }
             }
         }
 
-        // 3. Draw Edges
-        edges.forEach(edge => {
+        // 3. Filter for Top 10 for Visualization
+        const visualNodes = [...allNodes]
+            .sort((a, b) => b.totalStrength - a.totalStrength)
+            .slice(0, 10);
+        
+        // Recalculate positions for visual nodes
+        visualNodes.forEach((node, i) => {
+            const angle = (i / visualNodes.length) * Math.PI * 2;
+            const centerX = rect.width / 2;
+            const centerY = 400;
+            const layoutRadius = 200; // Fixed radius for small set
+            node.x = centerX + Math.cos(angle) * layoutRadius;
+            node.y = centerY + Math.sin(angle) * layoutRadius;
+        });
+
+        const visualEdges = allEdges.filter(e => 
+            visualNodes.includes(e.from) && visualNodes.includes(e.to)
+        );
+
+        // 4. Draw Edges (Visual subset)
+        visualEdges.forEach(edge => {
             const hue = Math.min(200 + (edge.strength * 10), 260); 
-            // Drastically reduced opacity for many edges to keep it clean
-            const baseOpacity = nodes.length > 100 ? 0.03 : 0.1;
-            const opacity = baseOpacity + Math.min(edge.strength * 0.02, 0.2);
+            const opacity = 0.2 + Math.min(edge.strength * 0.05, 0.4);
             ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${opacity})`;
-            ctx.lineWidth = Math.max(0.2, Math.min(edge.strength / 3, 3));
+            ctx.lineWidth = Math.max(1, Math.min(edge.strength, 5));
             
             ctx.beginPath();
             ctx.moveTo(edge.from.x, edge.from.y);
@@ -133,36 +141,26 @@ export async function performNetworkAnalysis(allArticles) {
             ctx.stroke();
         });
 
-        // 4. Draw Nodes
-        nodes.forEach(node => {
-            const radius = nodes.length > 100 ? 2 + Math.min(node.totalStrength, 10) : 3 + Math.min(node.totalStrength, 15);
+        // 5. Draw Nodes (Visual subset)
+        visualNodes.forEach(node => {
+            const radius = 8 + Math.min(node.totalStrength, 20);
             
-            ctx.shadowBlur = node.totalStrength > 0 ? 5 : 0;
+            ctx.shadowBlur = 10;
             ctx.shadowColor = '#2563eb';
+            ctx.fillStyle = '#2563eb';
             
-            ctx.fillStyle = node.totalStrength > 0 ? '#2563eb' : '#64748b';
             ctx.beginPath();
             ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
             ctx.fill();
             
             ctx.shadowBlur = 0;
             
-            // Smarter adaptive label logic
-            let showLabel = false;
-            const labelThreshold = nodes.length > 150 ? 12 : (nodes.length > 80 ? 6 : 2);
-            
-            if (nodes.length <= 20) showLabel = true;
-            else if (node.totalStrength > labelThreshold) showLabel = true;
-
-            if (showLabel) {
-                ctx.fillStyle = 'white';
-                ctx.font = 'bold 10px sans-serif';
-                ctx.textAlign = node.x > (rect.width / 2) ? 'left' : 'right';
-                const label = node.title.length > 20 ? node.title.slice(0, 18) + '..' : node.title;
-                const offset = radius + 8;
-                const labelX = node.x + (node.x > (rect.width / 2) ? offset : -offset);
-                ctx.fillText(label, labelX, node.y + 3);
-            }
+            // Labels for top 10 are always shown and centered
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.textAlign = 'center';
+            const label = node.title.length > 25 ? node.title.slice(0, 22) + '..' : node.title;
+            ctx.fillText(label, node.x, node.y + radius + 18);
         });
 
         // Save for export
@@ -170,20 +168,20 @@ export async function performNetworkAnalysis(allArticles) {
             timestamp: new Date().toISOString(),
             query: document.getElementById('search-query')?.value || 'N/A',
             resultsCount: articles.length,
-            nodes: nodes.map(n => ({ title: n.title, strength: n.totalStrength, connections: n.connectionCount, categories: n.categories })),
-            edges: edges.map(e => ({ from: e.from.title, to: e.to.title, strength: e.strength }))
+            nodes: allNodes.map(n => ({ title: n.title, strength: n.totalStrength, connections: n.connectionCount, categories: n.categories })),
+            edges: allEdges.map(e => ({ from: e.from.title, to: e.to.title, strength: e.strength }))
         };
-        console.log("Analysis complete. Nodes:", nodes.length, "Edges:", edges.length);
+        console.log("Analysis complete. Visual Nodes:", visualNodes.length, "Total analyzed:", allNodes.length);
 
-        // 5. Dynamic Explanation
-        updateNetworkExplanation(nodes, edges);
+        // 6. Dynamic Explanation & Table
+        updateNetworkExplanation(allNodes, allEdges, visualNodes);
 
     } catch (err) {
         console.error('Network analysis error:', err);
     }
 }
 
-function updateNetworkExplanation(nodes, edges) {
+function updateNetworkExplanation(nodes, edges, visualNodes) {
     const explanationEl = document.getElementById('network-explanation');
     if (!explanationEl) return;
 
@@ -204,14 +202,39 @@ function updateNetworkExplanation(nodes, edges) {
         .slice(0, 5)
         .map(entry => entry[0]);
 
-    // Find strongest node
+    // Strongest node overall
     const strongestNode = [...nodes].sort((a, b) => b.totalStrength - a.totalStrength)[0];
 
+    const isDe = getLanguage() === 'de';
+    
     const intro = getTranslation('network-explanation-intro', '', { total: nodes.length, connected: connectedNodes.length, edges: totalConnections });
-    const interpretation = getTranslation('network-explanation-interpretation');
+    const interpretation = isDe ? "Die Visualisierung zeigt die 10 am stärksten vernetzten Themen." : "The visualization shows the top 10 most connected topics.";
     const central = getTranslation('network-explanation-central', '', { title: strongestNode?.title || 'N/A' });
     const categories = getTranslation('network-explanation-categories', '', { categories: topCats.join(', ') || 'N/A' });
-    const note = getTranslation('network-explanation-note');
+
+    // Build Table
+    let tableHtml = `
+        <div style="margin-top: 2rem; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; color: var(--slate-300);">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--slate-700);">
+                        <th style="text-align: left; padding: 0.5rem;">${isDe ? 'Artikel' : 'Article'}</th>
+                        <th style="text-align: right; padding: 0.5rem;">${isDe ? 'Verknüpfungen' : 'Connections'}</th>
+                        <th style="text-align: right; padding: 0.5rem;">${isDe ? 'Relevanz' : 'Strength'}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${nodes.sort((a,b) => b.totalStrength - a.totalStrength).map(n => `
+                        <tr style="border-bottom: 1px solid var(--slate-800); ${visualNodes.includes(n) ? 'background: rgba(37, 99, 235, 0.1);' : ''}">
+                            <td style="padding: 0.5rem;">${n.title}</td>
+                            <td style="text-align: right; padding: 0.5rem;">${n.connectionCount}</td>
+                            <td style="text-align: right; padding: 0.5rem;">${n.totalStrength}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
 
     explanationEl.innerHTML = `
         <p><strong>${intro}</strong></p>
@@ -220,6 +243,6 @@ function updateNetworkExplanation(nodes, edges) {
             <li>${central}</li>
             <li>${categories}</li>
         </ul>
-        <p><small>${note}</small></p>
+        ${tableHtml}
     `;
 }
