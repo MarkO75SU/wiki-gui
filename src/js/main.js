@@ -12,6 +12,16 @@ async function initializeApp() {
     addAccordionFunctionality();
     loadSavedSearches();
 
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navList = document.getElementById('nav-list');
+    if (menuToggle && navList) {
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            menuToggle.classList.toggle('open');
+        });
+    }
+
     const downloadResultsBtn = document.getElementById('download-results-button');
     if (downloadResultsBtn) {
         downloadResultsBtn.addEventListener('click', downloadResults);

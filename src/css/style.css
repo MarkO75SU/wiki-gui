@@ -59,6 +59,7 @@ header {
     padding: var(--space-md) 0;
     margin-bottom: var(--space-xl);
     box-shadow: var(--shadow-lg);
+    position: relative;
 }
 
 header .container {
@@ -74,6 +75,39 @@ header .container {
     gap: 0.5rem;
     list-style: none;
     align-items: center;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+}
+
+.menu-toggle span {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
 }
 
 .dropdown {
@@ -498,7 +532,46 @@ footer a:hover { color: var(--primary); }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .search-interface { padding: var(--space-md); }
+    .menu-toggle {
+        display: flex;
+    }
+
+    .header-nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--slate-900);
+        width: 100%;
+        padding: var(--space-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 100;
+        gap: 1rem;
+    }
+
+    .header-nav ul.active {
+        display: flex;
+    }
+
+    .header-nav .header-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-content {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        background-color: var(--slate-800);
+        margin-top: 0.5rem;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .search-interface { padding: var(--space-sm); }
     .preset-controls { grid-template-columns: 1fr; }
     .main-action-buttons { grid-template-columns: 1fr; }
     .accordion-content { grid-template-columns: 1fr; padding: var(--space-md); }
