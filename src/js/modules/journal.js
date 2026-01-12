@@ -1,28 +1,51 @@
 // src/js/modules/journal.js
 import { getTranslation, getLanguage } from './state.js';
 import { showToast } from './toast.js';
+import { generateSearchString } from './search.js';
 
 const STORAGE_KEY = 'wikiGuiJournal';
 
-export function addJournalEntry(queryText, fullUrl) {
-    if (!queryText || !fullUrl) return;
+export function addJournalEntry(queryText, wikiUrl) {
+    if (!queryText || !wikiUrl) return;
+    
+    // Wir speichern die aktuelle Browser-URL (mit allen Feld-Parametern)
+    const appUrl = window.location.search;
+    
     let journal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     const newEntry = {
         id: Date.now(),
         name: queryText,
-        url: fullUrl,
+        wikiUrl: wikiUrl,
+        appUrl: appUrl, // Diese URL enthält alle ID=Wert Paare der Felder
         time: new Date().toLocaleString(getLanguage(), { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
         favorite: false
     };
-    journal = [newEntry, ...journal.filter(entry => entry.url !== fullUrl)];
-    
-    // Auto-limit to 50 for performance, keeping favorites
+
+    journal = [newEntry, ...journal.filter(entry => entry.wikiUrl !== wikiUrl)];
     const favorites = journal.filter(e => e.favorite);
     const nonFavorites = journal.filter(e => !e.favorite).slice(0, 50);
     journal = [...favorites, ...nonFavorites];
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(journal));
     renderJournal();
+}
+
+export function loadEntryIntoForm(appUrlSuffix) {
+    if (!appUrlSuffix) return;
+    const params = new URLSearchParams(appUrlSuffix);
+    
+    params.forEach((value, key) => {
+        const el = document.getElementById(key);
+        if (el) {
+            if (el.type === 'checkbox') el.checked = value === 'true';
+            else el.value = value;
+        }
+    });
+    
+    // UI aktualisieren (Vorschau-Badge etc.)
+    generateSearchString();
+    showToast(getTranslation('toast-loaded') || 'Suche in Felder geladen.');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 export function toggleFavorite(id) {
@@ -40,75 +63,6 @@ export function deleteJournalEntry(id) {
     journal = journal.filter(entry => entry.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(journal));
     renderJournal();
-}
-
-export function deleteSelectedEntries() {
-    const selectedIds = Array.from(document.querySelectorAll('.journal-checkbox:checked')).map(cb => Number(cb.dataset.id));
-    if (selectedIds.length === 0) {
-        showToast(getTranslation('alert-no-selection') || 'Nichts ausgewählt.');
-        return;
-    }
-    if (confirm(getTranslation('journal-delete-selected') + '?')) {
-        let journal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        journal = journal.filter(entry => !selectedIds.includes(entry.id));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(journal));
-        renderJournal();
-        showToast(selectedIds.length + ' Einträge gelöscht.');
-    }
-}
-
-export function exportJournal(format = 'json') {
-    const selectedIds = Array.from(document.querySelectorAll('.journal-checkbox:checked')).map(cb => Number(cb.dataset.id));
-    let journal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    const dataToExport = selectedIds.length > 0 ? journal.filter(entry => selectedIds.includes(entry.id)) : journal;
-
-    if (dataToExport.length === 0) {
-        showToast(getTranslation('alert-no-searches-to-export') || 'Keine Daten zum Exportieren.');
-        return;
-    }
-
-    let content = '';
-    let type = 'text/plain';
-    let fileName = `wikigui-journal-${new Date().toISOString().slice(0,10)}`;
-
-    if (format === 'json') {
-        content = JSON.stringify(dataToExport, null, 2);
-        fileName += '.json';
-        type = 'application/json';
-    } else {
-        content = 'Name,URL,Datum\n' + dataToExport.map(e => `"${e.name}","${e.url}","${e.time}"`).join('\n');
-        fileName += '.csv';
-        type = 'text/csv';
-    }
-
-    const blob = new Blob([content], { type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-}
-
-export async function importJournal(file) {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            let importedData = JSON.parse(e.target.result);
-            let currentJournal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            const combined = [...importedData, ...currentJournal];
-            const unique = Array.from(new Map(combined.map(item => [item.url, item])).values());
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(unique));
-            renderJournal();
-            showToast('Import erfolgreich.');
-        } catch (err) {
-            showToast('Fehler beim Import.');
-        }
-    };
-    reader.readAsText(file);
 }
 
 export function editJournalName(id) {
@@ -132,25 +86,17 @@ export function clearJournal() {
 
 export function renderJournal() {
     const list = document.getElementById('journal-list');
-    const selectAllCheckbox = document.getElementById('journal-select-all-checkbox');
     if (!list) return;
-    if (selectAllCheckbox) selectAllCheckbox.checked = false;
 
     let journal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    
-    // SORTIERUNG: Favoriten nach oben, dann nach Zeit
-    journal.sort((a, b) => {
-        if (a.favorite === b.favorite) return b.id - a.id;
-        return a.favorite ? -1 : 1;
-    });
+    journal.sort((a, b) => (a.favorite === b.favorite) ? b.id - a.id : (a.favorite ? -1 : 1));
 
     if (journal.length === 0) {
-        list.innerHTML = `<li style="color: var(--slate-400); padding: 2rem; text-align: center;">${getTranslation('no-history') || 'Dein Journal ist leer.'}</li>`;
+        list.innerHTML = `<li style="color: var(--slate-400); padding: 2rem; text-align: center;">${getTranslation('no-history')}</li>`;
         return;
     }
 
     list.innerHTML = journal.map((entry, index) => {
-        // Trenner einfügen, wenn nach Favoriten normale Einträge folgen
         const showSeparator = index > 0 && !entry.favorite && journal[index-1].favorite;
         const separatorHtml = showSeparator ? '<li style="border-bottom: 2px dashed var(--slate-200); margin: 1.5rem 0 1rem 0; list-style: none;"></li>' : '';
 
@@ -171,19 +117,18 @@ export function renderJournal() {
                         <button class="delete-journal-btn" data-id="${entry.id}" title="Löschen" style="background:none; border:none; cursor:pointer; font-size:1rem;">🗑️</button>
                     </div>
                 </div>
-                <button class="header-button load-journal-btn" data-url="${entry.url}" style="padding: 0.5rem; font-size: 0.8rem; background: var(--slate-800); border: none; width: 100%;">Wiederholen</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                    <button class="header-button load-to-fields-btn" data-appurl="${entry.appUrl || ''}" style="padding: 0.5rem; font-size: 0.8rem; background: var(--primary); border: none;">In Felder laden</button>
+                    <button class="header-button open-wiki-btn" data-wikiurl="${entry.wikiUrl}" style="padding: 0.5rem; font-size: 0.8rem; background: var(--slate-800); border: none;">Wiki öffnen</button>
+                </div>
             </li>
         `;
     }).join('');
 
-    // Re-attach listeners
-    list.querySelectorAll('.load-journal-btn').forEach(btn => btn.onclick = (e) => window.open(e.target.dataset.url, '_blank'));
+    // Listeners
+    list.querySelectorAll('.open-wiki-btn').forEach(btn => btn.onclick = (e) => window.open(e.target.dataset.wikiurl, '_blank'));
+    list.querySelectorAll('.load-to-fields-btn').forEach(btn => btn.onclick = (e) => loadEntryIntoForm(e.target.dataset.appurl));
     list.querySelectorAll('.delete-journal-btn').forEach(btn => btn.onclick = (e) => deleteJournalEntry(Number(e.target.dataset.id)));
     list.querySelectorAll('.edit-journal-btn').forEach(btn => btn.onclick = (e) => editJournalName(Number(e.target.dataset.id)));
     list.querySelectorAll('.fav-journal-btn').forEach(btn => btn.onclick = (e) => toggleFavorite(Number(e.target.dataset.id)));
 }
-
-// Global listener for Select All
-document.getElementById('journal-select-all-checkbox')?.addEventListener('change', (e) => {
-    document.querySelectorAll('.journal-checkbox').forEach(cb => cb.checked = e.target.checked);
-});
