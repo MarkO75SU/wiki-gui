@@ -6,6 +6,7 @@
     "nav-help": "Search Help",
     "nav-about": "About",
     "main-heading": "Wikipedia Search Helper",
+    "main-heading-disclaimer": "This website is not an official Wikipedia product. All search results link directly to Wikipedia; no affiliate links are used.",
     "official-doc-link": "Official Wikipedia Search Documentation",
     "github-support-text": "Want to support/use?:",
     "label-advanced-mode": "Advanced Mode",
