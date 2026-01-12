@@ -8,6 +8,10 @@ import { showToast } from './toast.js';
 
 let allSearchResults = []; // Store full search results for downloading
 
+export function getAllSearchResults() {
+    return allSearchResults;
+}
+
 const wikipediaSearchHelpUrls = {
     'de': 'https://de.wikipedia.org/wiki/Hilfe:Suche',
     'en': 'https://en.wikipedia.org/wiki/Help:Searching',
@@ -258,7 +262,7 @@ export function clearForm() {
 
 export async function handleSearchFormSubmit(event) {
     event.preventDefault();
-    const { apiQuery, wikiSearchUrlParams } = generateSearchString();
+    const { apiQuery, wikiSearchUrlParams, shareParams } = generateSearchString();
     const lang = document.getElementById('target-wiki-lang').value;
     const resultsContainer = document.getElementById('simulated-search-results');
     const searchResultsHeading = document.getElementById('search-results-heading');
@@ -325,7 +329,7 @@ export async function handleSearchFormSubmit(event) {
 
     // Save to journal AFTER rendering to ensure clean flow
     const targetUrl = `https://${lang}.wikipedia.org/wiki/Special:Search?${wikiSearchUrlParams}`;
-    addJournalEntry(apiQuery, targetUrl); 
+    addJournalEntry(apiQuery, targetUrl, shareParams); 
     showToast(getTranslation('toast-search-complete') || 'Suche abgeschlossen.');
 }
 

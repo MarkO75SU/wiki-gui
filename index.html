@@ -56,7 +56,7 @@
             <div class="title-group">
                 <h1 id="app-title"></h1>
                 <div class="language-selector">
-                    <button id="dark-mode-toggle" class="lang-button" title="Dark Mode umschalten">🌓</button>
+                    <button id="dark-mode-toggle" class="header-button" title="Dark Mode umschalten">🌓</button>
                     <button id="lang-de" class="lang-button" data-lang="de"></button>
                     <button id="lang-en" class="lang-button" data-lang="en"></button>
                 </div>
@@ -372,11 +372,15 @@
                 <div class="results-actions" style="margin-bottom: 1rem; display: none;" id="results-actions-container">
                     <button type="button" id="download-results-button" class="header-button" style="background: var(--info); border: none; cursor: pointer;"></button>
                     <button type="button" id="analyze-network-button" class="header-button" style="background: var(--accent); border: none; cursor: pointer; margin-left: 0.5rem;">Netzwerk-Analyse</button>
+                    <button type="button" id="export-network-button" class="header-button" style="background: var(--success, #10b981); border: none; cursor: pointer; margin-left: 0.5rem; display: none;">Netzwerk exportieren</button>
                 </div>
                 
                 <div id="network-analysis-container" style="display: none; background: var(--slate-900); border-radius: var(--radius-lg); padding: var(--space-md); margin-bottom: 1rem; color: white;">
-                    <h4>Themen-Verknüpfungen</h4>
-                    <canvas id="network-canvas" width="800" height="400" style="width: 100%; border: 1px solid var(--slate-700);"></canvas>
+                    <h4 id="network-title">Themen-Verknüpfungen</h4>
+                    <canvas id="network-canvas" width="800" height="400" style="width: 100%; border: 1px solid var(--slate-700); margin-bottom: 1rem;"></canvas>
+                    <div id="network-explanation" class="network-explanation" style="font-size: 0.85rem; line-height: 1.4; color: var(--slate-300); border-top: 1px solid var(--slate-700); padding-top: 1rem;">
+                        <!-- Dynamic explanation will be inserted here -->
+                    </div>
                 </div>
                 <ul id="simulated-search-results">
                     <!-- Simulated results will be inserted here -->
@@ -434,6 +438,6 @@
         </div>
     </div>
 
-    <script src="src/js/main.js?v=1.8" type="module"></script>
+    <script src="src/js/main.js?v=1.11" type="module"></script>
 </body>
 </html>

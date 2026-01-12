@@ -28,13 +28,19 @@ export function setTranslations(lang, data) {
 }
 
 export function getTranslation(key, defaultValue = '', replacements = {}) {
+    if (!key) {
+        console.warn("getTranslation called without key");
+        return defaultValue;
+    }
     let translatedString = defaultValue;
     if (state.translations[state.currentLang] && state.translations[state.currentLang][key]) {
         translatedString = state.translations[state.currentLang][key];
+    } else {
+        // console.log(`Missing translation for key: ${key} in lang: ${state.currentLang}`);
     }
 
     for (const placeholder in replacements) {
-        const regex = new RegExp(`{\s*${placeholder}\s*}`, 'g');
+        const regex = new RegExp(`{\\s*${placeholder}\\s*}`, 'g');
         translatedString = translatedString.replace(regex, replacements[placeholder]);
     }
 

@@ -148,5 +148,5 @@ export function generateSearchString() {
         expEl.innerHTML = explanationParts.length ? `<h4>${getTranslation('explanation-heading')}</h4><ul>${explanationParts.map(e => `<li>${e}</li>`).join('')}</ul>` : '';
     }
     
-    return { apiQuery: finalApiQuery, wikiSearchUrlParams: wikiSearchParams.toString() };
+    return { apiQuery: finalApiQuery, wikiSearchUrlParams: wikiSearchParams.toString(), shareParams: shareParams.toString() };
 }

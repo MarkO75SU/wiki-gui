@@ -1,11 +1,11 @@
 // src/js/main.js
 import { setLanguage, setTranslations, getLanguage, getTranslation } from './modules/state.js';
-import { applyTranslations, clearForm, handleSearchFormSubmit, addAccordionFunctionality, populatePresetCategories, populatePresets, applyPreset as applyPresetToForm, downloadResults } from './modules/ui.js';
+import { applyTranslations, clearForm, handleSearchFormSubmit, addAccordionFunctionality, populatePresetCategories, populatePresets, applyPreset as applyPresetToForm, downloadResults, getAllSearchResults } from './modules/ui.js';
 import { generateSearchString } from './modules/search.js';
 import { presetCategories } from './modules/presets.js';
 import { renderJournal, clearJournal, deleteSelectedEntries, exportJournal } from './modules/journal.js';
 import { setupCategoryAutocomplete } from './modules/autocomplete.js';
-import { performNetworkAnalysis } from './modules/network.js';
+import { performNetworkAnalysis, exportNetworkAsJSON } from './modules/network.js';
 import { showToast } from './modules/toast.js';
 
 async function initializeApp() {
@@ -110,10 +110,12 @@ async function initializeApp() {
 
     const analyzeNetworkBtn = document.getElementById('analyze-network-button');
     analyzeNetworkBtn?.addEventListener('click', () => {
-        const results = Array.from(document.querySelectorAll('#simulated-search-results li strong'))
-            .map(el => ({ title: el.textContent }));
+        const results = getAllSearchResults();
         performNetworkAnalysis(results);
     });
+
+    const exportNetworkBtn = document.getElementById('export-network-button');
+    exportNetworkBtn?.addEventListener('click', exportNetworkAsJSON);
 
     // Advanced mode toggle
     const advancedToggle = document.getElementById('advanced-mode-toggle');
@@ -200,6 +202,7 @@ async function initializeApp() {
     document.querySelectorAll('.lang-button').forEach(button => {
         button.addEventListener('click', async (event) => {
             const lang = event.target.dataset.lang;
+            if (!lang) return;
             setLanguage(lang);
             clearForm(); // Clear all fields on language switch
             

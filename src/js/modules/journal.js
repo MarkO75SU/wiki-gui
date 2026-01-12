@@ -5,36 +5,55 @@ import { generateSearchString } from './search.js';
 
 const STORAGE_KEY = 'wikiGuiJournal';
 
-export function addJournalEntry(queryText, wikiUrl) {
+export function addJournalEntry(queryText, wikiUrl, shareParams) {
     if (!queryText || !wikiUrl) return;
-    const appUrl = window.location.search;
+    
     let journal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     const newEntry = {
         id: Date.now(),
         name: queryText,
         wikiUrl: wikiUrl,
-        appUrl: appUrl,
+        appUrl: shareParams || '', // Speichert den Zustand der App-Felder
         time: new Date().toLocaleString(getLanguage(), { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
         favorite: false
     };
+
     journal = [newEntry, ...journal.filter(entry => entry.wikiUrl !== wikiUrl)];
     const favorites = journal.filter(e => e.favorite);
     const nonFavorites = journal.filter(e => !e.favorite).slice(0, 50);
     journal = [...favorites, ...nonFavorites];
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(journal));
     renderJournal();
 }
 
 export function loadEntryIntoForm(appUrlSuffix) {
-    if (!appUrlSuffix) return;
+    if (!appUrlSuffix) {
+        showToast('Keine Detail-Daten für diesen alten Eintrag vorhanden.');
+        return;
+    }
+    
     const params = new URLSearchParams(appUrlSuffix);
+    let hasAdvanced = false;
+
     params.forEach((value, key) => {
         const el = document.getElementById(key);
         if (el) {
             if (el.type === 'checkbox') el.checked = value === 'true';
             else el.value = value;
+            
+            // Prüfen, ob ein erweitertes Feld befüllt wurde
+            if (el.closest('[data-advanced]')) hasAdvanced = true;
         }
     });
+
+    // Falls fortgeschrittene Felder genutzt wurden, Modus umschalten
+    const advancedToggle = document.getElementById('advanced-mode-toggle');
+    if (hasAdvanced && advancedToggle && !advancedToggle.checked) {
+        advancedToggle.click(); // Simuliert Klick um UI-Logik (Klassen etc.) zu triggern
+    }
+    
+    // UI aktualisieren (Vorschau-Badge etc.)
     generateSearchString();
     showToast(getTranslation('toast-loaded') || 'Suche in Felder geladen.');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -141,15 +160,13 @@ export function clearJournal() {
 
 export function renderJournal() {
     const list = document.getElementById('journal-list');
-    const selectAllCheckbox = document.getElementById('journal-select-all-checkbox');
     if (!list) return;
-    if (selectAllCheckbox) selectAllCheckbox.checked = false;
 
     let journal = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     journal.sort((a, b) => (a.favorite === b.favorite) ? b.id - a.id : (a.favorite ? -1 : 1));
 
     if (journal.length === 0) {
-        list.innerHTML = `<li style="color: var(--slate-400); padding: 2rem; text-align: center;">Journal ist leer.</li>`;
+        list.innerHTML = `<li style="color: var(--slate-400); padding: 2rem; text-align: center;">${getTranslation('no-history')}</li>`;
         return;
     }
 
@@ -180,11 +197,12 @@ export function renderJournal() {
         `;
     }).join('');
 
-    list.querySelectorAll('.open-wiki-btn').forEach(btn => btn.onclick = (e) => window.open(e.currentTarget.dataset.wikiurl, '_blank'));
-    list.querySelectorAll('.load-to-fields-btn').forEach(btn => btn.onclick = (e) => loadEntryIntoForm(e.currentTarget.dataset.appurl));
-    list.querySelectorAll('.delete-journal-btn').forEach(btn => btn.onclick = (e) => deleteJournalEntry(Number(e.currentTarget.dataset.id)));
-    list.querySelectorAll('.edit-journal-btn').forEach(btn => btn.onclick = (e) => editJournalName(Number(e.currentTarget.dataset.id)));
-    list.querySelectorAll('.fav-journal-btn').forEach(btn => btn.onclick = (e) => toggleFavorite(Number(e.currentTarget.dataset.id)));
+    // Listeners
+    list.querySelectorAll('.open-wiki-btn').forEach(btn => btn.onclick = () => window.open(btn.dataset.wikiurl, '_blank'));
+    list.querySelectorAll('.load-to-fields-btn').forEach(btn => btn.onclick = () => loadEntryIntoForm(btn.dataset.appurl));
+    list.querySelectorAll('.delete-journal-btn').forEach(btn => btn.onclick = () => deleteJournalEntry(Number(btn.dataset.id)));
+    list.querySelectorAll('.edit-journal-btn').forEach(btn => btn.onclick = () => editJournalName(Number(btn.dataset.id)));
+    list.querySelectorAll('.fav-journal-btn').forEach(btn => btn.onclick = () => toggleFavorite(Number(btn.dataset.id)));
 }
 
 document.getElementById('journal-select-all-checkbox')?.addEventListener('change', (e) => {
