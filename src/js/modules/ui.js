@@ -258,7 +258,7 @@ export function clearForm() {
 
 export async function handleSearchFormSubmit(event) {
     event.preventDefault();
-    const { apiQuery } = generateSearchString();
+    const { apiQuery, wikiSearchUrlParams } = generateSearchString();
     const lang = document.getElementById('target-wiki-lang').value;
     const resultsContainer = document.getElementById('simulated-search-results');
     const searchResultsHeading = document.getElementById('search-results-heading');
@@ -324,7 +324,6 @@ export async function handleSearchFormSubmit(event) {
     }
 
     // Save to history AFTER rendering to ensure clean flow
-    const { apiQuery, wikiSearchUrlParams } = generateSearchString();
     const targetUrl = `https://${lang}.wikipedia.org/wiki/Special:Search?${wikiSearchUrlParams}`;
     updateHistory(apiQuery, targetUrl); // Pass query text AND URL
     showToast(getTranslation('toast-search-complete') || 'Suche abgeschlossen.');
