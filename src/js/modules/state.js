@@ -2,18 +2,25 @@
 
 const LANGUAGE_STORAGE_KEY = 'wikiGuiLanguage';
 
+const getInitialLang = () => {
+    const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (saved && ['de', 'en'].includes(saved)) return saved;
+    return 'de';
+};
+
 const state = {
-    currentLang: localStorage.getItem(LANGUAGE_STORAGE_KEY) || 'de', // Initialize from local storage, default to 'de'
+    currentLang: getInitialLang(),
     translations: {}
 };
 
 export function setLanguage(lang) {
+    if (!['de', 'en'].includes(lang)) return;
     state.currentLang = lang;
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang); // Persist language to local storage
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
 }
 
 export function getLanguage() {
-    return state.currentLang;
+    return state.currentLang || 'de';
 }
 
 export function setTranslations(lang, data) {
