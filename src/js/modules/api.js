@@ -124,3 +124,47 @@ export async function fetchArticleSummary(title, lang) {
         return "Summary could not be retrieved.";
     }
 }
+
+/**
+ * Fetches categories for multiple articles in batches.
+ */
+export async function fetchArticlesCategories(titles, lang, onProgress) {
+    const batchSize = 50;
+    const allPages = {};
+
+    for (let i = 0; i < titles.length; i += batchSize) {
+        const batchTitles = titles.slice(i, i + batchSize);
+        if (onProgress) {
+            onProgress(i, titles.length);
+        }
+        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${encodeURIComponent(batchTitles.join('|'))}&prop=categories&cllimit=50&clshow=!hidden`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.query && data.query.pages) {
+            Object.assign(allPages, data.query.pages);
+        }
+    }
+    return allPages;
+}
+
+/**
+ * Fetches categories for multiple articles in batches.
+ */
+export async function fetchArticlesCategories(titles, lang, onProgress) {
+    const batchSize = 50;
+    const allPages = {};
+
+    for (let i = 0; i < titles.length; i += batchSize) {
+        const batchTitles = titles.slice(i, i + batchSize);
+        if (onProgress) {
+            onProgress(i, titles.length);
+        }
+        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${encodeURIComponent(batchTitles.join('|'))}&prop=categories&cllimit=50&clshow=!hidden`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.query && data.query.pages) {
+            Object.assign(allPages, data.query.pages);
+        }
+    }
+    return allPages;
+}

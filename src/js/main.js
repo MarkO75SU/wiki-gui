@@ -46,16 +46,6 @@ async function initializeApp() {
         });
     }
 
-    // Dark Mode Logic
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    if (isDark) document.body.classList.add('dark');
-
-    darkModeToggle?.addEventListener('click', () => {
-        const wasDark = document.body.classList.toggle('dark');
-        localStorage.setItem('darkMode', wasDark);
-    });
-
     // Date Validation
     const dateAfter = document.getElementById('dateafter-value');
     const dateBefore = document.getElementById('datebefore-value');
