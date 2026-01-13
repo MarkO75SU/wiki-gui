@@ -218,10 +218,42 @@ input:focus, select:focus {
     border: 1px solid var(--border-color);
 }
 
+.generated-string-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
 #generated-search-string-display {
+    flex-grow: 1;
     font-family: monospace;
     color: var(--accent);
     background-color: var(--bg-surface);
+}
+
+.copy-button {
+    background-color: var(--bg-element);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0 1rem;
+    height: 48px; /* Match input height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+}
+
+.copy-button:hover {
+    background-color: var(--bg-element-hover);
+    border-color: var(--primary);
+}
+
+.copy-button::before {
+    content: '📋';
+}
+
+.copy-button.copied::before {
+    content: '✅';
 }
 
 /* --- Simulated Results --- */
