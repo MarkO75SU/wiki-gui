@@ -7,31 +7,49 @@
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .faq-search-container {
-            margin-bottom: var(--space-xl);
+            margin-bottom: 2rem;
         }
         .faq-item {
-            margin-bottom: var(--space-lg);
-            padding: var(--space-md);
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
             list-style: none;
+            color: var(--text-secondary);
         }
         .faq-item strong {
             display: block;
             font-size: 1.15rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
         .faq-section {
-            margin-bottom: var(--space-xl);
+            margin-bottom: 3rem;
         }
         .faq-section h2 {
             text-align: left;
-            border-bottom: 2px solid var(--slate-100);
-            padding-bottom: var(--space-xs);
-            margin-bottom: var(--space-md);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        #faq-search {
+            width: 100%;
+            height: 56px;
+            padding: 0 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            background: var(--bg-element);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            box-shadow: var(--shadow);
+        }
+        #faq-search:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-element-hover);
         }
     </style>
 </head>
@@ -71,7 +89,7 @@
 
     <main class="container">
         <div class="faq-search-container" style="margin-top: 2rem;">
-            <input type="text" id="faq-search" placeholder="FAQ durchsuchen..." style="width: 100%; height: 56px; padding: 0 1.5rem; border-radius: 16px; border: 1.5px solid var(--slate-200); font-size: 1.1rem; box-shadow: var(--shadow-md);">
+            <input type="text" id="faq-search" placeholder="FAQ durchsuchen...">
         </div>
 
         <div class="faq-container" id="faq-list">

@@ -8,52 +8,72 @@
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
     <style>
         .help-container {
-            background: var(--bg-card);
-            padding: var(--space-xl);
-            border-radius: 24px;
-            box-shadow: var(--shadow-xl);
-            margin-top: var(--space-lg);
+            background: var(--bg-surface);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
         }
         .help-section {
-            margin-bottom: var(--space-xl);
+            margin-bottom: 2.5rem;
         }
         .help-section h2 {
             text-align: left;
-            border-bottom: 2px solid var(--slate-100);
-            padding-bottom: var(--space-xs);
-            margin-bottom: var(--space-md);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
         }
         .help-item {
-            margin-bottom: var(--space-lg);
-            padding: var(--space-md);
-            background: var(--slate-50);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--slate-100);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-element);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
         }
         .help-item h3 {
             color: var(--primary);
-            margin-bottom: var(--space-xs);
+            margin-bottom: 0.75rem;
             font-size: 1.25rem;
         }
         .help-item p {
-            margin-bottom: var(--space-sm);
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
         }
         .help-item code {
             display: block;
-            padding: var(--space-sm);
-            background: var(--slate-900);
-            color: #10b981; /* Greenish */
-            border-radius: var(--radius-sm);
+            padding: 1rem;
+            background: var(--bg-body);
+            color: var(--accent);
+            border-radius: var(--radius);
             font-family: monospace;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             overflow-x: auto;
+            border: 1px solid var(--border-color);
         }
         .help-item em {
             font-weight: 700;
             font-style: normal;
-            color: var(--slate-600);
+            color: var(--text-muted);
             font-size: 0.8rem;
             text-transform: uppercase;
+        }
+        #help-search {
+            width: 100%;
+            height: 56px;
+            padding: 0 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            background: var(--bg-element);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            box-shadow: var(--shadow);
+        }
+        #help-search:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-element-hover);
         }
     </style>
 </head>
@@ -93,7 +113,7 @@
 
     <main class="container">
         <div class="search-box-container" style="margin-top: 2rem;">
-            <input type="text" id="help-search" placeholder="Hilfe durchsuchen..." style="width: 100%; height: 56px; padding: 0 1.5rem; border-radius: 16px; border: 1.5px solid var(--slate-200); font-size: 1.1rem; box-shadow: var(--shadow-md);">
+            <input type="text" id="help-search" placeholder="Hilfe durchsuchen...">
         </div>
 
         <div class="help-container">

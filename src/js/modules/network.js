@@ -93,10 +93,10 @@ function prepareNodes(articles, pages) {
 function calculateEdges(nodes) {
     const edges = [];
     for (let i = 0; i < nodes.length; i++) {
+        const wordsI = nodes[i].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
         for (let j = i + 1; j < nodes.length; j++) {
             const shared = nodes[i].categories.filter(cat => nodes[j].categories.includes(cat));
-            const wordsI = nodes[i].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-            const wordsJ = nodes[j].title.toLowerCase().split(/\s+/).filter(w => wordsJ.includes(w));
+            const wordsJ = nodes[j].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
             const sharedWords = wordsI.filter(w => wordsJ.includes(w));
 
             const strength = shared.length + (sharedWords.length * 2);
