@@ -55,74 +55,93 @@ function parseAdvancedSearchParams(query) {
 }
 
 /**
- * Performs a search on the Wikipedia API.
- * @param {string} query - The search query string.
- * @param {string} lang - The language of the Wikipedia to search.
- * @returns {Promise<object>} A promise that resolves to the full API response object.
+ * Generic helper for Wikipedia API fetches with error handling.
  */
-export async function performWikipediaSearch(query, lang = 'de', limit = 10) {
-    // Basic search call to get list of results
-    const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(query)}&srlimit=${limit}&prop=pageimages&piprop=thumbnail&pithumbsize=150`;
+async function fetchWikiData(lang, params) {
+    const endpoint = `https://${lang}.wikipedia.org/w/api.php`;
+    const queryParams = new URLSearchParams({
+        format: 'json',
+        origin: '*',
+        ...params
+    });
     
     try {
-        const response = await fetch(url);
+        const response = await fetch(`${endpoint}?${queryParams}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error("Wikipedia search error:", error);
+        console.error("Wikipedia API fetch error:", error);
         return null;
     }
+}
+
+/**
+ * Performs a search on the Wikipedia API.
+ */
+export async function performWikipediaSearch(query, lang = 'de', limit = 10) {
+    return await fetchWikiData(lang, {
+        action: 'query',
+        list: 'search',
+        srsearch: query,
+        srlimit: limit,
+        prop: 'pageimages',
+        piprop: 'thumbnail',
+        pithumbsize: 150
+    });
 }
 
 /**
  * Fetches additional info (like images) for specific titles.
  */
 export async function fetchArticlesInfo(titles, lang = 'de') {
-    const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${encodeURIComponent(titles.join('|'))}&prop=pageimages&piprop=thumbnail&pithumbsize=150`;
-    try {
-        const response = await fetch(url);
-        return await response.json();
-    } catch (error) {
-        console.error("Wikipedia info error:", error);
-        return null;
-    }
+    return await fetchWikiData(lang, {
+        action: 'query',
+        titles: titles.join('|'),
+        prop: 'pageimages',
+        piprop: 'thumbnail',
+        pithumbsize: 150
+    });
 }
 
 /**
  * Fetches a brief summary for a given article title.
- * @param {string} title - The title of the article.
- * @param {string} lang - The language of the Wikipedia.
- * @returns {Promise<string>} A promise that resolves to the article summary.
  */
 export async function fetchArticleSummary(title, lang) {
-    const endpoint = `https://${lang}.wikipedia.org/w/api.php`;
-    const params = new URLSearchParams({
+    const data = await fetchWikiData(lang, {
         action: 'query',
         prop: 'extracts',
         exsentences: 10,
         exintro: true,
         explaintext: true,
-        titles: title,
-        format: 'json',
-        origin: '*'
+        titles: title
     });
-    const url = `${endpoint}?${params}`;
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const pages = data.query.pages;
-        const pageId = Object.keys(pages)[0];
-        if (pageId === "-1" || !pages[pageId].extract) {
-            return "No summary available.";
-        }
-        return pages[pageId].extract;
-    } catch (error) {
-        console.error(`Could not fetch summary for ${title}:`, error);
-        return "Summary could not be retrieved.";
+    if (!data) return "Summary could not be retrieved.";
+    
+    const pages = data.query.pages;
+    const pageId = Object.keys(pages)[0];
+    if (pageId === "-1" || !pages[pageId].extract) {
+        return "No summary available.";
     }
+    return pages[pageId].extract;
+}
+
+/**
+ * Fetches summaries for multiple articles in one batch.
+ */
+export async function fetchArticlesSummaries(titles, lang) {
+    const data = await fetchWikiData(lang, {
+        action: 'query',
+        prop: 'extracts',
+        exsentences: 3, // Reduced for batch to keep payload small
+        exintro: true,
+        explaintext: true,
+        titles: titles.join('|'),
+        exlimit: titles.length
+    });
+
+    if (!data || !data.query || !data.query.pages) return {};
+    return data.query.pages;
 }
 
 /**
@@ -134,35 +153,17 @@ export async function fetchArticlesCategories(titles, lang, onProgress) {
 
     for (let i = 0; i < titles.length; i += batchSize) {
         const batchTitles = titles.slice(i, i + batchSize);
-        if (onProgress) {
-            onProgress(i, titles.length);
-        }
-        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${encodeURIComponent(batchTitles.join('|'))}&prop=categories&cllimit=50&clshow=!hidden`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.query && data.query.pages) {
-            Object.assign(allPages, data.query.pages);
-        }
-    }
-    return allPages;
-}
+        if (onProgress) onProgress(i, titles.length);
+        
+        const data = await fetchWikiData(lang, {
+            action: 'query',
+            titles: batchTitles.join('|'),
+            prop: 'categories',
+            cllimit: 50,
+            clshow: '!hidden'
+        });
 
-/**
- * Fetches categories for multiple articles in batches.
- */
-export async function fetchArticlesCategories(titles, lang, onProgress) {
-    const batchSize = 50;
-    const allPages = {};
-
-    for (let i = 0; i < titles.length; i += batchSize) {
-        const batchTitles = titles.slice(i, i + batchSize);
-        if (onProgress) {
-            onProgress(i, titles.length);
-        }
-        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${encodeURIComponent(batchTitles.join('|'))}&prop=categories&cllimit=50&clshow=!hidden`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.query && data.query.pages) {
+        if (data && data.query && data.query.pages) {
             Object.assign(allPages, data.query.pages);
         }
     }

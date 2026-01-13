@@ -1,7 +1,7 @@
 // src/js/modules/ui.js
 import { getTranslation, getLanguage } from './state.js';
 import { generateSearchString } from './search.js';
-import { performWikipediaSearch, fetchArticleSummary, fetchArticlesInfo } from './api.js';
+import { performWikipediaSearch, fetchArticleSummary, fetchArticlesInfo, fetchArticlesSummaries } from './api.js';
 import { presetCategories } from './presets.js';
 import { addJournalEntry } from './journal.js';
 import { showToast } from './toast.js';
@@ -302,14 +302,21 @@ export async function handleSearchFormSubmit(event) {
 
     if (resultsActions) resultsActions.style.display = 'block';
 
-    // Fetch images for top 10 results at once
-    const infoResponse = await fetchArticlesInfo(topResults.map(r => r.title), lang);
+    // Fetch images and summaries for top 10 results at once
+    const titles = topResults.map(r => r.title);
+    const [infoResponse, summariesPages] = await Promise.all([
+        fetchArticlesInfo(titles, lang),
+        fetchArticlesSummaries(titles, lang)
+    ]);
+    
     const pagesInfo = infoResponse?.query?.pages || {};
 
     for (const result of topResults) {
-        const summary = await fetchArticleSummary(result.title, lang);
+        // Find summary
+        const summaryPageId = Object.keys(summariesPages).find(id => summariesPages[id].title === result.title);
+        const summary = summariesPages[summaryPageId]?.extract || getTranslation('no-summary-available', 'Keine Zusammenfassung verfügbar.');
         
-        // Find thumbnail if exists
+        // Find thumbnail
         const pageId = Object.keys(pagesInfo).find(id => pagesInfo[id].title === result.title);
         const thumbUrl = pagesInfo[pageId]?.thumbnail?.source;
 
