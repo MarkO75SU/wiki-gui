@@ -10,7 +10,7 @@ import { showToast } from './modules/toast.js';
 import { loadHeader } from './modules/headerLoader.js'; // Added headerLoader import
 
 async function initializeApp() {
-    loadHeader('header-placeholder', 'src/html/header.html'); // Call loadHeader
+    await loadHeader('header-placeholder', 'src/html/header.html'); // AWAIT the header load
     const initialLang = getLanguage();
     document.documentElement.lang = initialLang;
 

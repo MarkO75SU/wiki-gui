@@ -110,7 +110,7 @@ button:hover, .header-button:hover, .lang-button:hover {
 }
 .menu-toggle span {
     height: 3px;
-    background: var(--text-primary);
+    background: white; /* Changed to white for better visibility */
     width: 100%;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
