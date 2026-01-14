@@ -391,13 +391,24 @@ export function addAccordionFunctionality() {
 export function populateLanguageOptions(selectElement) {
     selectElement.innerHTML = ''; // Clear existing options
     const languages = [
-        'de', 'en', 'fr', 'es', 'zh', 'hi', 'ar', 'ru', 'pt'
+        { code: 'de', flag: '🇩🇪' },
+        { code: 'en', flag: '🇬🇧' },
+        { code: 'fr', flag: '🇫🇷' },
+        { code: 'es', flag: '🇪🇸' },
+        { code: 'zh', flag: '🇨🇳' },
+        { code: 'hi', flag: '🇮🇳' },
+        { code: 'ar', flag: '🇦🇪' },
+        { code: 'ru', flag: '🇷🇺' },
+        { code: 'pt', flag: '🇵🇹' }
     ];
 
-    languages.forEach(langCode => {
+    languages.forEach(lang => {
         const option = document.createElement('option');
-        option.value = langCode;
-        option.textContent = getTranslation(`lang-${langCode}-option`);
+        option.value = lang.code;
+        const label = getTranslation(`lang-${lang.code}-option`);
+        // Remove existing flags from translation if present to avoid duplicates
+        const cleanLabel = label.replace(/[^\w\s\(\)]/g, '').trim(); 
+        option.textContent = `${lang.flag} ${cleanLabel}`;
         selectElement.appendChild(option);
     });
     selectElement.value = getLanguage(); // Set selected language
