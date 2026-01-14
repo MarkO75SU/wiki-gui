@@ -380,20 +380,16 @@ export function downloadResults() {
 export function addAccordionFunctionality() {
     document.querySelectorAll('.accordion-header').forEach(header => {
         header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            header.classList.toggle('active');
-            if (content.style.display === 'block') {
-                content.style.display = 'none';
-            } else {
-                content.style.display = 'block';
+            const group = header.closest('.search-group');
+            if (group) {
+                group.classList.toggle('active');
             }
         });
     });
     // Open the first accordion by default
-    const firstAccordion = document.getElementById('heading-main-query');
-    if(firstAccordion) {
-        firstAccordion.classList.add('active');
-        firstAccordion.nextElementSibling.style.display = 'block';
+    const firstGroup = document.getElementById('group-main-query');
+    if(firstGroup) {
+        firstGroup.classList.add('active');
     }
 }
 
