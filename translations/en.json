@@ -15,6 +15,8 @@
     "advanced-mode-hint": "Flip the switch for more input fields.",
 
     "heading-main-query": "Main Search Query:",
+    "heading-advanced-terms": "Advanced Search Terms:",
+    "label-search-query-adv": "All these words (Advanced):",
     "info-main-query": "Enter your terms here. The tool will automatically combine them for Wikipedia search.",
     "label-search-query": "All these words:",
     "search-query-placeholder": "e.g. solar energy climate change",

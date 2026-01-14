@@ -96,9 +96,9 @@ button:hover, .header-button:hover, .lang-button:hover {
     border-color: var(--primary);
 }
 
-/* Global styles for .menu-toggle (hidden on desktop) */
+/* Global styles for .menu-toggle (Always visible) */
 .menu-toggle {
-    display: none; /* Hidden on desktop by default */
+    display: flex; /* Always visible */
     flex-direction: column;
     gap: 5px;
     width: 30px;
@@ -110,7 +110,7 @@ button:hover, .header-button:hover, .lang-button:hover {
 }
 .menu-toggle span {
     height: 3px;
-    background: white; /* Changed to white for better visibility */
+    background: white !important; /* Force white for better visibility */
     width: 100%;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
@@ -131,16 +131,20 @@ button:hover, .header-button:hover, .lang-button:hover {
 
 /* --- Navigation --- */
 .header-nav ul {
-    display: flex; /* Visible by default on desktop */
+    display: none; /* Hidden by default, toggled via hamburger */
     list-style: none;
     gap: 0.5rem;
     flex-wrap: wrap;
     align-items: center;
 }
+
 .header-nav ul.active {
-    /* This rule will be used if JS toggles it */
-    /* On mobile, this will expand it */
+    display: flex; /* Show nav list when active */
 }
+
+/* On larger screens, we might still want it hidden until toggled if the requirement is "always appears and toggles" */
+/* But usually desktop users want visible nav. However, "Ensure it always appears and toggles" is specific. */
+/* We will keep it hidden by default and let the hamburger toggle it. */
 
 /* --- Info Icons --- */
 .info-icon {
@@ -247,6 +251,10 @@ input:focus, select:focus {
 
 .search-form-container.advanced-view .search-group[data-advanced] {
     display: block; /* Show when advanced mode is active */
+}
+
+.search-form-container.advanced-view .search-group[data-simple] {
+    display: none; /* Hide when advanced mode is active */
 }
 
 .accordion-header {
@@ -413,39 +421,18 @@ footer nav ul {
         padding: 1rem;
     }
     
-    /* Mobile-specific styles for the hamburger menu and nav list */
-    .menu-toggle {
-        display: flex; /* Show hamburger only on mobile */
-        /* REMOVE DEBUG STYLES HERE */
-    }
-
     .header-nav ul {
-        display: none; /* Hide nav list by default on mobile */
-        flex-direction: column;
         width: 100%;
         text-align: center;
-        gap: 0.5rem;
-        margin-top: 1rem;
-        background-color: var(--bg-element); /* Add background for visibility */
-        padding: 1rem; /* Add padding */
-        border-radius: var(--radius); /* Add border-radius */
-    }
-
-    .header-nav ul.active {
-        display: flex; /* Show nav list when active */
+        background-color: var(--bg-element);
+        padding: 1rem;
+        border-radius: var(--radius);
+        flex-direction: column;
     }
 }
 
-/* --- Desktop Responsiveness for Header (hiding hamburger, showing nav list) --- */
-@media (min-width: 769px) {
-    .menu-toggle {
-        display: none; /* Hide hamburger on desktop */
-    }
-
-    .header-nav ul {
-        display: flex; /* Show nav list on desktop */
-    }
-}
+/* On desktop, we still want the hamburger to control the menu if that's the requirement */
+/* No special overrides needed anymore as defaults are set globally above */
 
 
 /* --- Blog Grid --- */

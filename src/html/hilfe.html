@@ -238,7 +238,7 @@
         import { loadHeader } from '../js/modules/headerLoader.js'; // Added headerLoader import
         
         async function initHelp() {
-            loadHeader('header-placeholder', 'header.html'); // Call loadHeader
+            await loadHeader('header-placeholder', 'header.html'); // AWAIT the header load
             const lang = getLanguage() || 'de';
             const searchInput = document.getElementById('help-search'); // Moved declaration out of try block and to higher scope
             try {
@@ -279,15 +279,7 @@
                 }
             });
 
-            document.querySelectorAll('.lang-button').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const newLang = e.target.dataset.lang;
-                    setLanguage(newLang);
-                    location.reload();
-                });
-            });
-
-            // Mobile Menu Toggle
+            // Mobile Menu Toggle - Re-attach after header is loaded
             const menuToggle = document.getElementById('menu-toggle');
             const navList = document.getElementById('nav-list');
             if (menuToggle && navList) {
@@ -296,6 +288,15 @@
                     menuToggle.classList.toggle('open');
                 });
             }
+
+            // Language buttons - Re-attach after header is loaded
+            document.querySelectorAll('.lang-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const newLang = e.target.dataset.lang;
+                    setLanguage(newLang);
+                    location.reload();
+                });
+            });
         }
         initHelp();
     </script>

@@ -97,21 +97,22 @@ export function applyTranslations() {
             return;
         }
         const translation = getTranslation(key);
-        if (translation) {
+        if (translation && translation !== key) { // Added check translation !== key if getTranslation returns key on failure
             if (element.hasAttribute('placeholder')) {
                 element.placeholder = translation;
             } else {
+                // Only update text nodes to avoid destroying child elements (like icons)
                 const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
                 if (textNode) {
                     textNode.textContent = translation;
-                } else {
+                } else if (element.children.length === 0) {
                     element.textContent = translation;
                 }
             }
         }
         
         const titleTranslation = getTranslation(key + '-title');
-        if (titleTranslation) {
+        if (titleTranslation && titleTranslation !== (key + '-title')) {
             element.title = titleTranslation;
         }
     });
@@ -133,6 +134,11 @@ export function applyTranslations() {
     const searchQueryInput = document.getElementById('search-query');
     if (searchQueryInput) {
         searchQueryInput.placeholder = getTranslation('search-query-placeholder');
+    }
+
+    const searchQueryAdvInput = document.getElementById('search-query-adv');
+    if (searchQueryAdvInput) {
+        searchQueryAdvInput.placeholder = getTranslation('search-query-placeholder');
     }
 
     const exactPhraseInput = document.getElementById('exact-phrase');

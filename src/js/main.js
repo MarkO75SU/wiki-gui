@@ -38,7 +38,7 @@ async function initializeApp() {
     // Setup Autocomplete
     setupCategoryAutocomplete(document.getElementById('incategory-value'));
 
-    // Mobile Menu Toggle
+    // Mobile Menu Toggle - Re-attach after header is loaded
     const menuToggle = document.getElementById('menu-toggle');
     const navList = document.getElementById('nav-list');
     if (menuToggle && navList) {
@@ -47,6 +47,44 @@ async function initializeApp() {
             menuToggle.classList.toggle('open');
         });
     }
+
+    // Language buttons - Re-attach after header is loaded
+    document.querySelectorAll('.lang-button').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const lang = event.target.dataset.lang;
+            if (!lang) return;
+            setLanguage(lang);
+            clearForm(); // Clear all fields on language switch
+            
+            // Explicitly set the target wiki language to match the UI language
+            const targetWikiLangSelect = document.getElementById('target-wiki-lang');
+            if (targetWikiLangSelect) {
+                targetWikiLangSelect.value = lang;
+            }
+
+            try {
+                const response = await fetch(`translations/${lang}.json?v=${Date.now()}`);
+                const data = await response.json();
+                setTranslations(lang, data);
+                applyTranslations();
+                // Ensure presets are populated AFTER new language is set and translations applied
+                if (presetCategorySelect && presetSelect) {
+                    populatePresetCategories(presetCategorySelect, presetSelect);
+                    if (presetCategorySelect.options.length > 1) {
+                        presetCategorySelect.selectedIndex = 1;
+                        populatePresets(presetCategorySelect, presetSelect);
+                        applyPresetButton.disabled = false;
+                    } else {
+                        applyPresetButton.disabled = true;
+                    }
+                }
+                updateAdvancedModeDescription(); // Update description on language change
+                generateSearchString(); // Update generated string for new language context
+            } catch (error) {
+                console.error(`Could not fetch translations for ${lang}:`, error);
+            }
+        });
+    });
 
     // Date Validation
     const dateAfter = document.getElementById('dateafter-value');
@@ -199,43 +237,6 @@ async function initializeApp() {
         clearForm();
         generateSearchString();
     }); }
-
-    document.querySelectorAll('.lang-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const lang = event.target.dataset.lang;
-            if (!lang) return;
-            setLanguage(lang);
-            clearForm(); // Clear all fields on language switch
-            
-            // Explicitly set the target wiki language to match the UI language
-            const targetWikiLangSelect = document.getElementById('target-wiki-lang');
-            if (targetWikiLangSelect) {
-                targetWikiLangSelect.value = lang;
-            }
-
-            try {
-                const response = await fetch(`translations/${lang}.json?v=${Date.now()}`);
-                const data = await response.json();
-                setTranslations(lang, data);
-                applyTranslations();
-                // Ensure presets are populated AFTER new language is set and translations applied
-                if (presetCategorySelect && presetSelect) {
-                    populatePresetCategories(presetCategorySelect, presetSelect);
-                    if (presetCategorySelect.options.length > 1) {
-                        presetCategorySelect.selectedIndex = 1;
-                        populatePresets(presetCategorySelect, presetSelect);
-                        applyPresetButton.disabled = false;
-                    } else {
-                        applyPresetButton.disabled = true;
-                    }
-                }
-                updateAdvancedModeDescription(); // Update description on language change
-                generateSearchString(); // Update generated string for new language context
-            } catch (error) {
-                console.error(`Could not fetch translations for ${lang}:`, error);
-            }
-        });
-    });
 
     if (searchForm) { searchForm.addEventListener('input', generateSearchString); }
     const dateafterInput = document.getElementById('dateafter-value');
