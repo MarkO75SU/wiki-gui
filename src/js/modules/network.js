@@ -246,10 +246,8 @@ function updateNetworkExplanation(nodes, edges, visualNodes) {
     explanationEl.innerHTML = `
         <p><strong>${intro}</strong></p>
         <p>${interpretation}</p>
-        <ul>
-            <li>${central}</li>
-            <li>${categories}</li>
-        </ul>
+        <p style="margin-left: 2rem; margin-top: 0.5rem;">${central}</p>
+        <p style="margin-left: 2rem; margin-top: 0.25rem;">${categories}</p>
         ${tableHtml}
     `;
 }
