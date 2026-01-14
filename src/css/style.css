@@ -98,7 +98,36 @@ button:hover, .header-button:hover, .lang-button:hover {
 
 /* --- Navigation --- */
 .header-nav ul {
-    display: none; /* Mobile hidden by default */
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* --- Info Icons --- */
+.info-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    background-color: var(--bg-element);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: help;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    transition: all 0.2s;
+}
+
+.info-icon:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
 /* --- Main Card --- */
@@ -331,39 +360,12 @@ footer nav ul {
     .search-interface {
         padding: 1rem;
     }
-    
-    /* Mobile Menu (Hidden by default) */
+
+    /* Navigation adjustments for mobile */
     .header-nav ul {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        gap: 0.5rem;
+        justify-content: center;
         margin-top: 1rem;
     }
-    
-    .header-nav ul.active {
-        display: flex;
-    }
-    
-    .menu-toggle {
-        display: flex; /* Show hamburger only on mobile */
-        flex-direction: column;
-        gap: 5px;
-        width: 30px;
-        background: none;
-        border: none;
-    }
-    .menu-toggle span {
-        height: 3px;
-        background: var(--text-primary);
-        width: 100%;
-    }
-}
-
-@media (min-width: 769px) {
-    .menu-toggle { display: none; }
-    .header-nav ul { display: flex; }
 }
 
 /* --- Blog Grid --- */

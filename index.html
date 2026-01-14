@@ -62,11 +62,6 @@
             </div>
             <!-- Header Navigation -->
             <nav class="header-nav">
-                <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
                 <ul id="nav-list">
                     <li><a href="src/html/blog.html" class="header-button" id="link-blog-header">Blog</a></li>
                     <li><a href="src/html/faq.html" class="header-button" id="link-faq-header">FAQ</a></li>
@@ -88,12 +83,9 @@
             <h2 id="main-heading"></h2>
             <p id="main-heading-disclaimer" class="heading-disclaimer"></p>
             <div class="mode-toggle-container">
-                <label class="switch">
-                    <input type="checkbox" id="advanced-mode-toggle">
-                    <span class="slider"></span>
-                </label>
-                <label for="advanced-mode-toggle" id="label-advanced-mode"></label>
-                <span id="advanced-mode-description"></span>
+                <label for="advanced-mode-toggle" id="label-advanced-mode" style="margin-right: 0.5rem; font-weight: bold;">Expertenmodus</label>
+                <input type="checkbox" id="advanced-mode-toggle" checked>
+                <span id="advanced-mode-description" style="margin-left: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);"></span>
             </div>
             <p id="intro-text">
                 <a href="https://de.wikipedia.org/wiki/Hilfe:Suche" target="_blank" id="official-doc-link"></a>
@@ -128,7 +120,7 @@
 
                                         <div class="search-group" id="group-main-query">
 
-                                            <h3 class="accordion-header" id="heading-main-query">                <span class="info-icon" data-info-id="info-main-query" title="Define primary keywords and search logic (AND/OR, exclude, exact phrases). See '?' for full details and examples.">?</span><span class="accordion-arrow">
+                                            <h3 class="accordion-header" id="heading-main-query"><span class="accordion-arrow">
 
                                             </h3>
 
@@ -136,7 +128,7 @@
                 <div class="modifiers-group" style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-sm); background: var(--slate-50); padding: var(--space-sm); border-radius: var(--radius-md); margin-bottom: var(--space-md); border: 1px solid var(--slate-100);">
                     <div class="option-group">
                         <input type="checkbox" id="option-wildcard">
-                        <label for="option-wildcard" id="label-option-wildcard">Platzhalter-Suche aktivieren <span class="info-icon" data-info-id="info-wildcard-text" title="Verwenden Sie '*' als Platzhalter für beliebige Zeichen.">?</span></label>
+                        <label for="option-wildcard" id="label-option-wildcard">Platzhalter-Suche aktivieren</label>
                     </div>
                     <div class="option-group">
                         <input type="checkbox" id="option-fuzzy">
