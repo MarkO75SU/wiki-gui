@@ -166,32 +166,32 @@ export function renderJournal() {
     journal.sort((a, b) => (a.favorite === b.favorite) ? b.id - a.id : (a.favorite ? -1 : 1));
 
     if (journal.length === 0) {
-        list.innerHTML = `<li style="color: var(--slate-400); padding: 2rem; text-align: center;">${getTranslation('no-history')}</li>`;
+        list.innerHTML = `<li style="color: var(--text-secondary); padding: 3rem; text-align: center;">${getTranslation('no-history')}</li>`;
         return;
     }
 
     list.innerHTML = journal.map((entry, index) => {
         const showSep = index > 0 && !entry.favorite && journal[index-1].favorite;
         return `
-            ${showSep ? '<li style="border-bottom: 2px dashed var(--slate-200); margin: 1.5rem 0 1rem 0; list-style: none;"></li>' : ''}
-            <li class="journal-item" style="display: flex; flex-direction: column; padding: 1rem; background: ${entry.favorite ? 'var(--primary-light)' : 'var(--slate-50)'}; border-radius: var(--radius-md); margin-bottom: 0.75rem; border: 1px solid ${entry.favorite ? 'var(--primary)' : 'var(--border)'}; border-left: 5px solid ${entry.favorite ? '#f59e0b' : 'var(--primary)'};">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                    <div style="display: flex; gap: 0.75rem; align-items: flex-start; flex-grow: 1; overflow: hidden;">
-                        <input type="checkbox" class="journal-checkbox" data-id="${entry.id}" style="margin-top: 0.3rem; width: 1.1rem; height: 1.1rem;">
-                        <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            <strong style="color: var(--slate-900); font-size: 1rem;">${entry.name}</strong>
-                            <br><small style="color: var(--slate-400); font-size: 0.75rem;">${entry.time}</small>
+            ${showSep ? '<li style="border-bottom: 1px solid var(--border-color); margin: 1rem 0; list-style: none;"></li>' : ''}
+            <li class="journal-item ${entry.favorite ? 'is-favorite' : ''}">
+                <div class="journal-item-header">
+                    <div class="journal-item-info">
+                        <input type="checkbox" class="journal-checkbox" data-id="${entry.id}">
+                        <div class="journal-item-text">
+                            <strong>${entry.name}</strong>
+                            <small>${entry.time}</small>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button class="fav-journal-btn" data-id="${entry.id}" title="Favorit" style="background:none; border:none; cursor:pointer; font-size:1.1rem;">${entry.favorite ? '⭐' : '☆'}</button>
-                        <button class="edit-journal-btn" data-id="${entry.id}" title="Bearbeiten" style="background:none; border:none; cursor:pointer; font-size:1rem;">✏️</button>
-                        <button class="delete-journal-btn" data-id="${entry.id}" title="Löschen" style="background:none; border:none; cursor:pointer; font-size:1rem;">🗑️</button>
+                    <div class="journal-item-actions">
+                        <button class="journal-item-btn fav-journal-btn" data-id="${entry.id}" title="Favorit">${entry.favorite ? '⭐' : '☆'}</button>
+                        <button class="journal-item-btn edit-journal-btn" data-id="${entry.id}" title="Bearbeiten">✏️</button>
+                        <button class="journal-item-btn delete-journal-btn" data-id="${entry.id}" title="Löschen">🗑️</button>
                     </div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                    <button class="header-button load-to-fields-btn" data-appurl="${entry.appUrl || ''}" style="padding: 0.5rem; font-size: 0.8rem; background: var(--primary); border: none;">In Felder laden</button>
-                    <button class="header-button open-wiki-btn" data-wikiurl="${entry.wikiUrl}" style="padding: 0.5rem; font-size: 0.8rem; background: var(--slate-800); border: none;">Wiki öffnen</button>
+                <div class="journal-item-footer">
+                    <button class="btn-journal-action btn-journal-load load-to-fields-btn" data-appurl="${entry.appUrl || ''}">${getTranslation('load-button', 'Laden')}</button>
+                    <button class="btn-journal-action btn-journal-wiki open-wiki-btn" data-wikiurl="${entry.wikiUrl}">${getTranslation('open-in-wikipedia-link', 'Wiki öffnen')}</button>
                 </div>
             </li>
         `;
