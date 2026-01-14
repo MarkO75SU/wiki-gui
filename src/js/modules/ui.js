@@ -97,15 +97,19 @@ export function applyTranslations() {
             return;
         }
         const translation = getTranslation(key);
-        if (translation && translation !== key) { // Added check translation !== key if getTranslation returns key on failure
+        if (translation && translation !== key) {
             if (element.hasAttribute('placeholder')) {
                 element.placeholder = translation;
             } else {
-                // Only update text nodes to avoid destroying child elements (like icons)
-                const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+                // Preserving child elements (icons, arrows) by only updating the text node or prepending
+                let textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
                 if (textNode) {
                     textNode.textContent = translation;
-                } else if (element.children.length === 0) {
+                } else if (element.children.length > 0) {
+                    // If no text node but has children, we might need to add the text at the start
+                    const newTextNode = document.createTextNode(translation);
+                    element.insertBefore(newTextNode, element.firstChild);
+                } else {
                     element.textContent = translation;
                 }
             }

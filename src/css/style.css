@@ -100,17 +100,21 @@ button:hover, .header-button:hover, .lang-button:hover {
 .menu-toggle {
     display: flex; /* Always visible */
     flex-direction: column;
+    justify-content: center;
     gap: 5px;
     width: 30px;
+    height: 30px; /* Ensure height is set */
     background: none;
     border: none;
     cursor: pointer;
     position: relative;
     z-index: 1000;
+    padding: 0;
 }
 .menu-toggle span {
+    display: block; /* Ensure they are block elements */
     height: 3px;
-    background: white !important; /* Force white for better visibility */
+    background: #ffffff !important; /* Force white for better visibility */
     width: 100%;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
@@ -251,10 +255,6 @@ input:focus, select:focus {
 
 .search-form-container.advanced-view .search-group[data-advanced] {
     display: block; /* Show when advanced mode is active */
-}
-
-.search-form-container.advanced-view .search-group[data-simple] {
-    display: none; /* Hide when advanced mode is active */
 }
 
 .accordion-header {

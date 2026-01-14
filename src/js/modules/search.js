@@ -11,12 +11,7 @@ export function generateSearchString() {
     const wikiSearchParams = new URLSearchParams();
 
     const getValue = (id) => {
-        let element = document.getElementById(id);
-        // Fallback for search-query if we are in advanced mode
-        if (id === 'search-query' && (!element || !element.value.trim())) {
-            const advElement = document.getElementById('search-query-adv');
-            if (advElement && advElement.value.trim()) element = advElement;
-        }
+        const element = document.getElementById(id);
         if (!element) return '';
         return element.type === 'checkbox' ? element.checked : element.value.trim();
     };
