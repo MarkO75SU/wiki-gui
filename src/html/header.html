@@ -1,33 +1,25 @@
-<header>
-    <div class="container">
+<header class="header">
+    <div class="container header-container">
         <div class="title-group">
-            <h1 id="app-title"></h1>
-            <div class="language-selector">
-                <button id="lang-de" class="lang-button" data-lang="de"></button>
-                <button id="lang-en" class="lang-button" data-lang="en"></button>
-            </div>
+            <h1 id="app-title">WikiGUI</h1>
         </div>
-        <!-- Header Navigation -->
+
         <nav class="header-nav">
-            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <ul id="nav-list">
-                <li><a href="blog.html" class="header-button" id="link-blog-header">Blog</a></li>
-                <li><a href="faq.html" class="header-button" id="link-faq-header">FAQ</a></li>
-                <li class="dropdown">
-                    <button class="header-button" id="link-github-header">GitHub</button>
-                    <div class="dropdown-content">
-                        <a href="https://github.com/MarkO75SU/wiki-gui" target="_blank" id="link-github-repo">Repository</a>
-                        <a href="https://github.com/MarkO75SU/wiki-gui/archive/refs/heads/main.zip" id="link-download-zip">Download ZIP</a>
-                    </div>
-                </li>
-                <li><a href="hilfe.html" class="header-button" id="link-help-header">Hilfe</a></li>
-                <li><a href="https://github.com/MarkO75SU/wiki-gui/issues" target="_blank" class="header-button" id="link-report-issue-header">Problem melden</a></li>
-                <li><a href="../../index.html" class="header-button">Home</a></li>
+            <ul id="nav-list" class="nav-list">
+                <li><a href="index.html" id="nav-home"></a></li>
+                <li><a href="src/html/hilfe.html" id="nav-help"></a></li>
+                <li><a href="src/html/impressum.html" id="nav-about"></a></li>
             </ul>
         </nav>
+
+        <div class="language-selector">
+            <button class="lang-button" id="lang-de" data-lang="de">DE</button>
+            <button class="lang-button" id="lang-en" data-lang="en">EN</button>
+        </div>
     </div>
 </header>
