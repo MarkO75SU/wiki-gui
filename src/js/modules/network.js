@@ -92,21 +92,25 @@ function prepareNodes(articles, pages) {
 
 function calculateEdges(nodes) {
     const edges = [];
-    for (let i = 0; i < nodes.length; i++) {
-        const wordsI = nodes[i].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-        for (let j = i + 1; j < nodes.length; j++) {
-            const shared = nodes[i].categories.filter(cat => nodes[j].categories.includes(cat));
-            const wordsJ = nodes[j].title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    const n = nodes.length;
+    for (let i = 0; i < n; i++) {
+        const nodeI = nodes[i];
+        const wordsI = nodeI.title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        
+        for (let j = i + 1; j < n; j++) {
+            const nodeJ = nodes[j];
+            const shared = nodeI.categories.filter(cat => nodeJ.categories.includes(cat));
+            const wordsJ = nodeJ.title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
             const sharedWords = wordsI.filter(w => wordsJ.includes(w));
 
             const strength = shared.length + (sharedWords.length * 2);
 
             if (strength > 0) {
-                nodes[i].totalStrength += strength;
-                nodes[j].totalStrength += strength;
-                nodes[i].connectionCount++;
-                nodes[j].connectionCount++;
-                edges.push({ from: nodes[i], to: nodes[j], strength });
+                nodeI.totalStrength += strength;
+                nodeJ.totalStrength += strength;
+                nodeI.connectionCount++;
+                nodeJ.connectionCount++;
+                edges.push({ from: nodeI, to: nodeJ, strength });
             }
         }
     }
@@ -228,7 +232,7 @@ function updateNetworkExplanation(nodes, edges, visualNodes) {
                         .filter(n => n.connectionCount > 0 && n.totalStrength > 0)
                         .sort((a,b) => b.totalStrength - a.totalStrength)
                         .map(n => `
-                        <tr style="border-bottom: 1px solid var(--slate-800); ${visualNodes.includes(n) ? 'background: rgba(37, 99, 235, 0.1);' : ''}">
+                        <tr style="border-bottom: 1px solid var(--slate-800); ${visualNodes.includes(n) ? 'background: var(--bg-element);' : ''}">
                             <td style="padding: 0.5rem;"><a href="https://${lang}.wikipedia.org/wiki/${encodeURIComponent(n.title)}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">${n.title}</a></td>
                             <td style="text-align: right; padding: 0.5rem;">${n.connectionCount}</td>
                             <td style="text-align: right; padding: 0.5rem;">${n.totalStrength}</td>
