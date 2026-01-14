@@ -51,16 +51,6 @@
                             <span class="accordion-arrow"></span>
                         </h3>
                         <div class="accordion-content">
-                            <div class="mode-toggle-wrapper">
-                                <div class="mode-toggle-container">
-                                    <span id="label-advanced-mode"></span>
-                                    <label class="switch">
-                                        <input type="checkbox" id="advanced-mode-toggle">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                                <div id="advanced-mode-description" class="advanced-mode-hint"></div>
-                            </div>
                             <div class="modifiers-grid">
                                 <div class="option-group">
                                     <input type="checkbox" id="option-wildcard">
@@ -73,23 +63,42 @@
                             </div>
                             <div class="form-grid">
                                 <div class="form-group span-full">
-                                    <label for="search-query" id="label-search-query"></label>
+                                    <label for="search-query" id="label-search-query">
+                                        <span class="info-icon" data-info-id="info-all-words-text">?</span>
+                                    </label>
                                     <input type="text" id="search-query">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exact-phrase" id="label-exact-phrase"></label>
+                                    <label for="exact-phrase" id="label-exact-phrase">
+                                        <span class="info-icon" data-info-id="info-exact-phrase-text">?</span>
+                                    </label>
                                     <input type="text" id="exact-phrase">
                                 </div>
                                 <div class="form-group">
-                                    <label for="without-words" id="label-without-words"></label>
+                                    <label for="without-words" id="label-without-words">
+                                        <span class="info-icon" data-info-id="info-without-words-text">?</span>
+                                    </label>
                                     <input type="text" id="without-words">
                                 </div>
                                 <div class="form-group span-full">
-                                    <label for="any-words" id="label-any-words"></label>
+                                    <label for="any-words" id="label-any-words">
+                                        <span class="info-icon" data-info-id="info-any-words-text">?</span>
+                                    </label>
                                     <input type="text" id="any-words">
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="mode-toggle-wrapper">
+                        <div class="mode-toggle-container">
+                            <span id="label-advanced-mode"></span>
+                            <label class="switch">
+                                <input type="checkbox" id="advanced-mode-toggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div id="advanced-mode-description" class="advanced-mode-hint"></div>
                     </div>
 
                     <!-- STEP 02: SCOPE & LOCATION -->
@@ -102,30 +111,44 @@
                             <div class="form-grid">
                                 <div class="option-group span-full">
                                     <input type="checkbox" id="option-intitle">
-                                    <label for="option-intitle" id="label-intitle"></label>
+                                    <label for="option-intitle" id="label-intitle">
+                                        <span class="info-icon" data-info-id="info-intitle-text">?</span>
+                                    </label>
                                 </div>
                                 <div class="form-group">
-                                    <label for="prefix-value" id="label-prefix-value"></label>
+                                    <label for="prefix-value" id="label-prefix-value">
+                                        <span class="info-icon" data-info-id="info-prefix-value-text">?</span>
+                                    </label>
                                     <input type="text" id="prefix-value">
                                 </div>
                                 <div class="form-group">
-                                    <label for="incategory-value" id="label-incategory"></label>
+                                    <label for="incategory-value" id="label-incategory">
+                                        <span class="info-icon" data-info-id="info-incategory-text">?</span>
+                                    </label>
                                     <input type="text" id="incategory-value">
                                 </div>
                                 <div class="form-group">
-                                    <label for="deepcat-value" id="label-deepcat"></label>
+                                    <label for="deepcat-value" id="label-deepcat">
+                                        <span class="info-icon" data-info-id="info-deepcat-text">?</span>
+                                    </label>
                                     <input type="text" id="deepcat-value">
                                 </div>
                                 <div class="form-group">
-                                    <label for="linkfrom-value" id="label-linkfrom"></label>
+                                    <label for="linkfrom-value" id="label-linkfrom">
+                                        <span class="info-icon" data-info-id="info-linkfrom-text">?</span>
+                                    </label>
                                     <input type="text" id="linkfrom-value">
                                 </div>
                                 <div class="form-group span-full">
-                                    <label for="category-select" id="label-category-dropdown"></label>
+                                    <label for="category-select" id="label-category-dropdown">
+                                        <span class="info-icon" data-info-id="info-category-dropdown-text">?</span>
+                                    </label>
                                     <select id="category-select"></select>
                                 </div>
                                 <div class="form-group span-full">
-                                    <label id="label-namespaces"></label>
+                                    <label id="label-namespaces">
+                                        <span class="info-icon" data-info-id="info-namespaces-text">?</span>
+                                    </label>
                                     <div id="namespaces-options" class="chips-grid">
                                         <div class="option-group"><input type="checkbox" id="ns-main" value="0"><label for="ns-main" id="label-ns-main"></label></div>
                                         <div class="option-group"><input type="checkbox" id="ns-user" value="2"><label for="ns-user" id="label-ns-user"></label></div>
@@ -154,15 +177,21 @@
                         <div class="accordion-content">
                             <div class="form-grid">
                                 <div class="form-group span-full">
-                                    <label for="insource-value" id="label-insource"></label>
+                                    <label for="insource-value" id="label-insource">
+                                        <span class="info-icon" data-info-id="info-insource-text">?</span>
+                                    </label>
                                     <input type="text" id="insource-value">
                                 </div>
                                 <div class="form-group">
-                                    <label for="hastemplate-value" id="label-hastemplate"></label>
+                                    <label for="hastemplate-value" id="label-hastemplate">
+                                        <span class="info-icon" data-info-id="info-hastemplate-text">?</span>
+                                    </label>
                                     <input type="text" id="hastemplate-value">
                                 </div>
                                 <div class="form-group">
-                                    <label id="label-filetype"></label>
+                                    <label id="label-filetype">
+                                        <span class="info-icon" data-info-id="info-filetype-text">?</span>
+                                    </label>
                                     <div id="filetype-options" class="chips-grid">
                                         <div class="option-group"><input type="checkbox" id="filetype-bmp" value="bmp"><label for="filetype-bmp" id="filetype-bmp-label"></label></div>
                                         <div class="option-group"><input type="checkbox" id="filetype-gif" value="gif"><label for="filetype-gif" id="filetype-gif-label"></label></div>
@@ -175,7 +204,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group span-full">
-                                    <label id="label-filesize"></label>
+                                    <label id="label-filesize">
+                                        <span class="info-icon" data-info-id="info-filesize-text">?</span>
+                                    </label>
                                     <div class="form-grid" style="gap: 0.5rem;">
                                         <input type="number" id="filesize-min">
                                         <input type="number" id="filesize-max">
@@ -194,7 +225,9 @@
                         <div class="accordion-content">
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label for="dateafter-value" id="label-dateafter"></label>
+                                    <label for="dateafter-value" id="label-dateafter">
+                                        <span class="info-icon" data-info-id="info-date-filters">?</span>
+                                    </label>
                                     <input type="date" id="dateafter-value">
                                 </div>
                                 <div class="form-group">
@@ -214,7 +247,9 @@
                         <div class="accordion-content">
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label for="geo-radius" id="label-geo-radius"></label>
+                                    <label for="geo-radius" id="label-geo-radius">
+                                        <span class="info-icon" data-info-id="info-geo-search">?</span>
+                                    </label>
                                     <input type="number" id="geo-radius">
                                 </div>
                                 <div class="form-group">

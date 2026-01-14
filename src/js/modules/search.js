@@ -135,16 +135,20 @@ export function generateSearchString() {
 
     // Treffer-Vorschau
     const badge = document.getElementById('results-preview-badge');
-    if (finalApiQuery) {
-        clearTimeout(countDebounceTimer);
-        countDebounceTimer = setTimeout(async () => {
-            const res = await performWikipediaSearch(finalApiQuery, targetLang, 1);
-            const count = res?.query?.searchinfo?.totalhits || 0;
-            document.getElementById('results-preview-count').textContent = count.toLocaleString();
-            badge.style.display = 'flex';
-        }, 1000);
-    } else {
-        badge.style.display = 'none';
+    const badgeCount = document.getElementById('results-preview-count');
+    
+    if (badge && badgeCount) {
+        if (finalApiQuery) {
+            clearTimeout(countDebounceTimer);
+            countDebounceTimer = setTimeout(async () => {
+                const res = await performWikipediaSearch(finalApiQuery, targetLang, 1);
+                const count = res?.query?.searchinfo?.totalhits || 0;
+                badgeCount.textContent = count.toLocaleString();
+                badge.style.display = 'flex';
+            }, 1000);
+        } else {
+            badge.style.display = 'none';
+        }
     }
 
     if (document.getElementById('generated-string-explanation')) {

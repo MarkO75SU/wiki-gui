@@ -246,13 +246,7 @@ export function applyTranslations() {
 
     // Explicitly translate language switch buttons
     const langDeButton = document.getElementById('lang-de');
-    if (langDeButton) {
-        langDeButton.textContent = getTranslation('lang-de-option');
-    }
     const langEnButton = document.getElementById('lang-en');
-    if (langEnButton) {
-        langEnButton.textContent = getTranslation('lang-en-option');
-    }
 }
 
 export function clearForm() {

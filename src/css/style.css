@@ -202,6 +202,10 @@ input:focus, select:focus {
     margin-bottom: -1px;
 }
 
+/* Hide advanced steps by default */
+.search-group[data-advanced] { display: none; }
+.advanced-view .search-group[data-advanced] { display: block; }
+
 .accordion-header {
     background: rgba(255,255,255,0.02);
     padding: 1.5rem;
@@ -226,6 +230,10 @@ input:focus, select:focus {
 }
 
 .search-group.active .accordion-content { display: block; }
+
+/* --- Advanced Mode Visibility --- */
+.search-group[data-advanced] { display: none; }
+.advanced-view .search-group[data-advanced] { display: block; }
 
 /* --- Buttons --- */
 .main-action-buttons {
@@ -446,6 +454,30 @@ footer nav a {
 
 input:checked + .slider { background-color: var(--primary); }
 input:checked + .slider:before { transform: translateX(22px); }
+
+/* --- Copy Button --- */
+.copy-button {
+    width: 60px;
+    height: var(--control-h);
+    background: var(--bg-element);
+    border: 1px solid var(--border-color);
+    border-left: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: #fff;
+    border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.copy-button:hover {
+    border-color: var(--primary);
+    background: rgba(255,255,255,0.05);
+}
+
+.copy-button::before { content: '📋'; }
+.copy-button.copied::before { content: '✅'; }
 
 @media (max-width: 768px) {
     .form-grid, .main-action-buttons { grid-template-columns: 1fr; }

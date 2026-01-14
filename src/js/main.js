@@ -164,7 +164,9 @@ async function initializeApp() {
         if (advancedToggle.checked) {
             advancedModeDescription.textContent = getTranslation('advanced-mode-advanced-active');
         } else {
-            advancedModeDescription.textContent = getTranslation('advanced-mode-simple-active') + ' ' + getTranslation('advanced-mode-hint');
+            const simpleActive = getTranslation('advanced-mode-simple-active');
+            const hint = getTranslation('advanced-mode-hint');
+            advancedModeDescription.textContent = simpleActive ? `${simpleActive} ${hint}` : hint;
         }
     }
 
