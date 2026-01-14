@@ -120,7 +120,7 @@ header {
     .menu-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 }
 
-/* --- Master Card --- */
+/* --- master Card --- */
 .search-interface {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
@@ -135,6 +135,14 @@ header {
     border-left: 3px solid var(--primary);
     padding-left: 1rem;
     margin-bottom: 3rem;
+}
+
+/* --- Presets --- */
+.presets-section {
+    margin-top: 6rem;
+    margin-bottom: 8rem;
+    padding-bottom: 6rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 /* --- Form System --- */
@@ -236,6 +244,17 @@ input:focus, select:focus {
 /* Hide advanced steps by default */
 .search-group[data-advanced] { display: none; }
 .advanced-view .search-group[data-advanced] { display: block; }
+
+.modifiers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6rem;
+}
 
 .accordion-header {
     background: rgba(255,255,255,0.02);
