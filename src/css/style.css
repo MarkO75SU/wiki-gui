@@ -396,33 +396,41 @@ footer nav ul {
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
     header .container {
+        display: flex; /* Ensure it's a flex container */
         flex-direction: row;
-        flex-wrap: wrap;
+        justify-content: space-between; /* Space out header-left and menu-toggle */
+        align-items: center;
+        flex-wrap: wrap; /* Allow items to wrap if necessary */
     }
     
+    .header-left {
+        display: flex; /* Group title and language selector */
+        align-items: center;
+        flex-grow: 1; /* Allow header-left to take available space */
+        gap: 1rem; /* Space between title group and language selector */
+    }
+
     .title-group {
-        flex-grow: 1;
+        /* No flex-grow needed here anymore, as header-left manages space */
+    }
+
+    .language-selector {
+        /* No margin-left needed here anymore, gap in header-left handles it */
     }
 
     .menu-toggle {
-        display: flex;
+        display: flex; /* Show hamburger */
+        margin-left: 0.5rem; /* Add some space if needed */
     }
 
     .header-nav {
-        width: 100%;
-        order: 3;
+        width: 100%; /* Ensure nav takes full width below header items */
+        order: 4; /* Place it below other header items */
+        margin-top: 1rem; /* Space from elements above */
     }
 
-    .main-action-buttons {
-        grid-template-columns: 1fr;
-    }
-    
-    .search-interface {
-        padding: 1rem;
-    }
-    
     .header-nav ul {
-        display: none;
+        display: none; /* Hide nav list by default on mobile */
     }
 
     /* When active on mobile, arrange vertically */

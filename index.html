@@ -53,20 +53,22 @@
 <body>
     <header>
         <div class="container">
-            <div class="title-group">
-                <h1 id="app-title"></h1>
+            <div class="header-left">
+                <div class="title-group">
+                    <h1 id="app-title"></h1>
+                </div>
                 <div class="language-selector">
                     <button id="lang-de" class="lang-button" data-lang="de"></button>
                     <button id="lang-en" class="lang-button" data-lang="en"></button>
                 </div>
             </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <!-- Header Navigation -->
             <nav class="header-nav">
-                <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
                 <ul id="nav-list">
                     <li><a href="src/html/blog.html" class="header-button" id="link-blog-header">Blog</a></li>
                     <li><a href="src/html/faq.html" class="header-button" id="link-faq-header">FAQ</a></li>
