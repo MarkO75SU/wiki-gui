@@ -91,9 +91,13 @@ export function generateSearchString() {
     // Geo Search
     const geoCoord = getValue('geo-coord');
     if (geoCoord) {
-        const radius = getValue('geo-radius') || 5000;
-        wikiSearchParams.set('nearcoord', `${radius},${geoCoord}`);
-        apiQueryParts.push(`nearcoord:${radius},${geoCoord}`);
+        let radiusKm = parseFloat(getValue('geo-radius')); // Get value from input, convert to float
+        if (isNaN(radiusKm) || radiusKm <= 0) {
+            radiusKm = 5; // Default to 5 km if input is invalid or empty
+        }
+        const radiusMeters = radiusKm * 1000; // Convert km to meters
+        wikiSearchParams.set('nearcoord', `${radiusMeters},${geoCoord}`);
+        apiQueryParts.push(`nearcoord:${radiusMeters},${geoCoord}`);
     }
 
     Object.entries(rawParams).forEach(([key, value]) => {
