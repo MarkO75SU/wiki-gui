@@ -1,4 +1,6 @@
 // src/js/modules/api.js
+import { showToast } from './toast.js';
+import { getTranslation } from './state.js';
 
 /**
  * Parses the generated search query to separate recognized parameters from the main search term.
@@ -71,6 +73,7 @@ async function fetchWikiData(lang, params) {
         return await response.json();
     } catch (error) {
         console.error("Wikipedia API fetch error:", error);
+        showToast(getTranslation('error-api-fetch') || 'Could not fetch data from Wikipedia API.');
         return null;
     }
 }
@@ -168,4 +171,74 @@ export async function fetchArticlesCategories(titles, lang, onProgress) {
         }
     }
     return allPages;
+}
+
+/**
+ * Fetches a resource from a given URL and returns it as text.
+ * @param {string} url - The URL of the resource to fetch.
+ * @returns {Promise<string|null>} The resource as text, or null on error.
+ */
+export async function fetchResource(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.text();
+    } catch (error) {
+        console.error(`Error fetching resource from ${url}:`, error);
+        showToast(getTranslation('error-resource-fetch') || 'Could not fetch resource.');
+        return null;
+    }
+}
+
+/**
+ * Fetches JSON data from a given URL.
+ * @param {string} url - The URL to fetch JSON from.
+ * @returns {Promise<object|null>} The JSON data, or null on error.
+ */
+export async function fetchJson(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching JSON from ${url}:`, error);
+        showToast(getTranslation('error-json-fetch') || 'Could not fetch JSON data.');
+        return null;
+    }
+}
+
+/**
+ * Fetches search suggestions from Wikipedia's OpenSearch API.
+ * @param {string} query - The search query.
+ * @param {string} lang - The Wikipedia language edition.
+ * @param {number} limit - The maximum number of suggestions to return.
+ * @returns {Promise<Array|null>} An array of suggestions, or null on error.
+ */
+export async function fetchWikipediaOpenSearch(query, lang = 'de', limit = 10) {
+    const params = {
+        action: 'opensearch',
+        search: query,
+        limit: limit,
+    };
+    // fetchWikiData is not used here because opensearch has a different response format.
+    const endpoint = `https://${lang}.wikipedia.org/w/api.php`;
+    const queryParams = new URLSearchParams({
+        format: 'json',
+        origin: '*',
+        ...params
+    });
+    
+    try {
+        const response = await fetch(`${endpoint}?${queryParams}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Wikipedia OpenSearch fetch error:", error);
+        showToast(getTranslation('error-opensearch-fetch') || 'Could not fetch search suggestions.');
+        return null;
+    }
 }

@@ -24,6 +24,6 @@ This document outlines the planned improvements and future features for WikiGUI,
 - [ ] **Topic Explorer ("Surprise Me"):** A feature that generates a high-quality, complex search query for a random, well-documented niche topic to demonstrate the power of the tool.
 
 ## 6. Stability & Maintenance (Ongoing)
-- [ ] Centralize all API logic in `src/js/modules/api.js`.
-- [ ] Improve error handling with user-friendly toast notifications for network failures.
-- [ ] Standardize asynchronous patterns across all modules.
+- [x] Centralize all API logic in `src/js/modules/api.js`.
+- [x] Improve error handling with user-friendly toast notifications for network failures.
+- [x] Standardize asynchronous patterns across all modules.

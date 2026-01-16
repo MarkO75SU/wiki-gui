@@ -1,3 +1,5 @@
+import { fetchResource } from './api.js';
+
 export async function loadHeader(placeholderId, headerHtmlPath) {
     const placeholder = document.getElementById(placeholderId);
     if (!placeholder) {
@@ -6,13 +8,10 @@ export async function loadHeader(placeholderId, headerHtmlPath) {
     }
 
     try {
-        const response = await fetch(`${headerHtmlPath}?v=${Date.now()}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const headerHtml = await fetchResource(`${headerHtmlPath}?v=${Date.now()}`);
+        if (headerHtml) {
+            placeholder.innerHTML = headerHtml;
         }
-        const headerHtml = await response.text();
-        placeholder.innerHTML = headerHtml;
-
     } catch (error) {
         console.error("Could not load header:", error);
     }

@@ -8,9 +8,13 @@ import { setupCategoryAutocomplete } from './modules/autocomplete.js';
 import { performNetworkAnalysis, exportNetworkAsJSON } from './modules/network.js';
 import { showToast } from './modules/toast.js';
 import { loadHeader } from './modules/headerLoader.js'; // Added headerLoader import
+import { initializeCookieBanner } from './modules/cookie.js';
+import { fetchJson } from './modules/api.js';
+import { getCurrentPosition } from './modules/utils.js';
 
 async function initializeApp() {
     await loadHeader('header-placeholder', 'src/html/header.html'); // AWAIT the header load
+    initializeCookieBanner();
     const initialLang = getLanguage();
     document.documentElement.lang = initialLang;
 
@@ -63,8 +67,8 @@ async function initializeApp() {
             }
 
             try {
-                const response = await fetch(`translations/${lang}.json?v=${Date.now()}`);
-                const data = await response.json();
+                const data = await fetchJson(`translations/${lang}.json?v=${Date.now()}`);
+                if (!data) return;
                 setTranslations(lang, data);
                 applyTranslations();
                 // Ensure presets are populated AFTER new language is set and translations applied
@@ -101,14 +105,14 @@ async function initializeApp() {
     // Geo Location Logic
     const getLocationBtn = document.getElementById('get-location-btn');
     const geoCoordInput = document.getElementById('geo-coord');
-    getLocationBtn?.addEventListener('click', () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                geoCoordInput.value = `${pos.coords.latitude.toFixed(4)},${pos.coords.longitude.toFixed(4)}`;
-                generateSearchString();
-            }, (err) => {
-                alert('Standort konnte nicht ermittelt werden.');
-            });
+    getLocationBtn?.addEventListener('click', async () => {
+        try {
+            const pos = await getCurrentPosition();
+            geoCoordInput.value = `${pos.coords.latitude.toFixed(4)},${pos.coords.longitude.toFixed(4)}`;
+            generateSearchString();
+        } catch (err) {
+            alert('Standort konnte nicht ermittelt werden.');
+            console.error(err);
         }
     });
 
@@ -116,27 +120,6 @@ async function initializeApp() {
     if (downloadResultsBtn) {
         downloadResultsBtn.addEventListener('click', downloadResults);
     }
-
-    // Cookie Banner Logic
-    const cookieBanner = document.getElementById('cookie-banner');
-    const cookieAccept = document.getElementById('cookie-accept');
-    const cookieDecline = document.getElementById('cookie-decline');
-    const cookieConsent = localStorage.getItem('cookieConsent');
-
-    if (!cookieConsent && cookieBanner) {
-        cookieBanner.style.display = 'flex';
-    }
-
-    cookieAccept?.addEventListener('click', () => {
-        localStorage.setItem('cookieConsent', 'accepted');
-        cookieBanner.style.display = 'none';
-        showToast(getTranslation('toast-cookies-accepted') || 'Cookies akzeptiert.');
-    });
-
-    cookieDecline?.addEventListener('click', () => {
-        localStorage.setItem('cookieConsent', 'declined');
-        cookieBanner.style.display = 'none';
-    });
 
     const analyzeNetworkBtn = document.getElementById('analyze-network-button');
     analyzeNetworkBtn?.addEventListener('click', () => {
@@ -274,8 +257,8 @@ async function initializeApp() {
 
     // Initial language fetch and UI update
     try {
-        const response = await fetch(`translations/${initialLang}.json?v=${Date.now()}`);
-        const data = await response.json();
+        const data = await fetchJson(`translations/${initialLang}.json?v=${Date.now()}`);
+        if (!data) throw new Error('No translation data loaded');
         setTranslations(initialLang, data);
         applyTranslations(); // Apply initial translations to all elements
 

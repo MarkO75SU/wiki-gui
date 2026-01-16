@@ -336,5 +336,9 @@
     "param-ns-desc": "Namensraum-Filter werden als nsX=1 gesendet (z. B. ns0=1 für den Haupt-/Artikel-Namensraum).",
     "params-modal-intro": "Dieses Fenster erklärt alle Parameter, die du mit Special:Search verwenden kannst. Verwende das Formular, um eine URL zu generieren, oder füge eine Special:Search-URL ein, um eine Aufschlüsselung zu sehen.",
     "params-modal-breakdown-heading": "Parameter-Aufschlüsselung",
-    "copy-success-title": "Kopiert!"
+    "copy-success-title": "Kopiert!",
+    "error-api-fetch": "Daten konnten von der Wikipedia-API nicht abgerufen werden.",
+    "error-resource-fetch": "Ressource konnte nicht abgerufen werden.",
+    "error-json-fetch": "JSON-Daten konnten nicht abgerufen werden.",
+    "error-opensearch-fetch": "Suchvorschläge konnten nicht abgerufen werden."
 }

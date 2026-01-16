@@ -1,5 +1,6 @@
 // src/js/modules/autocomplete.js
 import { getLanguage } from './state.js';
+import { fetchWikipediaOpenSearch } from './api.js';
 
 let debounceTimer;
 
@@ -22,11 +23,11 @@ export function setupCategoryAutocomplete(inputElement) {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(async () => {
             const lang = getLanguage();
-            const url = `https://${lang}.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&search=Category:${query}&limit=10`;
             
             try {
-                const response = await fetch(url);
-                const data = await response.json();
+                const data = await fetchWikipediaOpenSearch(`Category:${query}`, lang, 10);
+                if (!data) return;
+
                 const categories = data[1].map(cat => cat.replace(/^Category:|Kategorie:/i, ''));
                 
                 dataList.innerHTML = categories.map(cat => `<option value="${cat}">`).join('');

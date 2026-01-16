@@ -330,5 +330,9 @@
     "network-explanation-note": "Note: The analysis is based on article metadata. Large nodes indicate \"bridge topics\" that connect many sub-fields.",
     "params-modal-intro": "This panel explains all parameters you can use with Special:Search. Use the form to generate a URL or paste a Special:Search URL to see a parameter breakdown.",
     "params-modal-breakdown-heading": "Breakdown of parameters",
-    "copy-success-title": "Copied!"
+    "copy-success-title": "Copied!",
+    "error-api-fetch": "Could not fetch data from Wikipedia API.",
+    "error-resource-fetch": "Could not fetch resource.",
+    "error-json-fetch": "Could not fetch JSON data.",
+    "error-opensearch-fetch": "Could not fetch search suggestions."
 }

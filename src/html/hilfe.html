@@ -219,6 +219,16 @@
         </div>
     </main>
 
+    <div id="cookie-banner">
+        <div class="cookie-content">
+            <p id="cookie-text"></p>
+        </div>
+        <div class="cookie-actions">
+            <button id="cookie-accept" class="btn-action btn-accent">OK</button>
+            <button id="cookie-decline" class="btn-action">NO</button>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <nav>
@@ -237,9 +247,11 @@
         import { getLanguage, setLanguage, setTranslations, getTranslation } from '../js/modules/state.js';
         import { applyTranslations } from '../js/modules/ui.js';
         import { loadHeader } from '../js/modules/headerLoader.js'; // Added headerLoader import
+        import { initializeCookieBanner } from '../js/modules/cookie.js';
         
         async function initHelp() {
             await loadHeader('header-placeholder', 'header.html'); // AWAIT the header load
+            initializeCookieBanner();
             const lang = getLanguage() || 'de';
             const searchInput = document.getElementById('help-search'); // Moved declaration out of try block and to higher scope
             try {
