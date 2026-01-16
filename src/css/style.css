@@ -273,26 +273,50 @@ input:focus, select:focus {
 
 .accordion-header {
     background: rgba(255,255,255,0.02);
-    padding: 5px;
+    padding: 1rem; /* Increased padding for better click area */
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 0.9rem; /* Slightly larger font */
     line-height: 1.2;
+    transition: background 0.2s ease, border-bottom 0.2s ease;
+}
+
+.accordion-header h2, .accordion-header h3, .accordion-header h4 {
+    font-size: inherit; /* Inherit font size from parent accordion-header */
+    margin: 0; /* Remove default margin */
+    color: var(--text-primary);
 }
 
 .search-group.active .accordion-header {
     background: rgba(255,255,255,0.05);
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 2px solid var(--primary); /* More pronounced active state */
+}
+
+.accordion-arrow {
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--text-secondary); /* Down arrow */
+    transition: transform 0.2s ease;
+    margin-left: 1rem;
+}
+
+.search-group.active .accordion-arrow {
+    transform: rotate(180deg); /* Up arrow when active */
+    border-top-color: var(--primary); /* Change color when active */
 }
 
 .accordion-content {
-    padding: 5px;
+    padding: 1rem; /* Consistent padding */
     display: none;
     background: rgba(0,0,0,0.1);
+    border-top: 1px solid var(--border-color); /* Separator from header */
 }
 
 .search-group.active .accordion-content { display: block; }
@@ -488,39 +512,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 .result-content h3 { font-size: 1.25rem; color: var(--primary); margin-bottom: 0.5rem; }
 .result-content p { font-size: 0.95rem; color: var(--text-secondary); }
 
-/* --- Network Graph Section --- */
-#network-graph-section {
-    margin-bottom: 1.5rem;
-}
 
-#network-graph-section .accordion-header {
-    background: rgba(255,255,255,0.02);
-    padding: 5px;
-    font-size: 0.8rem;
-    border-bottom: none;
-}
-
-#network-graph-section.active .accordion-header {
-    background: rgba(255,255,255,0.05);
-    border-bottom: 2px solid var(--primary);
-}
-
-/* --- Results Table Section --- */
-#results-table-section {
-    margin-bottom: 1.5rem;
-}
-
-#results-table-section .accordion-header {
-    background: rgba(255,255,255,0.02);
-    padding: 5px;
-    font-size: 0.8rem;
-    border-bottom: none;
-}
-
-#results-table-section.active .accordion-header {
-    background: rgba(255,255,255,0.05);
-    border-bottom: 2px solid var(--primary);
-}
 
 /* --- Network Panel --- */
 .network-panel {
